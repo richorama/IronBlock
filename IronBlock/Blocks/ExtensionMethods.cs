@@ -39,15 +39,15 @@ namespace IronBlock.Blocks
 
         public static void AddStandardBlocks(this Parser parser)
         {
-            parser.AddBlock("controls_repeat_ext", () => new ControlsRepeatExt());
-            parser.AddBlock("controls_if", () => new ControlsIf());
-            parser.AddBlock("logic_compare", () => new LogicCompare());
-            parser.AddBlock("math_arithmetic", () => new MathArithmetic());
-            parser.AddBlock("math_number", () => new MathNumber());
-            parser.AddBlock("text", () => new TextBlock());
-            parser.AddBlock("text_print", () => new TextPrint());
-            parser.AddBlock("variables_get", () => new VariablesGet());
-            parser.AddBlock("variables_set", () => new VariablesSet());
+            parser.AddBlock<ControlsRepeatExt>("controls_repeat_ext");
+            parser.AddBlock<ControlsIf>("controls_if");
+            parser.AddBlock<LogicCompare>("logic_compare");
+            parser.AddBlock<MathArithmetic>("math_arithmetic");
+            parser.AddBlock<MathNumber>("math_number");
+            parser.AddBlock<TextBlock>("text");
+            parser.AddBlock<TextPrint>("text_print");
+            parser.AddBlock<VariablesGet>("variables_get");
+            parser.AddBlock<VariablesSet>("variables_set");
         }
 
 

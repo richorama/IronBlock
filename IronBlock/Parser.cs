@@ -6,16 +6,16 @@ namespace IronBlock
 {
     public class Parser
     {
-        IDictionary<string,Func<IBlock>> blocks = new Dictionary<string,Func<IBlock>>();
+        IDictionary<string,Type> blocks = new Dictionary<string,Type>();
 
-        public void AddBlock(string type, Func<IBlock> blockFactory)
+        public void AddBlock<T>(string type) where T : IBlock
         {
             if (this.blocks.ContainsKey(type))
             {
-                this.blocks[type] = blockFactory;
+                this.blocks[type] = typeof(T);
                 return;
             }
-            this.blocks.Add(type, blockFactory);
+            this.blocks.Add(type, typeof(T));
         }
 
         public Workspace Parse(string xml)
@@ -40,7 +40,7 @@ namespace IronBlock
         {
             var type = node.Attributes["type"].Value;
             if (!this.blocks.ContainsKey(type)) throw new ApplicationException($"block type not registered: '{type}'");
-            var block = this.blocks[type]();
+            var block = Activator.CreateInstance(this.blocks[type]) as IBlock;
             
             block.Type = type;
             block.Id = node.Attributes["id"]?.Value;
