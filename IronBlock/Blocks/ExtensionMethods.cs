@@ -35,8 +35,6 @@ namespace IronBlock.Blocks
             return statement;
         }
 
-
-
         public static void AddStandardBlocks(this Parser parser)
         {
             parser.AddBlock<ControlsRepeatExt>("controls_repeat_ext");
