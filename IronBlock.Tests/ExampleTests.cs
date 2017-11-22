@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.IO;
 using IronBlock.Blocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -15,10 +14,11 @@ namespace IronBlock.Tests
             var parser = new Parser();
 
             parser.AddStandardBlocks();
+            var printer = parser.AddDebugPrinter();
 
-            var workspace = parser.Parse(xml);
+            parser.Parse(xml).Evaluate();
 
-            var output = workspace.Evaluate(new Dictionary<string,object>());
+            Assert.AreEqual("24816", printer.Text);
         }
 
 
@@ -29,10 +29,11 @@ namespace IronBlock.Tests
             var parser = new Parser();
 
             parser.AddStandardBlocks();
+            var printer = parser.AddDebugPrinter();
 
-            var workspace = parser.Parse(xml);
+            parser.Parse(xml).Evaluate();
 
-            var output = workspace.Evaluate(new Dictionary<string,object>());
+            Assert.AreEqual("Don't panic", printer.Text);
         }
 
 

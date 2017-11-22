@@ -31,10 +31,10 @@ namespace IronBlock
             var workspace = new Workspace();
             foreach (XmlNode node in xdoc.DocumentElement.ChildNodes)
             {
-                if (node.LocalName == "block" )
+                if (node.LocalName == "block" || node.LocalName == "shadow" )
                 {
                     var block = ParseBlock(node);
-                    workspace.Blocks.Add(block);
+                    if (null != block) workspace.Blocks.Add(block);
                 }
             }
 
@@ -43,12 +43,14 @@ namespace IronBlock
 
         IBlock ParseBlock(XmlNode node)
         {
-            var type = node.Attributes["type"].Value;
+            if (bool.Parse(node.GetAttribute("disabled") ?? "false")) return null;
+
+            var type = node.GetAttribute("type");
             if (!this.blocks.ContainsKey(type)) throw new ApplicationException($"block type not registered: '{type}'");
             var block = this.blocks[type]();
             
             block.Type = type;
-            block.Id = node.Attributes["id"]?.Value;
+            block.Id = node.GetAttribute("id");
 
             foreach (XmlNode childNode in node.ChildNodes)
             {
@@ -67,7 +69,8 @@ namespace IronBlock
                         ParseStatement(childNode, block);
                         break;
                     case "next":
-                        block.Next = ParseBlock(childNode.FirstChild);
+                        var nextBlock = ParseBlock(childNode.FirstChild);
+                        if (null != nextBlock) block.Next = nextBlock;
                         break;
                     default:
                         throw new ArgumentException($"unknown xml type: {childNode.LocalName}");
@@ -82,7 +85,7 @@ namespace IronBlock
         {
             var field = new Field
             {
-                Name = fieldNode.Attributes["name"]?.Value,
+                Name = fieldNode.GetAttribute("name"),
                 Value = fieldNode.InnerText
             };
             block.Fields.Add(field);
@@ -90,12 +93,13 @@ namespace IronBlock
 
         void ParseValue(XmlNode valueNode, IBlock block)
         {
-            var childNode = valueNode.GetChild("block");
+            var childNode = valueNode.GetChild("block") ?? valueNode.GetChild("shadow");
+            if (childNode == null) return;
             var childBlock = ParseBlock(childNode);
 
             var value = new Value
             {
-                Name = valueNode.Attributes["name"]?.Value,
+                Name = valueNode.GetAttribute("name"),
                 Block = childBlock
             };
             block.Values.Add(value);
@@ -104,12 +108,13 @@ namespace IronBlock
 
         void ParseStatement(XmlNode statementNode, IBlock block)
         {
-            var childNode = statementNode.GetChild("block");
+            var childNode = statementNode.GetChild("block") ?? statementNode.GetChild("shadow");
+            if (childNode == null) return;
             var childBlock = ParseBlock(childNode);
 
             var statement = new Statement
             {
-                Name = statementNode.Attributes["name"]?.Value,
+                Name = statementNode.GetAttribute("name"),
                 Block = childBlock
             };
             block.Statements.Add(statement);
@@ -141,6 +146,16 @@ namespace IronBlock
                 if (childNode.LocalName == name) return childNode;
             }
             return null;
+        }
+
+        public static string GetAttribute(this XmlNode node, string name)
+        {
+            foreach (XmlAttribute attribute in node.Attributes)
+            {
+                if (attribute.Name == name) return attribute.Value;
+            }
+            return null;
+
         }
     }
 
