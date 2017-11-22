@@ -50,6 +50,7 @@ namespace IronBlock.Blocks
             parser.AddBlock<LogicBoolean>("logic_boolean");
             parser.AddBlock<LogicNegate>("logic_negate");
             parser.AddBlock<LogicOperation>("logic_operation");
+            parser.AddBlock<LogicNull>("logic_null");
 
             parser.AddBlock<MathArithmetic>("math_arithmetic");
             parser.AddBlock<MathNumber>("math_number");

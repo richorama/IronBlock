@@ -7,8 +7,8 @@ namespace IronBlock.Blocks.Logic
     {
         public override object Evaluate(IDictionary<string, object> variables)
         {
-            var a = (bool) this.Values.Evaluate("A", variables);
-            var b = (bool) this.Values.Evaluate("B", variables);
+            var a = (bool) (this.Values.Evaluate("A", variables) ?? false);
+            var b = (bool) (this.Values.Evaluate("B", variables) ?? false);
             
             var op = this.Fields.Evaluate("OP");
 

@@ -87,7 +87,7 @@ namespace IronBlock.Tests
         }
 
         [TestMethod]
-        public void Test_Logic_Operation_Negate()
+        public void Test_Logic_Negate()
         {
             
             const string xml = @"
@@ -108,7 +108,24 @@ namespace IronBlock.Tests
             Assert.AreEqual(false, output);
         }
 
+        [TestMethod]
+        public void Test_Logic_Null()
+        {
+            
+            const string xml = @"
+<xml>
+  <block type=""logic_null""></block>
+</xml>";
+            var output = new Parser()
+                .AddStandardBlocks()
+                .Parse(xml)
+                .Evaluate();
+            
+            Assert.AreEqual(null, output);
+        }
 
+
+  
 
     }
 }
