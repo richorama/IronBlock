@@ -48,6 +48,7 @@ namespace IronBlock.Blocks
 
             parser.AddBlock<LogicCompare>("logic_compare");
             parser.AddBlock<LogicBoolean>("logic_boolean");
+            parser.AddBlock<LogicNegate>("logic_negate");
             parser.AddBlock<LogicOperation>("logic_operation");
 
             parser.AddBlock<MathArithmetic>("math_arithmetic");

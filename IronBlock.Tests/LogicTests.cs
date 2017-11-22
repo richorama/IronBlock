@@ -86,5 +86,29 @@ namespace IronBlock.Tests
             Assert.AreEqual(false, output);
         }
 
+        [TestMethod]
+        public void Test_Logic_Operation_Negate()
+        {
+            
+            const string xml = @"
+<xml>
+  <block type=""logic_negate"">
+    <value name=""BOOL"">
+      <block type=""logic_boolean"">
+        <field name=""BOOL"">TRUE</field>
+      </block>
+    </value>
+  </block>
+</xml>";
+            var output = new Parser()
+                .AddStandardBlocks()
+                .Parse(xml)
+                .Evaluate();
+            
+            Assert.AreEqual(false, output);
+        }
+
+
+
     }
 }
