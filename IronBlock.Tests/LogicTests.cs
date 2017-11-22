@@ -49,14 +49,11 @@ namespace IronBlock.Tests
     </value>
   </block>
 </xml>";
-            var model = new Parser()
+
+            var output = new Parser()
                 .AddStandardBlocks()
-                .Parse(xml);
-
-            Assert.AreEqual(1, model.Blocks.Count);
-            Assert.AreEqual(2, model.Blocks.First().Values.Count);
-
-            var output = model.Evaluate();
+                .Parse(xml)
+                .Evaluate();
             
             Assert.AreEqual(true, output);
         }

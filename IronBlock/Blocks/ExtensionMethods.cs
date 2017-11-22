@@ -11,7 +11,7 @@ namespace IronBlock.Blocks
 {
     public static class Extensions
     {
-        public static object Evaluate(this IEnumerable<Value> values, string name, IDictionary<string, object> variables)
+        internal static object Evaluate(this IEnumerable<Value> values, string name, IDictionary<string, object> variables)
         {
             var value = values.FirstOrDefault(x => x.Name == name);
             if (null == value) throw new ArgumentException($"value {name} not found");
@@ -19,7 +19,7 @@ namespace IronBlock.Blocks
             return value.Evaluate(variables);
         }
 
-        public static string Evaluate(this IEnumerable<Field> fields, string name)
+        internal static string Evaluate(this IEnumerable<Field> fields, string name)
         {
             var field = fields.FirstOrDefault(x => x.Name == name);
             if (null == field) throw new ArgumentException($"field {name} not found");
@@ -27,7 +27,7 @@ namespace IronBlock.Blocks
             return field.Value;
         }
 
-        public static Statement GetStatement(this IEnumerable<Statement> statements, string name)
+        internal static Statement GetStatement(this IEnumerable<Statement> statements, string name)
         {
             var statement = statements.FirstOrDefault(x => x.Name == name);
             if (null == statement) throw new ArgumentException($"statement {name} not found");

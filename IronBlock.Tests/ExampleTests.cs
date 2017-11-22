@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace IronBlock.Tests
 {
     [TestClass]
-    public class UnitTest1
+    public class ExampleTests
     {
         [TestMethod]
         public void Test_Example1()
