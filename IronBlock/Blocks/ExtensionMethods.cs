@@ -51,6 +51,7 @@ namespace IronBlock.Blocks
             parser.AddBlock<LogicNegate>("logic_negate");
             parser.AddBlock<LogicOperation>("logic_operation");
             parser.AddBlock<LogicNull>("logic_null");
+            parser.AddBlock<LogicTernary>("logic_ternary");
 
             parser.AddBlock<MathArithmetic>("math_arithmetic");
             parser.AddBlock<MathNumber>("math_number");

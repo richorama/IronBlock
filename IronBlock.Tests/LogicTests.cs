@@ -124,6 +124,40 @@ namespace IronBlock.Tests
             Assert.AreEqual(null, output);
         }
 
+        [TestMethod]
+        public void Test_Logic_Ternary()
+        {
+            
+            const string xml = @"
+<xml>
+  <block type=""logic_ternary"">
+    <value name=""IF"">
+      <block type=""logic_boolean"">
+        <field name=""BOOL"">TRUE</field>
+      </block>
+    </value>
+    <value name=""THEN"">
+      <block type=""logic_boolean"">
+        <field name=""BOOL"">FALSE</field>
+      </block>
+    </value>
+    <value name=""ELSE"">
+      <block type=""logic_boolean"">
+        <field name=""BOOL"">TRUE</field>
+      </block>
+    </value>
+  </block>
+</xml>";
+            var output = new Parser()
+                .AddStandardBlocks()
+                .Parse(xml)
+                .Evaluate();
+            
+            Assert.AreEqual(false, output);
+        }
+
+
+
 
   
 

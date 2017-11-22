@@ -75,9 +75,7 @@ namespace IronBlock
                     default:
                         throw new ArgumentException($"unknown xml type: {childNode.LocalName}");
                 }
-
             }
-           
             return block;
         }
 
