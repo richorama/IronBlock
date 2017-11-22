@@ -50,15 +50,31 @@ namespace IronBlock
             block.Type = type;
             block.Id = node.Attributes["id"]?.Value;
 
-            foreach (XmlNode childNode in node.SelectNodes("mutation")) ParseMutation(childNode, block);
-            foreach (XmlNode childNode in node.SelectNodes("field")) ParseField(childNode, block);
-            foreach (XmlNode childNode in node.SelectNodes("value")) ParseValue(childNode, block);
-            foreach (XmlNode childNode in node.SelectNodes("statement")) ParseStatement(childNode, block);
-            foreach (XmlNode childNode in node.SelectNodes("next"))
+            foreach (XmlNode childNode in node.ChildNodes)
             {
-                block.Next = ParseBlock(childNode.FirstChild);
-            }
+                switch (childNode.LocalName)
+                {
+                    case "mutation":
+                        ParseMutation(childNode, block);
+                        break;
+                    case "field":
+                        ParseField(childNode, block);
+                        break;
+                    case "value":
+                        ParseValue(childNode, block);
+                        break;
+                    case "statement":
+                        ParseStatement(childNode, block);
+                        break;
+                    case "next":
+                        block.Next = ParseBlock(childNode.FirstChild);
+                        break;
+                    default:
+                        throw new ArgumentException($"unknown xml type: {childNode.LocalName}");
+                }
 
+            }
+           
             return block;
         }
 
@@ -74,7 +90,7 @@ namespace IronBlock
 
         void ParseValue(XmlNode valueNode, IBlock block)
         {
-            var childNode = valueNode.SelectSingleNode("block");
+            var childNode = valueNode.GetChild("block");
             var childBlock = ParseBlock(childNode);
 
             var value = new Value
@@ -88,7 +104,7 @@ namespace IronBlock
 
         void ParseStatement(XmlNode statementNode, IBlock block)
         {
-            var childNode = statementNode.SelectSingleNode("block");
+            var childNode = statementNode.GetChild("block");
             var childBlock = ParseBlock(childNode);
 
             var statement = new Statement
@@ -114,6 +130,18 @@ namespace IronBlock
             }
         }
 
+    }
+
+    internal static class ParserExtensions
+    {
+        public static XmlNode GetChild(this XmlNode node, string name)
+        {
+            foreach (XmlNode childNode in node.ChildNodes)
+            {
+                if (childNode.LocalName == name) return childNode;
+            }
+            return null;
+        }
     }
 
 

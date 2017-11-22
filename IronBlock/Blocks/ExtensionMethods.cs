@@ -35,17 +35,31 @@ namespace IronBlock.Blocks
             return statement;
         }
 
-        public static void AddStandardBlocks(this Parser parser)
+
+        public static object Evaluate(this Workspace workspace)
+        {
+            return workspace.Evaluate(new Dictionary<string,object>());
+        }
+
+        public static Parser AddStandardBlocks(this Parser parser)
         {
             parser.AddBlock<ControlsRepeatExt>("controls_repeat_ext");
             parser.AddBlock<ControlsIf>("controls_if");
+
             parser.AddBlock<LogicCompare>("logic_compare");
+            parser.AddBlock<LogicBoolean>("logic_boolean");
+            parser.AddBlock<LogicOperation>("logic_operation");
+
             parser.AddBlock<MathArithmetic>("math_arithmetic");
             parser.AddBlock<MathNumber>("math_number");
+
             parser.AddBlock<TextBlock>("text");
             parser.AddBlock<TextPrint>("text_print");
+
             parser.AddBlock<VariablesGet>("variables_get");
             parser.AddBlock<VariablesSet>("variables_set");
+
+            return parser;
         }
 
 

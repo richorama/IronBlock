@@ -21,13 +21,14 @@ namespace IronBlock
         public virtual object Evaluate(IDictionary<string, object> variables)
         {   
             // TODO: variables
+            object returnValue = null;
 
             foreach (var block in this.Blocks)
             {
-                block.Evaluate(variables);
+                returnValue = block.Evaluate(variables);
             }
 
-            return null;
+            return returnValue;
         }
     }
 
