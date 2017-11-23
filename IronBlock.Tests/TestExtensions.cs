@@ -8,16 +8,16 @@ namespace IronBlock.Tests
     {
         internal class DebugPrint : IBlock
         {
-            public string Text { get; set; }
+            public List<string> Text { get; set; }
 
             public DebugPrint()
             {
-                this.Text = "";
+                this.Text = new List<string>();
             }
 
             public override object Evaluate(IDictionary<string, object> variables)
             {
-                this.Text += (this.Values.First(x => x.Name == "TEXT").Evaluate(variables) ?? "").ToString();
+                this.Text.Add((this.Values.First(x => x.Name == "TEXT").Evaluate(variables) ?? "").ToString());
                 return base.Evaluate(variables);
             }
         }

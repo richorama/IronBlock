@@ -72,7 +72,7 @@ namespace IronBlock.Tests
             var printer = parser.AddDebugPrinter();
             var output = parser.Parse(xml).Evaluate();
 
-            Assert.AreEqual("abc", printer.Text);
+            Assert.AreEqual("abc", printer.Text.First());
         }
     }
 

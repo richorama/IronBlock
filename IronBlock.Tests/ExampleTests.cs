@@ -1,4 +1,5 @@
 using System.IO;
+using System.Linq;
 using IronBlock.Blocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -18,7 +19,7 @@ namespace IronBlock.Tests
 
             parser.Parse(xml).Evaluate();
 
-            Assert.AreEqual("24816", printer.Text);
+            Assert.AreEqual("2,4,8,16", string.Join(",",printer.Text));
         }
 
 
@@ -33,7 +34,7 @@ namespace IronBlock.Tests
 
             parser.Parse(xml).Evaluate();
 
-            Assert.AreEqual("Don't panic", printer.Text);
+            Assert.AreEqual("Don't panic", printer.Text.First());
         }
 
 
