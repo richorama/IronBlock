@@ -56,6 +56,8 @@ namespace IronBlock.Blocks
 
             parser.AddBlock<MathArithmetic>("math_arithmetic");
             parser.AddBlock<MathNumber>("math_number");
+            parser.AddBlock<MathSingle>("math_single");
+            parser.AddBlock<MathSingle>("math_trig");
 
             parser.AddBlock<TextBlock>("text");
             parser.AddBlock<TextPrint>("text_print");
