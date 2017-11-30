@@ -57,6 +57,25 @@ namespace IronBlock.Tests
             Assert.AreEqual(System.Math.Sin(System.Math.PI / 4), output);
         }
 
+        [TestMethod]
+        public void Test_Math_PI()
+        {
+
+            const string xml = @"
+<xml>
+  <block type=""math_constant"">
+    <field name=""CONSTANT"">PI</field>
+  </block>        
+</xml>
+";
+            var output = new Parser()
+                .AddStandardBlocks()
+                .Parse(xml)
+                .Evaluate();
+            
+            Assert.AreEqual(System.Math.PI, output);
+        }
+
 
     }
 }
