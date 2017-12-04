@@ -10,7 +10,7 @@ namespace IronBlock.Tests
     public class TextTests
     {
         [TestMethod]
-        public void Test_Mutations()
+        public void Test_Text_Length()
         {
             const string xml = @"
 <xml>
@@ -32,6 +32,32 @@ namespace IronBlock.Tests
             Assert.AreEqual(3, output);
 
         }
+
+
+
+        [TestMethod]
+        public void Test_Text_IsEmpty()
+        {
+            const string xml = @"
+<xml>
+  <block type=""text_isEmpty"">
+    <value name=""VALUE"">
+      <shadow type=""text"">
+        <field name=""TEXT""></field>
+      </shadow>
+    </value>
+  </block>
+</xml>
+";
+            var output = (bool) new Parser()
+              .AddStandardBlocks()
+              .Parse(xml)
+              .Evaluate();
+            
+            Assert.IsTrue(output);
+        }
+
+
     }
 
 }
