@@ -58,6 +58,29 @@ namespace IronBlock.Tests
         }
 
 
-    }
+        [TestMethod]
+        public void Test_Text_Trim()
+        {
+            const string xml = @"
+<xml>
+  <block type=""text_trim"">
+    <field name=""MODE"">BOTH</field>
+    <value name=""TEXT"">
+      <shadow type=""text"">
+        <field name=""TEXT""> ab c </field>
+      </shadow>
+    </value>
+  </block>
+</xml>
+";
+            var output = new Parser()
+              .AddStandardBlocks()
+              .Parse(xml)
+              .Evaluate()
+              .ToString();
+            
+            Assert.AreEqual("ab c", output);
+        }
 
+    }
 }

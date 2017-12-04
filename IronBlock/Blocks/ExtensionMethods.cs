@@ -65,6 +65,7 @@ namespace IronBlock.Blocks
             parser.AddBlock<TextPrint>("text_print");
             parser.AddBlock<TextLength>("text_length");
             parser.AddBlock<TextIsEmpty>("text_isEmpty");
+            parser.AddBlock<TextTrim>("text_trim");
 
             parser.AddBlock<VariablesGet>("variables_get");
             parser.AddBlock<VariablesSet>("variables_set");
