@@ -82,5 +82,31 @@ namespace IronBlock.Tests
             Assert.AreEqual("ab c", output);
         }
 
+        [TestMethod]
+        public void Test_Text_ToCase()
+        {
+            const string xml = @"
+<xml>
+  <block type=""text_changeCase"">
+    <field name=""CASE"">TITLECASE</field>
+    <value name=""TEXT"">
+      <shadow type=""text"">
+        <field name=""TEXT"">hello world</field>
+      </shadow>
+    </value>
+  </block>
+</xml>
+";
+            var output = new Parser()
+              .AddStandardBlocks()
+              .Parse(xml)
+              .Evaluate()
+              .ToString();
+            
+            Assert.AreEqual("Hello World", output);
+        }
+
     }
 }
+
+
