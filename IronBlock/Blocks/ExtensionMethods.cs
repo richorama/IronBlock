@@ -70,6 +70,7 @@ namespace IronBlock.Blocks
             parser.AddBlock<TextCaseChange>("text_changeCase");
             parser.AddBlock<TextAppend>("text_append");
             parser.AddBlock<TextJoin>("text_join");
+            parser.AddBlock<TextIndexOf>("text_indexOf");
 
             parser.AddBlock<VariablesGet>("variables_get");
             parser.AddBlock<VariablesSet>("variables_set");

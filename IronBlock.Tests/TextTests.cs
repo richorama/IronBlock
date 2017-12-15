@@ -206,6 +206,34 @@ namespace IronBlock.Tests
             Assert.AreEqual("foobar", printer.Text.First());
         }
 
+
+        [TestMethod]
+        public void Test_IndexOf()
+        {
+            const string xml = @"
+<xml>
+  <block type=""text_indexOf"">
+    <field name=""END"">FIRST</field>
+    <value name=""VALUE"">
+      <block type=""text"">
+        <field name=""TEXT"">foo bar baz</field>
+      </block>
+    </value>
+    <value name=""FIND"">
+      <shadow type=""text"">
+        <field name=""TEXT"">bar</field>
+      </shadow>
+    </value>
+  </block>
+</xml>
+";
+            var output = new Parser()
+              .AddStandardBlocks()
+              .Parse(xml)
+              .Evaluate();
+            
+            Assert.AreEqual(5, output);
+        }
+
     }
 }
-
