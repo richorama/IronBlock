@@ -106,7 +106,96 @@ namespace IronBlock.Tests
             Assert.AreEqual("Hello World", output);
         }
 
+
+
+        [TestMethod]
+        public void Test_Text_Append()
+        {
+            const string xml = @"
+<xml>
+ <variables>
+    <variable type="""">x</variable>
+    <variable type="""">item</variable>
+  </variables>
+  <block type=""variables_set"">
+    <field name=""VAR"">x</field>
+    <value name=""VALUE"">
+      <block type=""text"">
+        <field name=""TEXT"">foo</field>
+      </block>
+    </value>
+    <next>
+      <block type=""text_append"">
+        <field name=""VAR"">x</field>
+        <value name=""TEXT"">
+          <shadow type=""text"">
+            <field name=""TEXT"">bar</field>
+          </shadow>
+        </value>
+        <next>
+          <block type=""text_print"">
+            <value name=""TEXT"">
+              <shadow type=""text"">
+                <field name=""TEXT"">abc</field>
+              </shadow>
+              <block type=""variables_get"">
+                <field name=""VAR"">x</field>
+              </block>
+            </value>
+          </block>
+        </next>
+      </block>
+    </next>
+  </block>
+</xml>
+";
+            var parser = new Parser();
+
+            parser.AddStandardBlocks();
+            var printer = parser.AddDebugPrinter();
+            parser.Parse(xml).Evaluate();
+
+            Assert.AreEqual("foobar", printer.Text.First());
+        }
+
     }
 }
 
 
+/*
+  <variables>
+    <variable type="""">x</variable>
+    <variable type="""">item</variable>
+  </variables>
+  <block type=""variables_set"">
+    <field name=""VAR"">x</field>
+    <value name=""VALUE"">
+      <block type=""text"">
+        <field name=""TEXT"">foo</field>
+      </block>
+    </value>
+    <next>
+      <block type=""text_append"">
+        <field name=""VAR"">x</field>
+        <value name=""TEXT"">
+          <shadow type=""text"">
+            <field name=""TEXT"">bar</field>
+          </shadow>
+        </value>
+        <next>
+          <block type=""text_print"">
+            <value name=""TEXT"">
+              <shadow type=""text"">
+                <field name=""TEXT"">abc</field>
+              </shadow>
+              <block type=""variables_get"">
+                <field name=""VAR"">x</field>
+              </block>
+            </value>
+          </block>
+        </next>
+      </block>
+    </next>
+  </block>
+
+ */
