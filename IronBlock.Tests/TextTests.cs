@@ -115,7 +115,6 @@ namespace IronBlock.Tests
 <xml>
  <variables>
     <variable type="""">x</variable>
-    <variable type="""">item</variable>
   </variables>
   <block type=""variables_set"">
     <field name=""VAR"">x</field>
@@ -158,44 +157,55 @@ namespace IronBlock.Tests
             Assert.AreEqual("foobar", printer.Text.First());
         }
 
-    }
-}
-
-
-/*
+        [TestMethod]
+        public void Test_Text_Join()
+        {
+            const string xml = @"
+<xml xmlns=""http://www.w3.org/1999/xhtml"">
   <variables>
-    <variable type="""">x</variable>
-    <variable type="""">item</variable>
+    <variable>x</variable>
   </variables>
   <block type=""variables_set"">
     <field name=""VAR"">x</field>
     <value name=""VALUE"">
-      <block type=""text"">
-        <field name=""TEXT"">foo</field>
+      <block type=""text_join"">
+        <mutation items=""3""></mutation>
+        <value name=""ADD0"">
+          <block type=""text"">
+            <field name=""TEXT"">foo</field>
+          </block>
+        </value>
+        <value name=""ADD1"">
+          <block type=""text"">
+            <field name=""TEXT"">bar</field>
+          </block>
+        </value>
       </block>
     </value>
     <next>
-      <block type=""text_append"">
-        <field name=""VAR"">x</field>
+      <block type=""text_print"">
         <value name=""TEXT"">
           <shadow type=""text"">
-            <field name=""TEXT"">bar</field>
+            <field name=""TEXT"">abc</field>
           </shadow>
-        </value>
-        <next>
-          <block type=""text_print"">
-            <value name=""TEXT"">
-              <shadow type=""text"">
-                <field name=""TEXT"">abc</field>
-              </shadow>
-              <block type=""variables_get"">
-                <field name=""VAR"">x</field>
-              </block>
-            </value>
+          <block type=""variables_get"">
+            <field name=""VAR"">x</field>
           </block>
-        </next>
+        </value>
       </block>
     </next>
   </block>
+</xml>
+";
+            var parser = new Parser();
 
- */
+            parser.AddStandardBlocks();
+            var printer = parser.AddDebugPrinter();
+            parser.Parse(xml).Evaluate();
+
+            Assert.AreEqual("foobar", printer.Text.First());
+        }
+
+    }
+}
+
