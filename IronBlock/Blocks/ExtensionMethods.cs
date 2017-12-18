@@ -75,6 +75,10 @@ namespace IronBlock.Blocks
             parser.AddBlock<VariablesGet>("variables_get");
             parser.AddBlock<VariablesSet>("variables_set");
 
+            parser.AddBlock<ColourPicker>("colour_picker");
+            parser.AddBlock<ColourRandom>("colour_random");
+
+
             return parser;
         }
 
