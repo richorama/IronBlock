@@ -13,14 +13,7 @@ namespace IronBlock.Blocks.Text
             var bytes = new byte[3];
             random.NextBytes(bytes);
             
-            var hex = new StringBuilder(bytes.Length * 2);
-            hex.Append("#");
-            foreach (byte b in bytes)
-            {
-                hex.AppendFormat("{0:x2}", b);
-            }
-            
-            return hex.ToString(); // between #000000 - #FFFFFF
+            return string.Format("#{0}", string.Join("", bytes.Select(x => string.Format("{0:x2}", x))));
         }
     }
 
