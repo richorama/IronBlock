@@ -53,5 +53,62 @@ namespace IronBlock.Tests
         }
 
 
+        [TestMethod]
+        public void Test_Colour_Rgb()
+        {
+            const string xml = @"
+<xml>
+ <block type=""colour_rgb"" id=""JM:^k(U=gB8g^%oXS3}#"" x=""188"" y=""88"">
+    <value name=""RED"">
+      <shadow type=""math_number"" id="":R|JG4bNKO%{Imqb80Ra"">
+        <field name=""NUM"">255</field>
+      </shadow>
+    </value>
+    <value name=""GREEN"">
+      <shadow type=""math_number"" id=""u)A6y/5^OS?,@4_[qH#f"">
+        <field name=""NUM"">0</field>
+      </shadow>
+    </value>
+    <value name=""BLUE"">
+      <shadow type=""math_number"" id=""QygYvsLu_]am-bn9M_S-"">
+        <field name=""NUM"">1</field>
+      </shadow>
+    </value>
+  </block>
+</xml>
+";
+
+            var colour = new Parser()
+              .AddStandardBlocks()
+              .Parse(xml)
+              .Evaluate() as string;
+
+            Assert.AreEqual("#ff0001", colour);
+
+        }
+
+
+
     }
 }
+
+/*
+
+  <block type=""colour_rgb"" id=""JM:^k(U=gB8g^%oXS3}#"" x=""188"" y=""88"">
+    <value name=""RED"">
+      <shadow type=""math_number"" id="":R|JG4bNKO%{Imqb80Ra"">
+        <field name=""NUM"">100</field>
+      </shadow>
+    </value>
+    <value name=""GREEN"">
+      <shadow type=""math_number"" id=""u)A6y/5^OS?,@4_[qH#f"">
+        <field name=""NUM"">50</field>
+      </shadow>
+    </value>
+    <value name=""BLUE"">
+      <shadow type=""math_number"" id=""QygYvsLu_]am-bn9M_S-"">
+        <field name=""NUM"">0</field>
+      </shadow>
+    </value>
+  </block>
+ */
