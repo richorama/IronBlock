@@ -88,27 +88,40 @@ namespace IronBlock.Tests
         }
 
 
-
-    }
-}
-
-/*
-
-  <block type=""colour_rgb"" id=""JM:^k(U=gB8g^%oXS3}#"" x=""188"" y=""88"">
-    <value name=""RED"">
-      <shadow type=""math_number"" id="":R|JG4bNKO%{Imqb80Ra"">
-        <field name=""NUM"">100</field>
+        [TestMethod]
+        public void Test_Colour_Blend()
+        {
+            const string xml = @"
+<xml>
+  <block type=""colour_blend"">
+    <value name=""COLOUR1"">
+      <shadow type=""colour_picker"">
+        <field name=""COLOUR"">#ff0000</field>
       </shadow>
     </value>
-    <value name=""GREEN"">
-      <shadow type=""math_number"" id=""u)A6y/5^OS?,@4_[qH#f"">
-        <field name=""NUM"">50</field>
+    <value name=""COLOUR2"">
+      <shadow type=""colour_picker"">
+        <field name=""COLOUR"">#3333ff</field>
       </shadow>
     </value>
-    <value name=""BLUE"">
-      <shadow type=""math_number"" id=""QygYvsLu_]am-bn9M_S-"">
-        <field name=""NUM"">0</field>
+    <value name=""RATIO"">
+      <shadow type=""math_number"">
+        <field name=""NUM"">0.2</field>
       </shadow>
     </value>
   </block>
- */
+</xml>
+";
+
+            var colour = new Parser()
+              .AddStandardBlocks()
+              .Parse(xml)
+              .Evaluate() as string;
+
+            Assert.AreEqual("#d60a33", colour);
+
+        }
+
+
+    }
+}

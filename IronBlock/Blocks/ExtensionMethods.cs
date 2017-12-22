@@ -78,7 +78,7 @@ namespace IronBlock.Blocks
             parser.AddBlock<ColourPicker>("colour_picker");
             parser.AddBlock<ColourRandom>("colour_random");
             parser.AddBlock<ColourRgb>("colour_rgb");
-
+            parser.AddBlock<ColourBlend>("colour_blend");
 
             return parser;
         }
