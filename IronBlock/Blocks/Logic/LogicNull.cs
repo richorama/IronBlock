@@ -5,7 +5,7 @@ namespace IronBlock.Blocks.Logic
 {
     public class LogicNull : IBlock
     {
-        public override object Evaluate(IDictionary<string, object> variables)
+        public override object Evaluate(Context context)
         {
             return null;
         }

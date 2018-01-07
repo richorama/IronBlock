@@ -6,9 +6,9 @@ namespace IronBlock.Blocks.Math
 {
     public class MathConstant : IBlock
     {
-        public override object Evaluate(IDictionary<string, object> variables)
+        public override object Evaluate(Context context)
         {
-            var constant = this.Fields.Evaluate("CONSTANT");
+            var constant = this.Fields.Get("CONSTANT");
 
             switch (constant)
             {

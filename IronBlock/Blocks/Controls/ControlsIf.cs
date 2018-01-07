@@ -1,25 +1,27 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace IronBlock.Blocks.Controls
 {
     public class ControlsIf : IBlock
     {
-        public override object Evaluate(IDictionary<string, object> variables)
+        public override object Evaluate(Context context)
         {
             
             var ifCount = 1;
-            if (this.Mutations.TryGetValue("elseif", out var elseIf))
+            if (null != this.Mutations.GetValue("elseif"))
             {
+                var elseIf = this.Mutations.GetValue("elseif");
                 ifCount = int.Parse(elseIf) + 1;
             }
 
             var done = false;
             for (var i = 0; i < ifCount; i++)
             {
-                if ((bool) Values.Evaluate($"IF{i}", variables))
+                if ((bool) Values.Evaluate($"IF{i}", context))
                 {
                     var statement = this.Statements.GetStatement($"DO{i}");
-                    statement.Evaluate(variables);
+                    statement.Evaluate(context);
                     done = true;
                     break;
                 }
@@ -27,17 +29,18 @@ namespace IronBlock.Blocks.Controls
 
             if (!done)
             {
-                if (this.Mutations.TryGetValue("else", out var elseExists))
+                if (null != this.Mutations.GetValue("else"))
                 {
+                    var elseExists = this.Mutations.GetValue("else");
                     if (elseExists == "1")
                     {
                         var statement = this.Statements.GetStatement("ELSE");
-                        statement.Evaluate(variables);
+                        statement.Evaluate(context);
                     }
                 }
             }
 
-            return base.Evaluate(variables);
+            return base.Evaluate(context);
         }
     }
 

@@ -6,9 +6,9 @@ namespace IronBlock.Blocks.Math
 {
     public class MathNumber : IBlock
     {
-        public override object Evaluate(IDictionary<string, object> variables)
+        public override object Evaluate(Context context)
         {
-            return double.Parse(this.Fields.Evaluate("NUM"));
+            return double.Parse(this.Fields.Get("NUM"));
         }
     }
 

@@ -6,12 +6,11 @@ namespace IronBlock.Blocks.Text
 {
     public class TextPrompt : IBlock
     {
-        public override object Evaluate(IDictionary<string, object> variables)
+        public override object Evaluate(Context context)
         {
-            var inputType = "TEXT";
-            this.Mutations.TryGetValue("type", out inputType);
+            var inputType = this.Mutations.GetValue("type") ?? "TEXT";
 
-            var text = (this.Values.Evaluate("TEXT", variables) ?? "").ToString();
+            var text = (this.Values.Evaluate("TEXT", context) ?? "").ToString();
 
             if (!string.IsNullOrWhiteSpace(text))
             {

@@ -6,10 +6,10 @@ namespace IronBlock.Blocks.Math
 {
     public class MathSingle : IBlock
     {
-        public override object Evaluate(IDictionary<string, object> variables)
+        public override object Evaluate(Context context)
         {
-            var op = this.Fields.Evaluate("OP");
-            var number = (double) this.Values.Evaluate("NUM", variables);
+            var op = this.Fields.Get("OP");
+            var number = (double) this.Values.Evaluate("NUM", context);
 
             switch (op)
             {

@@ -15,10 +15,10 @@ namespace IronBlock.Tests
                 this.Text = new List<string>();
             }
 
-            public override object Evaluate(IDictionary<string, object> variables)
+            public override object Evaluate(Context context)
             {
-                this.Text.Add((this.Values.First(x => x.Name == "TEXT").Evaluate(variables) ?? "").ToString());
-                return base.Evaluate(variables);
+                this.Text.Add((this.Values.First(x => x.Name == "TEXT").Evaluate(context) ?? "").ToString());
+                return base.Evaluate(context);
             }
         }
 

@@ -6,13 +6,13 @@ namespace IronBlock.Blocks.Variables
 {
     public class VariablesGet : IBlock
     {
-        public override object Evaluate(IDictionary<string, object> variables)
+        public override object Evaluate(Context context)
         {
-            var variableName = this.Fields.Evaluate("VAR");
+            var variableName = this.Fields.Get("VAR");
 
-            if (!variables.ContainsKey(variableName)) return null;
+            if (!context.Variables.ContainsKey(variableName)) return null;
 
-            return variables[variableName];
+            return context.Variables[variableName];
         }
     }
 

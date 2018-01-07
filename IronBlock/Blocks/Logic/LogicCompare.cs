@@ -5,12 +5,12 @@ namespace IronBlock.Blocks.Logic
 {
     public class LogicCompare : IBlock
     {
-        public override object Evaluate(IDictionary<string, object> variables)
+        public override object Evaluate(Context context)
         {
-            var a = this.Values.Evaluate("A", variables);
-            var b = this.Values.Evaluate("B", variables);
+            var a = this.Values.Evaluate("A", context);
+            var b = this.Values.Evaluate("B", context);
             
-            var opValue = this.Fields.Evaluate("OP");
+            var opValue = this.Fields.Get("OP");
 
             if (a is string) return Compare(opValue, a as string, b as string);
             if (a is double) return Compare(opValue, (double)a, (double)b);

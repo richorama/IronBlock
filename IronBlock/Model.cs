@@ -6,7 +6,7 @@ namespace IronBlock
     public interface IFragment
     { 
         // probably need a method like this here:
-        object Evaluate(IDictionary<string,object> variables);
+        object Evaluate(Context context);
     }
 
     public class Workspace : IFragment
@@ -18,14 +18,14 @@ namespace IronBlock
 
         public IList<IBlock> Blocks {get;set;}
 
-        public virtual object Evaluate(IDictionary<string, object> variables)
+        public virtual object Evaluate(Context context)
         {   
             // TODO: variables
             object returnValue = null;
 
             foreach (var block in this.Blocks)
             {
-                returnValue = block.Evaluate(variables);
+                returnValue = block.Evaluate(context);
             }
 
             return returnValue;
@@ -41,7 +41,7 @@ namespace IronBlock
             this.Fields = new List<Field>();
             this.Values = new List<Value>();
             this.Statements = new List<Statement>();
-            this.Mutations = new Dictionary<string,string>();
+            this.Mutations = new List<Mutation>();
         }
 
         public string Id { get; set; }
@@ -51,12 +51,12 @@ namespace IronBlock
         public string Type { get; set; }
         public bool Inline { get; set; }
         public IBlock Next { get; set; }
-        public IDictionary<string,string> Mutations { get; set; }
-        public virtual object Evaluate(IDictionary<string, object> variables)
+        public IList<Mutation> Mutations { get; set; }
+        public virtual object Evaluate(Context context)
         {
             if (null != this.Next)
             {
-                return this.Next.Evaluate(variables);                
+                return this.Next.Evaluate(context);                
             }
             return null;
         }
@@ -67,10 +67,10 @@ namespace IronBlock
     { 
         public string Name { get; set; }
         public IBlock Block { get; set; }
-        public object Evaluate(IDictionary<string, object> variables)
+        public object Evaluate(Context context)
         {
             if (null == this.Block) return null;
-            return this.Block.Evaluate(variables);
+            return this.Block.Evaluate(context);
         }
     }
 
@@ -78,10 +78,10 @@ namespace IronBlock
     { 
         public string Name { get; set; }
         public IBlock Block { get; set; }
-        public object Evaluate(IDictionary<string, object> variables)
+        public object Evaluate(Context context)
         {
             if (null == this.Block) return null;
-            return this.Block.Evaluate(variables);
+            return this.Block.Evaluate(context);
         }
 
     }
@@ -92,6 +92,32 @@ namespace IronBlock
         public string Value { get; set; }
     }
 
+
+    public class Context
+    {
+        public Context()
+        {
+            this.Variables = new Dictionary<string,object>();
+            this.Functions = new Dictionary<string,IFragment>();
+        }
+        public IDictionary<string, object> Variables { get; set; }
+
+        public IDictionary<string, IFragment> Functions { get; set; }
+    }
+
+    public class Mutation
+    {
+        public Mutation(string domain, string name, string value)
+        {
+            this.Domain = domain;
+            this.Name = name;
+            this.Value = value;
+        }
+        public string Domain { get; set; }
+        public string Name { get; set; }
+        public string Value { get; set; }
+
+    }
 
 
 }

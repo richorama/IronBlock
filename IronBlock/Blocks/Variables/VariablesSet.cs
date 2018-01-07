@@ -6,11 +6,13 @@ namespace IronBlock.Blocks.Variables
 {
     public class VariablesSet : IBlock
     {
-        public override object Evaluate(IDictionary<string, object> variables)
+        public override object Evaluate(Context context)
         {
-            var value = this.Values.Evaluate("VALUE", variables);
+            var variables = context.Variables;
 
-            var variableName = this.Fields.Evaluate("VAR");
+            var value = this.Values.Evaluate("VALUE", context);
+
+            var variableName = this.Fields.Get("VAR");
 
             if (variables.ContainsKey(variableName))
             {
@@ -21,7 +23,7 @@ namespace IronBlock.Blocks.Variables
                 variables.Add(variableName, value);
             }
 
-            return base.Evaluate(variables);
+            return base.Evaluate(context);
         }
     }
 

@@ -6,9 +6,9 @@ namespace IronBlock.Blocks.Text
 {
     public class ColourPicker : IBlock
     {
-        public override object Evaluate(IDictionary<string, object> variables)
+        public override object Evaluate(Context context)
         {
-            return this.Fields.Evaluate("COLOUR") ?? "#000000";
+            return this.Fields.Get("COLOUR") ?? "#000000";
         }
     }
 

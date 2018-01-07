@@ -6,10 +6,12 @@ namespace IronBlock.Blocks.Text
 {
     public class TextAppend : IBlock
     {
-        public override object Evaluate(IDictionary<string, object> variables)
+        public override object Evaluate(Context context)
         {
-            var variableName = this.Fields.Evaluate("VAR");
-            var textToAppend = (this.Values.Evaluate("TEXT", variables) ?? "").ToString();
+            var variables = context.Variables;
+
+            var variableName = this.Fields.Get("VAR");
+            var textToAppend = (this.Values.Evaluate("TEXT", context) ?? "").ToString();
 
             if (!variables.ContainsKey(variableName))
             {
@@ -19,7 +21,7 @@ namespace IronBlock.Blocks.Text
 
             variables[variableName] = value + textToAppend;
 
-            return base.Evaluate(variables);           
+            return base.Evaluate(context);           
         }
     }
 

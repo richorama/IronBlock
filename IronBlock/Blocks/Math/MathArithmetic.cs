@@ -6,12 +6,12 @@ namespace IronBlock.Blocks.Math
 {
     public class MathArithmetic : IBlock
     {
-        public override object Evaluate(IDictionary<string, object> variables)
+        public override object Evaluate(Context context)
         {
-            var a = (double) this.Values.Evaluate("A", variables);
-            var b = (double) this.Values.Evaluate("B", variables);
+            var a = (double) this.Values.Evaluate("A", context);
+            var b = (double) this.Values.Evaluate("B", context);
             
-            var opValue = this.Fields.Evaluate("OP");
+            var opValue = this.Fields.Get("OP");
 
             switch (opValue)
             {

@@ -8,11 +8,11 @@ namespace IronBlock.Blocks.Text
     public class ColourBlend : IBlock
     {
         Random random = new Random();
-        public override object Evaluate(IDictionary<string, object> variables)
+        public override object Evaluate(Context context)
         {
-            var colour1 = (this.Values.Evaluate("COLOUR1", variables) ?? "").ToString();
-            var colour2 = (this.Values.Evaluate("COLOUR2", variables) ?? "").ToString();
-            var ratio = System.Math.Min(System.Math.Max((double) this.Values.Evaluate("RATIO", variables), 0), 1);
+            var colour1 = (this.Values.Evaluate("COLOUR1", context) ?? "").ToString();
+            var colour2 = (this.Values.Evaluate("COLOUR2", context) ?? "").ToString();
+            var ratio = System.Math.Min(System.Math.Max((double) this.Values.Evaluate("RATIO", context), 0), 1);
 
             if (string.IsNullOrWhiteSpace(colour1) || colour1.Length != 7 ) return null;
             if (string.IsNullOrWhiteSpace(colour2) || colour2.Length != 7 ) return null;

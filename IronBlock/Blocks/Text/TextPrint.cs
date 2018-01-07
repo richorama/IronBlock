@@ -6,13 +6,13 @@ namespace IronBlock.Blocks.Text
 {
     public class TextPrint : IBlock
     {
-        public override object Evaluate(IDictionary<string, object> variables)
+        public override object Evaluate(Context context)
         {
-            var text = this.Values.Evaluate("TEXT", variables);
+            var text = this.Values.Evaluate("TEXT", context);
 
             Console.WriteLine(text);
 
-            return base.Evaluate(variables);
+            return base.Evaluate(context);
         }
     }
 

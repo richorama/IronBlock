@@ -5,20 +5,20 @@ namespace IronBlock.Blocks.Controls
 {
     public class ControlsRepeatExt : IBlock
     {
-        public override object Evaluate(IDictionary<string, object> variables)
+        public override object Evaluate(Context context)
         {
-            var timesValue = (double) this.Values.Evaluate("TIMES", variables);
+            var timesValue = (double) this.Values.Evaluate("TIMES", context);
 
-            if (!this.Statements.Any(x => x.Name == "DO")) return base.Evaluate(variables);
+            if (!this.Statements.Any(x => x.Name == "DO")) return base.Evaluate(context);
 
             var statement = this.Statements.GetStatement("DO");
 
             for (var i = 0; i < timesValue; i++)
             {
-                statement.Evaluate(variables);
+                statement.Evaluate(context);
             }
 
-            return base.Evaluate(variables);
+            return base.Evaluate(context);
         }
     }
 

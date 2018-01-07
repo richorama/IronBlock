@@ -6,22 +6,22 @@ namespace IronBlock.Blocks.Logic
 {
     public class LogicTernary : IBlock
     {
-        public override object Evaluate(IDictionary<string, object> variables)
+        public override object Evaluate(Context context)
         {
-            var ifValue = (bool) this.Values.Evaluate("IF", variables);
+            var ifValue = (bool) this.Values.Evaluate("IF", context);
             
             if (ifValue)
             {
                 if (this.Values.Any(x => x.Name == "THEN"))
                 {
-                    return this.Values.Evaluate("THEN", variables);
+                    return this.Values.Evaluate("THEN", context);
                 }
             }
             else
             {
                 if (this.Values.Any(x => x.Name == "ELSE"))
                 {
-                    return this.Values.Evaluate("ELSE", variables);
+                    return this.Values.Evaluate("ELSE", context);
                 }
             }
             return null;

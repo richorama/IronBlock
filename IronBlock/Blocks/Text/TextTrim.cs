@@ -6,11 +6,11 @@ namespace IronBlock.Blocks.Text
 {
     public class TextTrim : IBlock
     {
-        public override object Evaluate(IDictionary<string, object> variables)
+        public override object Evaluate(Context context)
         {
-            var mode = this.Fields.Evaluate("MODE");
+            var mode = this.Fields.Get("MODE");
 
-            var text = (this.Values.Evaluate("TEXT", variables) ?? "").ToString();
+            var text = (this.Values.Evaluate("TEXT", context) ?? "").ToString();
 
             switch (mode)
             {

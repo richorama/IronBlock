@@ -6,9 +6,9 @@ namespace IronBlock.Blocks.Text
 {
     public class TextBlock : IBlock
     {
-        public override object Evaluate(IDictionary<string, object> variables)
+        public override object Evaluate(Context context)
         {
-            var text = this.Fields.Evaluate("TEXT");
+            var text = this.Fields.Get("TEXT");
 
             return text;
         }

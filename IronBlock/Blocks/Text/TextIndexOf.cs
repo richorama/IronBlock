@@ -6,12 +6,12 @@ namespace IronBlock.Blocks.Text
 {
     public class TextIndexOf : IBlock
     {
-        public override object Evaluate(IDictionary<string, object> variables)
+        public override object Evaluate(Context context)
         {
-            var mode = this.Fields.Evaluate("END");
+            var mode = this.Fields.Get("END");
 
-            var text = (this.Values.Evaluate("VALUE", variables) ?? "").ToString();
-            var term = (this.Values.Evaluate("FIND", variables) ?? "").ToString();
+            var text = (this.Values.Evaluate("VALUE", context) ?? "").ToString();
+            var term = (this.Values.Evaluate("FIND", context) ?? "").ToString();
 
             switch (mode)
             {

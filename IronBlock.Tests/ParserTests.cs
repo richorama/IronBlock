@@ -27,7 +27,7 @@ namespace IronBlock.Tests
 
             Assert.AreEqual(1, workspace.Blocks.Count);
             Assert.AreEqual(1, workspace.Blocks.First().Mutations.Count);
-            Assert.AreEqual("1", workspace.Blocks.First().Mutations["else"]);
+            Assert.AreEqual("1", workspace.Blocks.First().Mutations.GetValue("else"));
 
         }
 

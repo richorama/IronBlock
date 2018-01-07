@@ -68,6 +68,9 @@ namespace IronBlock
                     case "statement":
                         ParseStatement(childNode, block);
                         break;
+                    case "comment":
+                        // comments are ignored
+                        break;
                     case "next":
                         var nextBlock = ParseBlock(childNode.FirstChild);
                         if (null != nextBlock) block.Next = nextBlock;
@@ -122,13 +125,14 @@ namespace IronBlock
         {
             foreach (XmlAttribute attribute in mutationNode.Attributes)
             {
-                if ( block.Mutations.ContainsKey(attribute.Name))
+                block.Mutations.Add(new Mutation("mutation", attribute.Name, attribute.Value));
+            }
+
+            foreach (XmlNode node in mutationNode.ChildNodes)
+            {
+                foreach (XmlAttribute attribute in node.Attributes)
                 {
-                    block.Mutations[attribute.Name] = attribute.Value;
-                }
-                else
-                {
-                    block.Mutations.Add(attribute.Name, attribute.Value);
+                    block.Mutations.Add(new Mutation(node.Name, attribute.Name, attribute.Value));
                 }
             }
         }

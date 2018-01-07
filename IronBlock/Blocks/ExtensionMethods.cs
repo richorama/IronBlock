@@ -11,15 +11,15 @@ namespace IronBlock.Blocks
 {
     public static class Extensions
     {
-        internal static object Evaluate(this IEnumerable<Value> values, string name, IDictionary<string, object> variables)
+        internal static object Evaluate(this IEnumerable<Value> values, string name, Context context)
         {
             var value = values.FirstOrDefault(x => x.Name == name);
             if (null == value) throw new ArgumentException($"value {name} not found");
             
-            return value.Evaluate(variables);
+            return value.Evaluate(context);
         }
 
-        internal static string Evaluate(this IEnumerable<Field> fields, string name)
+        internal static string Get(this IEnumerable<Field> fields, string name)
         {
             var field = fields.FirstOrDefault(x => x.Name == name);
             if (null == field) throw new ArgumentException($"field {name} not found");
@@ -35,10 +35,17 @@ namespace IronBlock.Blocks
             return statement;
         }
 
+        public static string GetValue(this IList<Mutation> mutations, string name, string domain = "mutation")
+        {
+            var mut = mutations.FirstOrDefault(x => x.Domain == domain && x.Name == name);
+            if (null == mut) return null;
+            return mut.Value;
+        }
+
 
         public static object Evaluate(this Workspace workspace)
         {
-            return workspace.Evaluate(new Dictionary<string,object>());
+            return workspace.Evaluate(new Context());
         }
 
         public static Parser AddStandardBlocks(this Parser parser)
@@ -79,6 +86,9 @@ namespace IronBlock.Blocks
             parser.AddBlock<ColourRandom>("colour_random");
             parser.AddBlock<ColourRgb>("colour_rgb");
             parser.AddBlock<ColourBlend>("colour_blend");
+
+            parser.AddBlock<ProceduresDefNoReturn>("procedures_defnoreturn");
+            parser.AddBlock<ProceduresCallNoReturn>("procedures_callnoreturn");
 
             return parser;
         }

@@ -7,10 +7,10 @@ namespace IronBlock.Blocks.Text
 {
     public class TextCaseChange : IBlock
     {
-        public override object Evaluate(IDictionary<string, object> variables)
+        public override object Evaluate(Context context)
         {
-            var toCase = this.Fields.Evaluate("CASE").ToString();
-            var text = (this.Values.Evaluate("TEXT", variables) ?? "").ToString();
+            var toCase = this.Fields.Get("CASE").ToString();
+            var text = (this.Values.Evaluate("TEXT", context) ?? "").ToString();
 
             switch(toCase)
             {
