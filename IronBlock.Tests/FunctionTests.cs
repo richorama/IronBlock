@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using IronBlock.Blocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -58,13 +55,13 @@ namespace IronBlock.Tests
 </xml>
 ";
 
-            var parser = new Parser();
+            new Parser()
+                .AddStandardBlocks()
+                .AddDebugPrinter()
+                .Parse(xml)
+                .Evaluate();
 
-            parser.AddStandardBlocks();
-            var printer = parser.AddDebugPrinter();
-            parser.Parse(xml).Evaluate();
-
-            Assert.AreEqual("hello world,hello world,hello world", string.Join(",", printer.Text));
+            Assert.AreEqual("hello world,hello world,hello world", string.Join(",", TestExtensions.GetDebugText()));
 
         }
 

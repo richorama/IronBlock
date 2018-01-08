@@ -68,11 +68,13 @@ namespace IronBlock.Tests
   </block>
 </xml>";
 
-            var parser = new Parser().AddStandardBlocks();
-            var printer = parser.AddDebugPrinter();
-            var output = parser.Parse(xml).Evaluate();
+            new Parser()
+                .AddStandardBlocks()
+                .AddDebugPrinter()
+                .Parse(xml)
+                .Evaluate();
 
-            Assert.AreEqual("abc", printer.Text.First());
+            Assert.AreEqual("abc", TestExtensions.GetDebugText().First());
         }
     }
 

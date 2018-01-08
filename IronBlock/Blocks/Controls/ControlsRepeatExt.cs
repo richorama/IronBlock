@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 
 namespace IronBlock.Blocks.Controls
@@ -16,8 +15,18 @@ namespace IronBlock.Blocks.Controls
             for (var i = 0; i < timesValue; i++)
             {
                 statement.Evaluate(context);
+
+                if (context.EscapeMode == EscapeMode.Break)
+                {
+                    context.EscapeMode = EscapeMode.None;
+                    break;
+                }
+
+                context.EscapeMode = EscapeMode.None;
             }
 
+            context.EscapeMode = EscapeMode.None;
+                
             return base.Evaluate(context);
         }
     }

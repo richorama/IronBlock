@@ -1,8 +1,6 @@
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using IronBlock.Blocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
 
 namespace IronBlock.Tests
 {
@@ -33,15 +31,17 @@ namespace IronBlock.Tests
   </block>       
 </xml>
 ";
-            var parser = new Parser().AddStandardBlocks();
-            var printer = parser.AddDebugPrinter();
-            parser.Parse(xml).Evaluate();
+            new Parser()
+                .AddStandardBlocks()
+                .AddDebugPrinter()
+                .Parse(xml)
+                .Evaluate();
             
-            Assert.AreEqual("success", printer.Text.First());
+            Assert.AreEqual("success", TestExtensions.GetDebugText().First());
         }
 
 
-                [TestMethod]
+        [TestMethod]
         public void Test_Controls_WhileUntil()
         {
 
@@ -102,11 +102,127 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            var parser = new Parser().AddStandardBlocks();
-            var printer = parser.AddDebugPrinter();
-            parser.Parse(xml).Evaluate();
+            var parser = new Parser()
+                .AddStandardBlocks()
+                .AddDebugPrinter()
+                .Parse(xml)
+                .Evaluate();
             
-            Assert.AreEqual("0", string.Join(",",printer.Text));
+            Assert.AreEqual("0", string.Join(",", TestExtensions.GetDebugText()));
+        }
+
+
+        [TestMethod]
+        public void Test_Controls_Flow_Continue()
+        {
+
+            const string xml = @"
+<xml>
+  <block type=""controls_repeat_ext"">
+    <value name=""TIMES"">
+      <shadow type=""math_number"">
+        <field name=""NUM"">3</field>
+      </shadow>
+    </value>
+    <statement name=""DO"">
+      <block type=""text_print"">
+        <value name=""TEXT"">
+          <shadow type=""text"">
+            <field name=""TEXT"">hello</field>
+          </shadow>
+        </value>
+        <next>
+          <block type=""controls_if"">
+            <value name=""IF0"">
+              <block type=""logic_boolean"">
+                <field name=""BOOL"">TRUE</field>
+              </block>
+            </value>
+            <statement name=""DO0"">
+              <block type=""controls_flow_statements"">
+                <field name=""FLOW"">CONTINUE</field>
+              </block>
+            </statement>
+            <next>
+              <block type=""text_print"">
+                <value name=""TEXT"">
+                  <shadow type=""text"">
+                    <field name=""TEXT"">world</field>
+                  </shadow>
+                </value>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </statement>
+  </block>
+</xml>
+";
+            new Parser()
+                .AddStandardBlocks()
+                .AddDebugPrinter()
+                .Parse(xml)
+                .Evaluate();
+            
+            Assert.AreEqual("hello,hello,hello", string.Join(",", TestExtensions.GetDebugText()));
+        }
+
+
+        [TestMethod]
+        public void Test_Controls_Flow_Break()
+        {
+
+            const string xml = @"
+<xml>
+  <block type=""controls_repeat_ext"">
+    <value name=""TIMES"">
+      <shadow type=""math_number"">
+        <field name=""NUM"">3</field>
+      </shadow>
+    </value>
+    <statement name=""DO"">
+      <block type=""text_print"">
+        <value name=""TEXT"">
+          <shadow type=""text"">
+            <field name=""TEXT"">hello</field>
+          </shadow>
+        </value>
+        <next>
+          <block type=""controls_if"">
+            <value name=""IF0"">
+              <block type=""logic_boolean"">
+                <field name=""BOOL"">TRUE</field>
+              </block>
+            </value>
+            <statement name=""DO0"">
+              <block type=""controls_flow_statements"">
+                <field name=""FLOW"">BREAK</field>
+              </block>
+            </statement>
+            <next>
+              <block type=""text_print"">
+                <value name=""TEXT"">
+                  <shadow type=""text"">
+                    <field name=""TEXT"">world</field>
+                  </shadow>
+                </value>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </statement>
+  </block>
+</xml>
+";
+            new Parser()
+                .AddStandardBlocks()
+                .AddDebugPrinter()
+                .Parse(xml)
+                .Evaluate();
+
+            Assert.AreEqual("hello", string.Join(",", TestExtensions.GetDebugText()));
         }
 
 

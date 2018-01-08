@@ -53,6 +53,7 @@ namespace IronBlock.Blocks
             parser.AddBlock<ControlsRepeatExt>("controls_repeat_ext");
             parser.AddBlock<ControlsIf>("controls_if");
             parser.AddBlock<ControlsWhileUntil>("controls_whileUntil");
+            parser.AddBlock<ControlsFlowStatement>("controls_flow_statements");
 
             parser.AddBlock<LogicCompare>("logic_compare");
             parser.AddBlock<LogicBoolean>("logic_boolean");

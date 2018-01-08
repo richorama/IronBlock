@@ -148,13 +148,13 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            var parser = new Parser();
+            new Parser()
+                .AddStandardBlocks()
+                .AddDebugPrinter()
+                .Parse(xml)
+                .Evaluate();
 
-            parser.AddStandardBlocks();
-            var printer = parser.AddDebugPrinter();
-            parser.Parse(xml).Evaluate();
-
-            Assert.AreEqual("foobar", printer.Text.First());
+            Assert.AreEqual("foobar", TestExtensions.GetDebugText().First());
         }
 
         [TestMethod]
@@ -197,13 +197,13 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            var parser = new Parser();
+            new Parser()
+                .AddStandardBlocks()
+                .AddDebugPrinter()
+                .Parse(xml)
+                .Evaluate();
 
-            parser.AddStandardBlocks();
-            var printer = parser.AddDebugPrinter();
-            parser.Parse(xml).Evaluate();
-
-            Assert.AreEqual("foobar", printer.Text.First());
+            Assert.AreEqual("foobar", TestExtensions.GetDebugText().First());
         }
 
 

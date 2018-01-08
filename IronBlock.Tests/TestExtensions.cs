@@ -8,25 +8,31 @@ namespace IronBlock.Tests
     {
         internal class DebugPrint : IBlock
         {
-            public List<string> Text { get; set; }
+            public static List<string> Text { get; set; }
 
-            public DebugPrint()
+            static DebugPrint()
             {
-                this.Text = new List<string>();
+                Text = new List<string>();
             }
 
             public override object Evaluate(Context context)
             {
-                this.Text.Add((this.Values.First(x => x.Name == "TEXT").Evaluate(context) ?? "").ToString());
+                Text.Add((this.Values.First(x => x.Name == "TEXT").Evaluate(context) ?? "").ToString());
                 return base.Evaluate(context);
             }
         }
 
-        internal static DebugPrint AddDebugPrinter(this Parser parser)
+        internal static IList<string> GetDebugText()
         {
-            var printer = new DebugPrint();
-            parser.AddBlock("text_print", () => printer);
-            return printer;
+            return DebugPrint.Text;
+        }
+
+        internal static Parser AddDebugPrinter(this Parser parser)
+        {
+            DebugPrint.Text.Clear();
+
+            parser.AddBlock<DebugPrint>("text_print");
+            return parser;
         }
 
     }

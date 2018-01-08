@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace IronBlock
 {
@@ -54,7 +53,7 @@ namespace IronBlock
         public IList<Mutation> Mutations { get; set; }
         public virtual object Evaluate(Context context)
         {
-            if (null != this.Next)
+            if (null != this.Next && context.EscapeMode == EscapeMode.None)
             {
                 return this.Next.Evaluate(context);                
             }
@@ -93,6 +92,14 @@ namespace IronBlock
     }
 
 
+    public enum EscapeMode
+    {
+        None,
+        Break,
+        Continue
+    }
+
+
     public class Context
     {
         public Context()
@@ -103,6 +110,7 @@ namespace IronBlock
         public IDictionary<string, object> Variables { get; set; }
 
         public IDictionary<string, IFragment> Functions { get; set; }
+        public EscapeMode EscapeMode { get; set; }
     }
 
     public class Mutation
