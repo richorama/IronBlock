@@ -6,6 +6,7 @@ using IronBlock.Blocks.Text;
 using IronBlock.Blocks.Variables;
 using IronBlock.Blocks.Controls;
 using IronBlock.Blocks.Logic;
+using IronBlock.Blocks.Lists;
 
 namespace IronBlock.Blocks
 {
@@ -90,6 +91,9 @@ namespace IronBlock.Blocks
 
             parser.AddBlock<ProceduresDefNoReturn>("procedures_defnoreturn");
             parser.AddBlock<ProceduresCallNoReturn>("procedures_callnoreturn");
+
+            parser.AddBlock<ListsSplit>("lists_split");
+            parser.AddBlock<ListsCreateWith>("lists_create_with");
 
             return parser;
         }
