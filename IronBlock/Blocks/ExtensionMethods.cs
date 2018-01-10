@@ -94,6 +94,7 @@ namespace IronBlock.Blocks
 
             parser.AddBlock<ListsSplit>("lists_split");
             parser.AddBlock<ListsCreateWith>("lists_create_with");
+            parser.AddBlock<ListsLength>("lists_length");
 
             return parser;
         }

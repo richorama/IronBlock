@@ -78,7 +78,7 @@ namespace IronBlock.Tests
         }
 
         [TestMethod]
-        public void Test_List_Join()
+        public void Test_Lists_Join()
         {
             const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"">
@@ -120,6 +120,43 @@ namespace IronBlock.Tests
               .Evaluate();
             
             Assert.AreEqual("x,y,z", output);
+
+        }
+
+
+
+        [TestMethod]
+        public void Test_Lists_Length()
+        {
+            const string xml = @"
+<xml xmlns=""http://www.w3.org/1999/xhtml"">
+  <block type=""lists_length"">
+    <value name=""VALUE"">
+      <block type=""lists_split"">
+        <mutation mode=""SPLIT""></mutation>
+        <field name=""MODE"">SPLIT</field>
+        <value name=""INPUT"">
+          <block type=""text"">
+            <field name=""TEXT"">a,b,c</field>
+          </block>
+        </value>
+        <value name=""DELIM"">
+          <shadow type=""text"">
+            <field name=""TEXT"">,</field>
+          </shadow>
+        </value>
+      </block>
+    </value>
+  </block>
+</xml>
+";
+
+            var output = new Parser()
+              .AddStandardBlocks()
+              .Parse(xml)
+              .Evaluate();
+            
+            Assert.AreEqual(3, (double) output);
 
         }
 
