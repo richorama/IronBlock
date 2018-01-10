@@ -9,6 +9,43 @@ namespace IronBlock.Tests
     [TestClass]
     public class ListsTests
     {
+
+        [TestMethod]
+        public void Test_List_Create_With()
+        {
+            const string xml = @"
+<xml xmlns=""http://www.w3.org/1999/xhtml"">
+  <block type=""lists_create_with"">
+    <mutation items=""3""></mutation>
+    <value name=""ADD0"">
+      <block type=""text"">
+        <field name=""TEXT"">x</field>
+      </block>
+    </value>
+    <value name=""ADD1"">
+      <block type=""text"">
+        <field name=""TEXT"">y</field>
+      </block>
+    </value>
+    <value name=""ADD2"">
+      <block type=""text"">
+        <field name=""TEXT"">z</field>
+      </block>
+    </value>
+  </block>
+</xml>            
+";
+
+            var output = new Parser()
+              .AddStandardBlocks()
+              .Parse(xml)
+              .Evaluate();
+            
+            Assert.AreEqual("x,y,z", string.Join(",", (output as IEnumerable<object>).Select(x => x.ToString())));
+        }
+
+
+
         [TestMethod]
         public void Test_List_Split()
         {
