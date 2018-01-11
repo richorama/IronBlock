@@ -161,5 +161,38 @@ namespace IronBlock.Tests
         }
 
 
+        [TestMethod]
+        public void Test_Lists_Repeat()
+        {
+            const string xml = @"
+<xml xmlns=""http://www.w3.org/1999/xhtml"">
+  <block type=""lists_repeat"">
+    <value name=""ITEM"">
+      <block type=""text"">
+        <field name=""TEXT"">hello</field>
+      </block>
+    </value>
+    <value name=""NUM"">
+      <shadow type=""math_number"">
+        <field name=""NUM"">3</field>
+      </shadow>
+    </value>
+  </block>
+</xml>
+";
+
+            var output = new Parser()
+              .AddStandardBlocks()
+              .Parse(xml)
+              .Evaluate();
+            
+            Assert.AreEqual("hello,hello,hello", string.Join(",", (output as IEnumerable<object>).Select(x => x.ToString())));
+
+        }
+
+
+
+
+
     }
 }
