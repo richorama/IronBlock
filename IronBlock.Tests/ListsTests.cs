@@ -191,6 +191,31 @@ namespace IronBlock.Tests
         }
 
 
+        [TestMethod]
+        public void Test_Lists_IsEmpty()
+        {
+            const string xml = @"
+<xml xmlns=""http://www.w3.org/1999/xhtml"">
+  <block type=""lists_isEmpty"">
+    <value name=""VALUE"">
+      <block type=""lists_create_with"">
+        <mutation items=""0""></mutation>
+      </block>
+    </value>
+  </block>
+</xml>
+";
+
+            var output = new Parser()
+              .AddStandardBlocks()
+              .Parse(xml)
+              .Evaluate();
+            
+            Assert.IsTrue((bool) output);
+
+        }
+
+
 
 
 

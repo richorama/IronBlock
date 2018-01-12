@@ -96,6 +96,7 @@ namespace IronBlock.Blocks
             parser.AddBlock<ListsCreateWith>("lists_create_with");
             parser.AddBlock<ListsLength>("lists_length");
             parser.AddBlock<ListsRepeat>("lists_repeat");
+            parser.AddBlock<ListsIsEmpty>("lists_isEmpty");
 
             return parser;
         }
