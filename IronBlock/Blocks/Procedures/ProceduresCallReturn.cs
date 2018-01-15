@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace IronBlock.Blocks.Text
 {
-    public class ProceduresCallNoReturn : IBlock
+    public class ProceduresCallReturn : IBlock
     {
         public override object Evaluate(Context context)
         {
@@ -12,7 +12,7 @@ namespace IronBlock.Blocks.Text
 
             var name = this.Mutations.GetValue("name");
           
-            if (!context.Functions.ContainsKey(name)) throw new MissingMethodException($"Method ${name} not defined");
+            if (!context.Functions.ContainsKey(name)) throw new MissingMethodException($"Method '{name}' not defined");
 
             var statement = context.Functions[name];
 
@@ -27,9 +27,8 @@ namespace IronBlock.Blocks.Text
                 counter++;
             }
 
-            statement.Evaluate(funcContext);
+            return statement.Evaluate(funcContext);
 
-            return base.Evaluate(context);
         }
     }
 

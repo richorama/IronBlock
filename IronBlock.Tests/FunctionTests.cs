@@ -7,7 +7,7 @@ namespace IronBlock.Tests
     public class FunctionTests
     {
         [TestMethod]
-        public void Test_Text_Length()
+        public void Test_Procedure_No_Return()
         {
             const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"">
@@ -66,6 +66,34 @@ namespace IronBlock.Tests
         }
 
 
+        [TestMethod]
+        public void Test_Procedure_Return()
+        {
+            const string xml = @"
+<xml xmlns=""http://www.w3.org/1999/xhtml"">
+  <block type=""procedures_defreturn"">
+    <field name=""NAME"">do something</field>
+    <comment pinned=""false"" h=""80"" w=""160"">Describe this function...</comment>
+    <value name=""RETURN"">
+      <block type=""text"" id=""4p1uAONhYe8wWJ};60Ff"">
+        <field name=""TEXT"">hello world</field>
+      </block>
+    </value>
+  </block>
+  <block type=""procedures_callreturn"" id=""%qnT~o/4TK+nMt-tCrh6"" x=""238"" y=""113"">
+    <mutation name=""do something""></mutation>
+  </block>
+</xml>
+";
+
+            var output = new Parser()
+                .AddStandardBlocks()
+                .Parse(xml)
+                .Evaluate();
+
+            Assert.AreEqual("hello world", output);
+
+        }
 
 
     }

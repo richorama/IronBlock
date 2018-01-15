@@ -89,8 +89,10 @@ namespace IronBlock.Blocks
             parser.AddBlock<ColourRgb>("colour_rgb");
             parser.AddBlock<ColourBlend>("colour_blend");
 
-            parser.AddBlock<ProceduresDefNoReturn>("procedures_defnoreturn");
+            parser.AddBlock<ProceduresDef>("procedures_defnoreturn");
+            parser.AddBlock<ProceduresDef>("procedures_defreturn");
             parser.AddBlock<ProceduresCallNoReturn>("procedures_callnoreturn");
+            parser.AddBlock<ProceduresCallReturn>("procedures_callreturn");
 
             parser.AddBlock<ListsSplit>("lists_split");
             parser.AddBlock<ListsCreateWith>("lists_create_with");
