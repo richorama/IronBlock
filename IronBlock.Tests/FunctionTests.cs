@@ -96,6 +96,51 @@ namespace IronBlock.Tests
         }
 
 
+        [TestMethod]
+        public void Test_Procedure_If_Return()
+        {
+            const string xml = @"
+<xml xmlns=""http://www.w3.org/1999/xhtml"">
+  <block type=""procedures_defreturn"">
+    <field name=""NAME"">do something</field>
+    <comment pinned=""false"">Describe this function...</comment>
+    <statement name=""STACK"">
+      <block type=""procedures_ifreturn"">
+        <mutation value=""1""></mutation>
+        <value name=""CONDITION"">
+          <block type=""logic_boolean"">
+            <field name=""BOOL"">TRUE</field>
+          </block>
+        </value>
+        <value name=""VALUE"">
+          <block type=""text"">
+            <field name=""TEXT"">hello world</field>
+          </block>
+        </value>
+      </block>
+    </statement>
+    <value name=""RETURN"">
+      <block type=""text"">
+        <field name=""TEXT"">xxx</field>
+      </block>
+    </value>
+  </block>
+  <block type=""procedures_callreturn"">
+    <mutation name=""do something""></mutation>
+  </block>
+</xml>
+";
+
+            var output = new Parser()
+                .AddStandardBlocks()
+                .Parse(xml)
+                .Evaluate();
+
+            Assert.AreEqual("hello world", output);
+
+        }
+
+
     }
 }
 

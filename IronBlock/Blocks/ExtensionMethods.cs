@@ -93,6 +93,7 @@ namespace IronBlock.Blocks
             parser.AddBlock<ProceduresDef>("procedures_defreturn");
             parser.AddBlock<ProceduresCallNoReturn>("procedures_callnoreturn");
             parser.AddBlock<ProceduresCallReturn>("procedures_callreturn");
+            parser.AddBlock<ProceduresIfReturn>("procedures_ifreturn");
 
             parser.AddBlock<ListsSplit>("lists_split");
             parser.AddBlock<ListsCreateWith>("lists_create_with");
