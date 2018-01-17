@@ -226,5 +226,58 @@ namespace IronBlock.Tests
         }
 
 
+
+        [TestMethod]
+        public void Test_Controls_For_Each()
+        {
+
+            const string xml = @"
+<xml xmlns=""http://www.w3.org/1999/xhtml"">
+  <variables>
+    <variable type="""" id=""%%M;gt+!MJxzjuj,*~.X"">i</variable>
+  </variables>
+  <block type=""controls_forEach"" id=""Mue=s2=VyJ,|.^Jk7Y6$"" x=""112"" y=""112"">
+    <field name=""VAR"" id=""%%M;gt+!MJxzjuj,*~.X"" variabletype="""">i</field>
+    <value name=""LIST"">
+      <block type=""lists_split"" id=""U@Eu{y]crRkv4qeX!wgB"">
+        <mutation mode=""SPLIT""></mutation>
+        <field name=""MODE"">SPLIT</field>
+        <value name=""INPUT"">
+          <block type=""text"" id=""JkR7d1MvrJydd#t2yr,O"">
+            <field name=""TEXT"">a,b,c</field>
+          </block>
+        </value>
+        <value name=""DELIM"">
+          <shadow type=""text"" id=""M6%A!]!KJA04vggp9X8*"">
+            <field name=""TEXT"">,</field>
+          </shadow>
+        </value>
+      </block>
+    </value>
+    <statement name=""DO"">
+      <block type=""text_print"" id="";j~?B]t;80-uv1Ef3qnZ"">
+        <value name=""TEXT"">
+          <shadow type=""text"" id=""wD|J$)cg{^g4+P3!1QpW"">
+            <field name=""TEXT"">abc</field>
+          </shadow>
+          <block type=""variables_get"" id=""Kp`QS4LS,+l.Bb0~+tx2"">
+            <field name=""VAR"" id=""%%M;gt+!MJxzjuj,*~.X"" variabletype="""">i</field>
+          </block>
+        </value>
+      </block>
+    </statement>
+  </block>
+</xml>
+";
+            new Parser()
+                .AddStandardBlocks()
+                .AddDebugPrinter()
+                .Parse(xml)
+                .Evaluate();
+
+            Assert.AreEqual("a|b|c", string.Join("|", TestExtensions.GetDebugText()));
+        }
+
+
     }
 }
