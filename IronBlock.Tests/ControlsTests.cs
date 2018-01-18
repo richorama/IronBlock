@@ -279,5 +279,56 @@ namespace IronBlock.Tests
         }
 
 
+        [TestMethod]
+        public void Test_Controls_For()
+        {
+
+            const string xml = @"
+<xml xmlns=""http://www.w3.org/1999/xhtml"">
+  <variables>
+    <variable type="""" id=""%%M;gt+!MJxzjuj,*~.X"">i</variable>
+  </variables>
+  <block type=""controls_for"" id=""d/iaO@0M8X3$3qCi@QR]"" x=""113"" y=""263"">
+    <field name=""VAR"" id=""%%M;gt+!MJxzjuj,*~.X"" variabletype="""">i</field>
+    <value name=""FROM"">
+      <shadow type=""math_number"" id=""Rx;IYft^ona!~Skl@in`"">
+        <field name=""NUM"">1</field>
+      </shadow>
+    </value>
+    <value name=""TO"">
+      <shadow type=""math_number"" id=""sl*-19-B$bU7=H3D2W`q"">
+        <field name=""NUM"">3</field>
+      </shadow>
+    </value>
+    <value name=""BY"">
+      <shadow type=""math_number"" id=""I6{~_*N.9;,`_8brq`)i"">
+        <field name=""NUM"">1</field>
+      </shadow>
+    </value>
+    <statement name=""DO"">
+      <block type=""text_print"" id="";j~?B]t;80-uv1Ef3qnZ"">
+        <value name=""TEXT"">
+          <shadow type=""text"" id=""wD|J$)cg{^g4+P3!1QpW"">
+            <field name=""TEXT"">abc</field>
+          </shadow>
+          <block type=""variables_get"" id=""Kp`QS4LS,+l.Bb0~+tx2"">
+            <field name=""VAR"" id=""%%M;gt+!MJxzjuj,*~.X"" variabletype="""">i</field>
+          </block>
+        </value>
+      </block>
+    </statement>
+  </block>
+</xml>
+";
+            new Parser()
+                .AddStandardBlocks()
+                .AddDebugPrinter()
+                .Parse(xml)
+                .Evaluate();
+
+            Assert.AreEqual("1,2,3", string.Join(",", TestExtensions.GetDebugText()));
+        }
+
+
     }
 }
