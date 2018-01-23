@@ -71,6 +71,7 @@ namespace IronBlock.Blocks
             parser.AddBlock<MathSingle>("math_trig");
             parser.AddBlock<MathSingle>("math_round");
             parser.AddBlock<MathConstant>("math_constant");
+            parser.AddBlock<MathNumberProperty>("math_number_property");
 
             parser.AddBlock<TextBlock>("text");
             parser.AddBlock<TextPrint>("text_print");
