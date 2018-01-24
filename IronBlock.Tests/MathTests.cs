@@ -283,6 +283,79 @@ namespace IronBlock.Tests
             Assert.AreEqual(true, (bool) output);
         }
 
+        [TestMethod]
+        public void Test_Math_Number_Round()
+        {
+
+            const string xml = @"
+<xml>
+  <block type=""math_round"">
+    <field name=""OP"">ROUND</field>
+    <value name=""NUM"">
+      <shadow type=""math_number"">
+        <field name=""NUM"">3.1</field>
+      </shadow>
+    </value>
+  </block>
+</xml>
+";
+            var output = new Parser()
+                .AddStandardBlocks()
+                .Parse(xml)
+                .Evaluate();
+            
+            Assert.AreEqual(3.0, (double) output);
+        }
+
+        [TestMethod]
+        public void Test_Math_Number_Round_Up()
+        {
+
+            const string xml = @"
+<xml>
+  <block type=""math_round"">
+    <field name=""OP"">ROUNDUP</field>
+    <value name=""NUM"">
+      <shadow type=""math_number"">
+        <field name=""NUM"">3.1</field>
+      </shadow>
+    </value>
+  </block>
+</xml>
+";
+            var output = new Parser()
+                .AddStandardBlocks()
+                .Parse(xml)
+                .Evaluate();
+            
+            Assert.AreEqual(4.0, (double) output);
+        }
+
+
+        [TestMethod]
+        public void Test_Math_Number_Round_Down()
+        {
+
+            const string xml = @"
+<xml>
+  <block type=""math_round"">
+    <field name=""OP"">ROUNDDOWN</field>
+    <value name=""NUM"">
+      <shadow type=""math_number"">
+        <field name=""NUM"">3.1</field>
+      </shadow>
+    </value>
+  </block>
+</xml>
+";
+            var output = new Parser()
+                .AddStandardBlocks()
+                .Parse(xml)
+                .Evaluate();
+            
+            Assert.AreEqual(3.0, (double) output);
+        }
+
 
     }
 }

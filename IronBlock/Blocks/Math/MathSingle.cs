@@ -28,10 +28,6 @@ namespace IronBlock.Blocks.Math
                 case "ACOS": return System.Math.Acos(number / 180 * System.Math.PI);
                 case "ATAN": return System.Math.Atan(number / 180 * System.Math.PI);
 
-                case "ROUND": return System.Math.Round(number);
-                case "ROUNDUP": return System.Math.Ceiling(number);
-                case "ROUNDDOWN": return System.Math.Floor(number);
-                
                 default: throw new ApplicationException($"Unknown OP {op}");
             }
         }
