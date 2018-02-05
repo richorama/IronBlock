@@ -392,6 +392,41 @@ namespace IronBlock.Tests
         }
 
 
+       [TestMethod]
+        public void Test_Math_On_List_Random()
+        {
+
+            const string xml = @"
+<xml xmlns=""http://www.w3.org/1999/xhtml"">
+  <block type=""math_on_list"">
+    <mutation op=""RANDOM""></mutation>
+    <field name=""OP"">RANDOM</field>
+    <value name=""LIST"">
+      <block type=""lists_repeat"">
+        <value name=""ITEM"">
+          <block type=""math_number"">
+            <field name=""NUM"">3</field>
+          </block>
+        </value>
+        <value name=""NUM"">
+          <shadow type=""math_number"">
+            <field name=""NUM"">5</field>
+          </shadow>
+        </value>
+      </block>
+    </value>
+  </block>
+</xml>
+";
+            var output = new Parser()
+                .AddStandardBlocks()
+                .Parse(xml)
+                .Evaluate();
+            
+            Assert.AreEqual(3, (double) output);
+        }
+
+
 
     }
 }

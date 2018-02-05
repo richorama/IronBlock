@@ -7,6 +7,7 @@ namespace IronBlock.Blocks.Math
 {
     public class MathOnList : IBlock
     {
+        static Random rnd = new Random();
         public override object Evaluate(Context context)
         {
             var op = this.Fields.Get("OP");
@@ -21,10 +22,10 @@ namespace IronBlock.Blocks.Math
                 case "MAX": return doubleList.Max();
                 case "AVERAGE": return doubleList.Average();
                 case "MEDIAN": return Median(doubleList);
+                case "RANDOM": return doubleList.Any() ? doubleList[rnd.Next(doubleList.Count())] as object : null;
                 
                 case "MODE":
                 case "STD_DEV":
-                case "RANDOM":
                     throw new NotImplementedException($"OP {op} not implemented");
 
                 default: throw new ApplicationException($"Unknown OP {op}");
