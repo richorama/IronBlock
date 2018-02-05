@@ -23,8 +23,8 @@ namespace IronBlock.Blocks.Math
                 case "AVERAGE": return doubleList.Average();
                 case "MEDIAN": return Median(doubleList);
                 case "RANDOM": return doubleList.Any() ? doubleList[rnd.Next(doubleList.Count())] as object : null;
+                case "MODE": return doubleList.Any() ? doubleList.GroupBy(x => x).OrderByDescending(x => x.Count()).First().Key as object : null;
                 
-                case "MODE":
                 case "STD_DEV":
                     throw new NotImplementedException($"OP {op} not implemented");
 
