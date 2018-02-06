@@ -1,4 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.Collections.Generic;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace IronBlock
 {
@@ -17,7 +22,9 @@ namespace IronBlock
 
         public IList<IBlock> Blocks {get;set;}
 
-        public virtual object Evaluate(Context context)
+		public IEnumerable<string> Tags { get; }
+
+		public virtual object Evaluate(Context context)
         {   
             // TODO: variables
             object returnValue = null;
@@ -29,9 +36,52 @@ namespace IronBlock
 
             return returnValue;
         }
-    }
 
+		public virtual SyntaxNode Generate(Context context)
+		{
+			foreach (var block in this.Blocks)
+			{
+				var syntaxNode = block.Generate(context);
+				if (syntaxNode == null)
+					continue;
 
+				var statement = syntaxNode as StatementSyntax;
+				if (statement == null)
+				{
+					statement = ExpressionStatement(syntaxNode as ExpressionSyntax);
+				}
+
+				context.Statements.Add(statement);
+			}
+
+			foreach (var variable in context.Variables)
+			{
+				var variableDeclaration = GenerateVariableDeclaration(SyntaxKind.DoubleKeyword, variable.Key);
+				context.Statements.Insert(0, variableDeclaration);
+			}
+
+			var blockSyntax = SyntaxFactory.Block(context.Statements);		
+			return blockSyntax;
+		}
+
+		private LocalDeclarationStatementSyntax GenerateVariableDeclaration(SyntaxKind variableType, string variableName)
+		{
+			return LocalDeclarationStatement(
+						VariableDeclaration(
+							PredefinedType(
+								Token(variableType)
+							)
+						)
+						.WithVariables(
+							SingletonSeparatedList(
+								VariableDeclarator(
+									Identifier(variableName)
+								)
+							)
+						)
+					);
+		}
+	}
 
     public abstract class IBlock : IFragment
     { 
@@ -59,8 +109,16 @@ namespace IronBlock
             }
             return null;
         }
-    
-    }
+
+		public virtual SyntaxNode Generate(Context context)
+		{
+			if (null != this.Next && context.EscapeMode == EscapeMode.None)
+			{
+				return this.Next.Generate(context);
+			}
+			return null;
+		}
+	}
 
     public class Statement : IFragment
     { 
@@ -71,7 +129,12 @@ namespace IronBlock
             if (null == this.Block) return null;
             return this.Block.Evaluate(context);
         }
-    }
+		public SyntaxNode Generate(Context context)
+		{
+			if (null == this.Block) return null;
+			return this.Block.Generate(context);
+		}
+	}
 
     public class Value : IFragment
     { 
@@ -82,8 +145,12 @@ namespace IronBlock
             if (null == this.Block) return null;
             return this.Block.Evaluate(context);
         }
-
-    }
+		public SyntaxNode Generate(Context context)
+		{
+			if (null == this.Block) return null;
+			return this.Block.Generate(context);
+		}
+	}
 
     public class Field
     { 
@@ -106,12 +173,20 @@ namespace IronBlock
         {
             this.Variables = new Dictionary<string,object>();
             this.Functions = new Dictionary<string,IFragment>();
-        }
-        public IDictionary<string, object> Variables { get; set; }
+
+			this.Tags = new Dictionary<string, object>();
+			this.Statements = new List<StatementSyntax>();
+		}
+
+		public IDictionary<string, object> Variables { get; set; }
 
         public IDictionary<string, IFragment> Functions { get; set; }
+
         public EscapeMode EscapeMode { get; set; }
-    }
+
+		public IDictionary<string, object> Tags { get; }
+		public List<StatementSyntax> Statements { get; }
+	}
 
     public class Mutation
     {

@@ -1,6 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace IronBlock.Blocks.Variables
 {
@@ -25,6 +27,29 @@ namespace IronBlock.Blocks.Variables
 
             return base.Evaluate(context);
         }
-    }
+
+		public override SyntaxNode Generate(Context context)
+		{
+			var variables = context.Variables;
+
+			var variableName = this.Fields.Get("VAR");
+
+			var valueExpression = this.Values.Generate("VALUE", context) as ExpressionSyntax;
+			if (valueExpression == null)
+				throw new ApplicationException($"Unknown expression for value.");
+
+			variables[variableName] = valueExpression;
+
+			var assignment = AssignmentExpression(
+								SyntaxKind.SimpleAssignmentExpression,
+									IdentifierName(variableName),
+									valueExpression
+								);
+
+			context.Statements.Add(ExpressionStatement(assignment));
+
+			return base.Generate(context);
+		}
+	}
 
 }

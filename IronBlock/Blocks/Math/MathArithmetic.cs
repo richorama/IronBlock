@@ -1,6 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace IronBlock.Blocks.Math
 {
@@ -23,6 +25,34 @@ namespace IronBlock.Blocks.Math
                 default: throw new ApplicationException($"Unknown OP {opValue}");
             }
         }
-    }
+
+		public override SyntaxNode Generate(Context context)
+		{
+			var firstExpression = this.Values.Generate("A", context) as ExpressionSyntax;
+			if (firstExpression == null)
+				throw new ApplicationException($"Unknown expression for value A.");
+
+			var secondExpression = this.Values.Generate("B", context) as ExpressionSyntax;
+			if (secondExpression == null)
+				throw new ApplicationException($"Unknown expression for value B.");
+
+			var opValue = this.Fields.Get("OP");
+			var binaryOperator = GetBinaryOperator(opValue);
+			return ParenthesizedExpression(BinaryExpression(binaryOperator, firstExpression, secondExpression));
+		}
+
+		private SyntaxKind GetBinaryOperator(string opValue)
+		{
+			switch (opValue)
+			{
+				case "MULTIPLY": return SyntaxKind.MultiplyExpression;
+				case "DIVIDE": return SyntaxKind.DivideExpression;
+				case "ADD": return SyntaxKind.AddExpression;
+				case "SUBTRACT": return SyntaxKind.SubtractExpression;
+
+				default: throw new ApplicationException($"Unknown OP {opValue}");
+			}
+		}
+	}
 
 }
