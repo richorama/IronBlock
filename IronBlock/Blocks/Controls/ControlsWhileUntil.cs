@@ -12,7 +12,7 @@ namespace IronBlock.Blocks.Controls
             
             if (!this.Statements.Any(x => x.Name == "DO") || null == value) return base.Evaluate(context);
             
-            var statement = this.Statements.GetStatement("DO");
+            var statement = this.Statements.Get("DO");
 
             if (mode == "WHILE")
             {
