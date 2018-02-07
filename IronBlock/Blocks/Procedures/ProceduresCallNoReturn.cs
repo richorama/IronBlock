@@ -16,7 +16,7 @@ namespace IronBlock.Blocks.Text
 
             var statement = context.Functions[name];
 
-            var funcContext = new Context();
+            var funcContext = new Context() { Parent = context };
             funcContext.Functions = context.Functions;
             
             var counter = 0;

@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -174,7 +174,6 @@ namespace IronBlock
             this.Variables = new Dictionary<string,object>();
             this.Functions = new Dictionary<string,IFragment>();
 
-			this.Tags = new Dictionary<string, object>();
 			this.Statements = new List<StatementSyntax>();
 		}
 
@@ -183,10 +182,11 @@ namespace IronBlock
         public IDictionary<string, IFragment> Functions { get; set; }
 
         public EscapeMode EscapeMode { get; set; }
-
-		public IDictionary<string, object> Tags { get; }
+        		
 		public List<StatementSyntax> Statements { get; }
-	}
+
+        public Context Parent { get; set; }
+    }
 
     public class Mutation
     {

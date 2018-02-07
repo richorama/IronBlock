@@ -8,8 +8,6 @@ using IronBlock.Blocks.Controls;
 using IronBlock.Blocks.Logic;
 using IronBlock.Blocks.Lists;
 using Microsoft.CodeAnalysis;
-using IronBlock.Blocks.Connectitude.Tags;
-using IronBlock.Blocks.Connectitude.Methods;
 
 namespace IronBlock.Blocks
 {
@@ -23,7 +21,7 @@ namespace IronBlock.Blocks
             return value.Evaluate(context);
         }
 
-		internal static SyntaxNode Generate(this IEnumerable<Value> values, string name, Context context)
+		public static SyntaxNode Generate(this IEnumerable<Value> values, string name, Context context)
 		{
 			var value = values.FirstOrDefault(x => x.Name == name);
 			if (null == value) throw new ArgumentException($"value {name} not found");
@@ -31,7 +29,7 @@ namespace IronBlock.Blocks
 			return value.Generate(context);
 		}
 
-		internal static string Get(this IEnumerable<Field> fields, string name)
+		public static string Get(this IEnumerable<Field> fields, string name)
         {
             var field = fields.FirstOrDefault(x => x.Name == name);
             if (null == field) throw new ArgumentException($"field {name} not found");
@@ -59,13 +57,28 @@ namespace IronBlock.Blocks
             return workspace.Evaluate(new Context());
         }
 
-		public static SyntaxNode Generate(this Workspace workspace)
+        public static SyntaxNode Generate(this Workspace workspace)
 		{
-			var context = new Context();
+            var context = new Context();
 			return workspace.Generate(context);
 		}
 
-		public static Parser AddStandardBlocks(this Parser parser)
+        public static Context GetRootContext(this Context context)
+        {
+            var parentContext = context?.Parent;
+            
+            while (parentContext != null)
+            {
+                if (parentContext.Parent == null)
+                    return parentContext;
+
+                parentContext = parentContext.Parent;
+            };
+
+            return context;
+        }
+
+        public static Parser AddStandardBlocks(this Parser parser)
         {
             parser.AddBlock<ControlsRepeatExt>("controls_repeat_ext");
             parser.AddBlock<ControlsIf>("controls_if");
@@ -121,19 +134,8 @@ namespace IronBlock.Blocks
             parser.AddBlock<ListsRepeat>("lists_repeat");
             parser.AddBlock<ListsIsEmpty>("lists_isEmpty");
 
-			parser.AddBlock<TagsGet>("connectitude_tags_get");
-			//parser.AddBlock<TagsSet>("connectitude_tags_set");
-
-			parser.AddBlock<MethodsCallNoReturn>("connectitude_methods_callnoreturn");
-			//parser.AddBlock<MethodsCallReturn>("connectitude_methods_callreturn"); ;
-
 			return parser;
         }
-
-		public static string GetVariableName(this string id)
-		{
-			return $"_{id.Replace("-", "_")}";
-		}
     }
 
 }
