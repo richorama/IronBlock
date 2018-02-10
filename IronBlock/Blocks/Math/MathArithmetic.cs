@@ -20,7 +20,8 @@ namespace IronBlock.Blocks.Math
                 case "MULTIPLY": return a * b;
                 case "DIVIDE": return a / b;
                 case "ADD": return a + b;
-                case "SUBTRACT": return a - b;
+                case "MINUS": return a - b;
+                case "POWER": return System.Math.Pow(a, b);
 
                 default: throw new ApplicationException($"Unknown OP {opValue}");
             }
@@ -36,9 +37,39 @@ namespace IronBlock.Blocks.Math
 			if (secondExpression == null)
 				throw new ApplicationException($"Unknown expression for value B.");
 
+            ExpressionSyntax expression = null;
+
 			var opValue = this.Fields.Get("OP");
-			var binaryOperator = GetBinaryOperator(opValue);
-			return ParenthesizedExpression(BinaryExpression(binaryOperator, firstExpression, secondExpression));
+            if (opValue == "POWER")
+            {
+                expression = InvocationExpression(
+                    MemberAccessExpression(
+                        SyntaxKind.SimpleMemberAccessExpression,
+                        IdentifierName("Math"),
+                        IdentifierName("Pow")
+                    )
+                )
+                .WithArgumentList(
+                    ArgumentList(
+                        SeparatedList<ArgumentSyntax>(
+                            new SyntaxNodeOrToken[]{
+                                Argument(
+                                    firstExpression),
+                                Token(SyntaxKind.CommaToken),
+                                Argument(
+                                    secondExpression)
+                            }
+                        )
+                    )
+                );
+            }
+            else
+            {
+                var binaryOperator = GetBinaryOperator(opValue);
+                expression = BinaryExpression(binaryOperator, firstExpression, secondExpression);
+            }
+			
+			return ParenthesizedExpression(expression);
 		}
 
 		private SyntaxKind GetBinaryOperator(string opValue)
@@ -48,9 +79,9 @@ namespace IronBlock.Blocks.Math
 				case "MULTIPLY": return SyntaxKind.MultiplyExpression;
 				case "DIVIDE": return SyntaxKind.DivideExpression;
 				case "ADD": return SyntaxKind.AddExpression;
-				case "SUBTRACT": return SyntaxKind.SubtractExpression;
+				case "MINUS": return SyntaxKind.SubtractExpression;
 
-				default: throw new ApplicationException($"Unknown OP {opValue}");
+                default: throw new ApplicationException($"Unknown OP {opValue}");
 			}
 		}
 	}
