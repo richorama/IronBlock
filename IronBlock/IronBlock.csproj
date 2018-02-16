@@ -13,6 +13,7 @@
     <Copyright>Richard Astbury 2018</Copyright>
     <Version>$(VersionSuffix)</Version>
     <PackageVersion>$(Version)</PackageVersion>
+    <PackageId>BlocklyGenerator</PackageId>
   </PropertyGroup>
 
   <ItemGroup>
