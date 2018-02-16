@@ -37,7 +37,7 @@ namespace IronBlock.Blocks
             return field.Value;
         }
 
-        internal static Statement GetStatement(this IEnumerable<Statement> statements, string name)
+        internal static Statement Get(this IEnumerable<Statement> statements, string name)
         {
             var statement = statements.FirstOrDefault(x => x.Name == name);
             if (null == statement) throw new ArgumentException($"statement {name} not found");

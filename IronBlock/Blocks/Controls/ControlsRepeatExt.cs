@@ -10,7 +10,7 @@ namespace IronBlock.Blocks.Controls
 
             if (!this.Statements.Any(x => x.Name == "DO")) return base.Evaluate(context);
 
-            var statement = this.Statements.GetStatement("DO");
+            var statement = this.Statements.Get("DO");
 
             for (var i = 0; i < timesValue; i++)
             {

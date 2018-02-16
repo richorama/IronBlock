@@ -20,7 +20,7 @@ namespace IronBlock.Blocks.Controls
             {
                 if ((bool) Values.Evaluate($"IF{i}", context))
                 {
-                    var statement = this.Statements.GetStatement($"DO{i}");
+                    var statement = this.Statements.Get($"DO{i}");
                     statement.Evaluate(context);
                     done = true;
                     break;
@@ -34,7 +34,7 @@ namespace IronBlock.Blocks.Controls
                     var elseExists = this.Mutations.GetValue("else");
                     if (elseExists == "1")
                     {
-                        var statement = this.Statements.GetStatement("ELSE");
+                        var statement = this.Statements.Get("ELSE");
                         statement.Evaluate(context);
                     }
                 }

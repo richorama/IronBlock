@@ -60,6 +60,44 @@ var output = workspace.Evaluate();
 // "Hello World"
 ```
 
+## Custom Blocks
+
+Blockly has a [block designer](https://blockly-demo.appspot.com/static/demos/blockfactory/index.html), allowing you to create your own blocks very easily.
+
+Custom block can be created in C# by inheriting `IBlock`:
+
+```cs
+public class MyCustomBlock : IBlock
+{
+    public override object Evaluate(Context context)
+    {
+        // read a field
+        var myField = this.Fields.Get("MY_FIELD");
+        
+        // evaluate a value
+        var myValue = this.Values.Evaluate("MY_VALUE", context);
+        
+        // evaluate a statement
+        var myStatement = this.Statements.Get($"MY_STATEMENT");
+        myStatement.Evaluate(context); // evaluate your statement
+
+        // if your block returns a value, simply `return myValue`
+
+        // if your block is part of a statment, and another block runs after it, call
+        base.Evaluate(context);
+        return null;
+    }
+}
+```
+
+You can then register your block and run it:
+
+```cs
+var parser = new Parser();
+parser.AddBlock<MyCustomBlock>("my_custom_block");
+var workspace = parser.Parse(xml);
+workspace.Evaluate();
+```
 
 ## License
 
