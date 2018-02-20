@@ -14,7 +14,7 @@ namespace IronBlock.Blocks.Text
 
             if (!string.IsNullOrWhiteSpace(text))
             {
-                Console.WriteLine(text);
+                Console.Write($"{text}: ");
             }
 
             var value = Console.ReadLine();
@@ -24,7 +24,7 @@ namespace IronBlock.Blocks.Text
                 return int.Parse(value);                
             }
 
-            return text;
+            return value;
         }
     }
 
