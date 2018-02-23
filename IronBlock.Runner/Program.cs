@@ -9,27 +9,37 @@ namespace IronBlock.Runner
     {
         static void Main(string[] args)
         {
-            if (!args.Any()) 
+            try
             {
-                Console.WriteLine("Specify an XML file as the first argument");
-                return;
+                if (!args.Any()) 
+                {
+                    Console.WriteLine("Specify an XML file as the first argument");
+                    Environment.ExitCode = 1;
+                    return;
+                }
+
+                var filename = args.First();
+
+                if (!File.Exists(filename))
+                {
+                    Console.WriteLine($"ERROR: File ({filename}) does not exist");
+                    Environment.ExitCode = 1;
+                    return;
+                }
+
+                var xml = File.ReadAllText(filename);
+                
+                new Parser()
+                    .AddStandardBlocks()
+                    .Parse(xml)
+                    .Evaluate();
+
             }
-
-            var filename = args.First();
-
-            if (!File.Exists(filename))
+            catch (Exception ex)
             {
-                Console.WriteLine($"Error, file ({filename}) does not exist");
-                return;
+                Console.WriteLine($"ERROR: {ex.ToString()}");
+                Environment.ExitCode = 1;
             }
-
-            var xml = File.ReadAllText(filename);
-            
-            new Parser()
-                .AddStandardBlocks()
-                .Parse(xml)
-                .Evaluate();
-
         }
     }
 }
