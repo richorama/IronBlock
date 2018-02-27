@@ -7,6 +7,7 @@ using IronBlock.Blocks.Variables;
 using IronBlock.Blocks.Controls;
 using IronBlock.Blocks.Logic;
 using IronBlock.Blocks.Lists;
+using Microsoft.CodeAnalysis;
 
 namespace IronBlock.Blocks
 {
@@ -20,7 +21,15 @@ namespace IronBlock.Blocks
             return value.Evaluate(context);
         }
 
-        internal static string Get(this IEnumerable<Field> fields, string name)
+		public static SyntaxNode Generate(this IEnumerable<Value> values, string name, Context context)
+		{
+			var value = values.FirstOrDefault(x => x.Name == name);
+			if (null == value) throw new ArgumentException($"value {name} not found");
+
+			return value.Generate(context);
+		}
+
+		public static string Get(this IEnumerable<Field> fields, string name)
         {
             var field = fields.FirstOrDefault(x => x.Name == name);
             if (null == field) throw new ArgumentException($"field {name} not found");
@@ -43,10 +52,30 @@ namespace IronBlock.Blocks
             return mut.Value;
         }
 
-
         public static object Evaluate(this Workspace workspace)
         {
             return workspace.Evaluate(new Context());
+        }
+
+        public static SyntaxNode Generate(this Workspace workspace)
+		{
+            var context = new Context();
+			return workspace.Generate(context);
+		}
+
+        public static Context GetRootContext(this Context context)
+        {
+            var parentContext = context?.Parent;
+            
+            while (parentContext != null)
+            {
+                if (parentContext.Parent == null)
+                    return parentContext;
+
+                parentContext = parentContext.Parent;
+            };
+
+            return context;
         }
 
         public static Parser AddStandardBlocks(this Parser parser)
@@ -105,10 +134,8 @@ namespace IronBlock.Blocks
             parser.AddBlock<ListsRepeat>("lists_repeat");
             parser.AddBlock<ListsIsEmpty>("lists_isEmpty");
 
-            return parser;
+			return parser;
         }
-
-
     }
 
 }

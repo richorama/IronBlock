@@ -1,6 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace IronBlock.Blocks.Math
 {
@@ -10,6 +11,14 @@ namespace IronBlock.Blocks.Math
         {
             return double.Parse(this.Fields.Get("NUM"));
         }
-    }
 
+		public override SyntaxNode Generate(Context context)
+		{
+			var value = double.Parse(this.Fields.Get("NUM"));
+			return LiteralExpression(
+				SyntaxKind.NumericLiteralExpression,
+				Literal(value)
+			);
+		}
+	}
 }
