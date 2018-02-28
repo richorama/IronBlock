@@ -42,7 +42,9 @@ The XML will look something like this:
 </xml>
 ```
 
-You'll need to pass this XML to you server using an Ajax call or similar.
+You'll need to pass this XML to your .NET server using an Ajax call or similar.
+
+You can then parse the XML, and execute the Blockly program from .NET.
 
 ```cs
 // create a parser
@@ -62,9 +64,9 @@ var output = workspace.Evaluate();
 
 ## Custom Blocks
 
-Blockly has a [block designer](https://blockly-demo.appspot.com/static/demos/blockfactory/index.html), allowing you to create your own blocks very easily.
+Blockly has a [block designer](https://blockly-demo.appspot.com/static/demos/blockfactory/index.html) allowing you to create your own blocks very easily.
 
-Custom block can be created in C# by inheriting `IBlock`:
+Custom blocks can be implemented in C# by inheriting `IBlock`:
 
 ```cs
 public class MyCustomBlock : IBlock
