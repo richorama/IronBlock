@@ -80,7 +80,7 @@ public class MyCustomBlock : IBlock
         var myValue = this.Values.Evaluate("MY_VALUE", context);
         
         // evaluate a statement
-        var myStatement = this.Statements.Get($"MY_STATEMENT");
+        var myStatement = this.Statements.Get("MY_STATEMENT");
         myStatement.Evaluate(context); // evaluate your statement
 
         // if your block returns a value, simply `return myValue`
