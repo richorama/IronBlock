@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using IronBlock.Blocks;
+using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace IronBlock.Tests
@@ -68,12 +69,15 @@ namespace IronBlock.Tests
   </block>        
 </xml>
 ";
-            var output = new Parser()
+            var workspace = new Parser()
                 .AddStandardBlocks()
-                .Parse(xml)
-                .Evaluate();
-            
+                .Parse(xml);
+
+            var output = workspace.Evaluate();
             Assert.AreEqual(System.Math.PI, output);
+
+            var csharp = workspace.Generate().NormalizeWhitespace().ToFullString();
+            Assert.IsTrue(csharp.Contains("3.1415926535897931"));
         }
 
 

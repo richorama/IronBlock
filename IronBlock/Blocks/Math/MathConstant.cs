@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace IronBlock.Blocks.Math
 {
@@ -9,7 +12,11 @@ namespace IronBlock.Blocks.Math
         public override object Evaluate(Context context)
         {
             var constant = this.Fields.Get("CONSTANT");
+            return GetValue(constant);          
+        }
 
+        static double GetValue(string constant)
+        {
             switch (constant)
             {
                 case "PI": return System.Math.PI;
@@ -20,6 +27,17 @@ namespace IronBlock.Blocks.Math
                 case "INFINITY": return double.PositiveInfinity;
                 default: throw new ApplicationException($"Unknown CONSTANT {constant}");
             }
+
+        }
+
+        public override SyntaxNode Generate(Context context)
+        {
+            var constant = this.Fields.Get("CONSTANT");
+            var value = GetValue(constant);
+  
+            return LiteralExpression(
+				SyntaxKind.NumericLiteralExpression,
+				Literal(value));
         }
     }
 

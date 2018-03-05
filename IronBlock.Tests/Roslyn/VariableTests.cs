@@ -95,6 +95,7 @@ namespace IronBlock.Tests.Roslyn
 			Assert.IsTrue(code.Contains("a = 5;"));
 			Assert.IsTrue(code.Contains("b = 8;"));
 			Assert.IsTrue(code.Contains("b = (a + b);"));
+
 		}
 	}
 }
