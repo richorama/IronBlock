@@ -1,6 +1,7 @@
+using System;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using System;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace IronBlock.Blocks.Text
 {
@@ -15,10 +16,13 @@ namespace IronBlock.Blocks.Text
 
         public override SyntaxNode Generate(Context context)
         {
-            var variableName = this.Fields.Get("TEXT");
+            var text = this.Fields.Get("TEXT");
 
-            return SyntaxFactory.IdentifierName(variableName);
-        }
+			return LiteralExpression(
+					SyntaxKind.StringLiteralExpression,
+						Literal(text)
+					);
+		}
     }
 
 }

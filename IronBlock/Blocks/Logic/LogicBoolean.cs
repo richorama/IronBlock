@@ -1,5 +1,7 @@
 using System;
-using System.Collections.Generic;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace IronBlock.Blocks.Logic
 {
@@ -10,6 +12,13 @@ namespace IronBlock.Blocks.Logic
             return bool.Parse(this.Fields.Get("BOOL"));
         }
 
-    }
+		public override SyntaxNode Generate(Context context)
+		{
+			bool value = bool.Parse(this.Fields.Get("BOOL"));
+			if (value)
+				return LiteralExpression(SyntaxKind.TrueLiteralExpression);
 
+			return LiteralExpression(SyntaxKind.FalseLiteralExpression);
+		}
+	}
 }

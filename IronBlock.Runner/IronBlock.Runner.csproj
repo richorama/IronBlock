@@ -8,5 +8,11 @@
   <ItemGroup>
     <ProjectReference Include="..\IronBlock\IronBlock.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Update="test.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   
 </Project>
