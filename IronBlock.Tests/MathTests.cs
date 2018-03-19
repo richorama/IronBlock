@@ -431,7 +431,7 @@ namespace IronBlock.Tests
         }
 
 
-                [TestMethod]
+        [TestMethod]
         public void Test_Math_On_List_Mode()
         {
 
@@ -465,6 +465,38 @@ namespace IronBlock.Tests
             Assert.AreEqual(3 , (double) output);
         }
 
+        [TestMethod]
+        public void Test_Math_Constrain()
+        {
+
+            const string xml = @"
+<xml xmlns=""http://www.w3.org/1999/xhtml"">
+  <block type=""math_constrain"">
+    <value name=""VALUE"">
+      <shadow type=""math_number"">
+        <field name=""NUM"">110</field>
+      </shadow>
+    </value>
+    <value name=""LOW"">
+      <shadow type=""math_number"">
+        <field name=""NUM"">1</field>
+      </shadow>
+    </value>
+    <value name=""HIGH"">
+      <shadow type=""math_number"">
+        <field name=""NUM"">100</field>
+      </shadow>
+    </value>
+  </block>
+</xml>
+";
+            var output = new Parser()
+                .AddStandardBlocks()
+                .Parse(xml)
+                .Evaluate();
+            
+            Assert.AreEqual(100 , (double) output);
+        }
 
 
     }
