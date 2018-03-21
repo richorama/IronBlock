@@ -31,7 +31,7 @@ namespace IronBlock.Tests.Roslyn
 				.Generate();
 
 			string code = output.NormalizeWhitespace().ToFullString();
-			Assert.IsTrue(code.Contains("double a;"));
+			Assert.IsTrue(code.Contains("dynamic a;"));
 			Assert.IsTrue(code.Contains("a = 1;"));
 		}
 
@@ -90,11 +90,12 @@ namespace IronBlock.Tests.Roslyn
 				.Generate();
 
 			string code = output.NormalizeWhitespace().ToFullString();
-			Assert.IsTrue(code.Contains("double a;"));
-			Assert.IsTrue(code.Contains("double b;"));
+			Assert.IsTrue(code.Contains("dynamic a;"));
+			Assert.IsTrue(code.Contains("dynamic b;"));
 			Assert.IsTrue(code.Contains("a = 5;"));
 			Assert.IsTrue(code.Contains("b = 8;"));
 			Assert.IsTrue(code.Contains("b = (a + b);"));
+
 		}
 	}
 }

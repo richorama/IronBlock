@@ -1,0 +1,29 @@
+<xml xmlns="http://www.w3.org/1999/xhtml">
+  <variables></variables>
+  <block type="text_print" id=".^Fy|z+*ML#gI{Q*:X!o" x="38" y="138">
+    <value name="TEXT">
+      <shadow type="text" id=";K}4@^Jh+!m.tqENhDSO">
+        <field name="TEXT">abc</field>
+      </shadow>
+      <block type="text_join" id="HIN2Y|s%A@/I+mU4J_)c">
+        <mutation items="2"></mutation>
+        <value name="ADD0">
+          <block type="text" id="YQkN@VY^:Ffw[|Lqoy6c">
+            <field name="TEXT">Hello </field>
+          </block>
+        </value>
+        <value name="ADD1">
+          <block type="text_prompt_ext" id="RwU*7+yA?C=qAN+Y2ib-">
+            <mutation type="TEXT"></mutation>
+            <field name="TYPE">TEXT</field>
+            <value name="TEXT">
+              <shadow type="text" id="@`q#IVRol}s,7Q:NcLFI">
+                <field name="TEXT">Please enter your name</field>
+              </shadow>
+            </value>
+          </block>
+        </value>
+      </block>
+    </value>
+  </block>
+</xml>

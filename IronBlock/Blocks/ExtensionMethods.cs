@@ -102,6 +102,8 @@ namespace IronBlock.Blocks
             parser.AddBlock<MathConstant>("math_constant");
             parser.AddBlock<MathNumberProperty>("math_number_property");
             parser.AddBlock<MathOnList>("math_on_list");
+            parser.AddBlock<MathConstrain>("math_constrain");
+            parser.AddBlock<MathModulo>("math_modulo");            
 
             parser.AddBlock<TextBlock>("text");
             parser.AddBlock<TextPrint>("text_print");

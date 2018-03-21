@@ -11,7 +11,8 @@ namespace IronBlock
     { 
         // probably need a method like this here:
         object Evaluate(Context context);
-    }
+		SyntaxNode Generate(Context context);
+	}
 
     public class Workspace : IFragment
     {
@@ -56,21 +57,19 @@ namespace IronBlock
 
 			foreach (var variable in context.Variables)
 			{
-				var variableDeclaration = GenerateVariableDeclaration(SyntaxKind.DoubleKeyword, variable.Key);
+				var variableDeclaration = GenerateVariableDeclaration(variable.Key);
 				context.Statements.Insert(0, variableDeclaration);
 			}
 
-			var blockSyntax = SyntaxFactory.Block(context.Statements);		
+			var blockSyntax = Block(context.Statements);		
 			return blockSyntax;
 		}
 
-		private LocalDeclarationStatementSyntax GenerateVariableDeclaration(SyntaxKind variableType, string variableName)
+		private LocalDeclarationStatementSyntax GenerateVariableDeclaration(string variableName)
 		{
 			return LocalDeclarationStatement(
 						VariableDeclaration(
-							PredefinedType(
-								Token(variableType)
-							)
+							IdentifierName("dynamic")
 						)
 						.WithVariables(
 							SingletonSeparatedList(
@@ -82,7 +81,7 @@ namespace IronBlock
 					);
 		}
 	}
-
+						
     public abstract class IBlock : IFragment
     { 
         public IBlock()

@@ -1,10 +1,12 @@
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace IronBlock.Blocks.Text
 {
-    public class ProceduresCallReturn : IBlock
+    public class ProceduresCallReturn : ProceduresCallNoReturn
     {
         public override object Evaluate(Context context)
         {
@@ -28,8 +30,6 @@ namespace IronBlock.Blocks.Text
             }
 
             return statement.Evaluate(funcContext);
-
         }
-    }
-
+	}
 }
