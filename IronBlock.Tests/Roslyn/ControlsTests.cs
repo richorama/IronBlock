@@ -38,7 +38,7 @@ namespace IronBlock.Tests.Roslyn
 				.Generate();
 
 			string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
-			Assert.IsTrue(code.Contains("if (true) Console.WriteLine(\"success\");"));
+			Assert.IsTrue(code.Contains("if (true) { Console.WriteLine(\"success\"); }"));
 		}
 		
 		[TestMethod]
@@ -95,7 +95,7 @@ namespace IronBlock.Tests.Roslyn
 				.Generate();
 
 			string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
-			Assert.IsTrue(code.Contains("if ((test == 0)) test = 1; else test = 2;"));
+			Assert.IsTrue(code.Contains("if ((test == 0)) { test = 1; } else { test = 2; }"));
 		}
 
 		[TestMethod]
@@ -203,7 +203,7 @@ namespace IronBlock.Tests.Roslyn
 				.Generate();
 
 			string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
-			Assert.IsTrue(code.Contains("if ((test == 0)) test = 1; else if ((test == 1)) test = 2; else if ((test == 2)) test = 3; else test = 4;"));
+			Assert.IsTrue(code.Contains("if ((test == 0)) { test = 1; } else if ((test == 1)) { test = 2; } else if ((test == 2)) { test = 3; } else { test = 4; }"));
 		}
 
 
@@ -330,7 +330,7 @@ namespace IronBlock.Tests.Roslyn
 				.Generate();
 
 			string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
-			Assert.IsTrue(code.Contains(@"for (int count = 0; count < 3; count++) { Console.WriteLine(""hello""); if (true) continue; Console.WriteLine(""world""); }"));
+			Assert.IsTrue(code.Contains("for (int count = 0; count < 3; count++) { Console.WriteLine(\"hello\"); if (true) { continue; }  Console.WriteLine(\"world\"); }"));
 		}
 
 
@@ -387,7 +387,7 @@ namespace IronBlock.Tests.Roslyn
 				.Generate();
 
 			string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
-			Assert.IsTrue(code.Contains(@"for (int count = 0; count < 3; count++) { Console.WriteLine(""hello""); if (true) break; Console.WriteLine(""world""); }"));
+			Assert.IsTrue(code.Contains("for (int count = 0; count < 3; count++) { Console.WriteLine(\"hello\"); if (true) { break; }  Console.WriteLine(\"world\"); }"));
 		}
 
 

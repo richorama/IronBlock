@@ -67,11 +67,9 @@ namespace IronBlock.Blocks.Controls
 					WhileStatement(
 						conditionExpression,
 						Block(whileContext.Statements)
-					);
+					);			
 
-			context.Statements.Add(whileStatement);
-
-			return base.Generate(context);
+			return Statement(whileStatement, base.Generate(context), context);
 		}
 	}
 

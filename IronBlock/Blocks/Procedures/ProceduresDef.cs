@@ -79,7 +79,7 @@ namespace IronBlock.Blocks.Text
 
 				returnStatement = ReturnStatement(returnExpression);
 			}
-			
+
 			var parameters = new List<ParameterSyntax>();
 
 			foreach (var mutation in this.Mutations.Where(x => x.Domain == "arg" && x.Name == "name"))
@@ -120,7 +120,7 @@ namespace IronBlock.Blocks.Text
 					)
 					.WithBody(
 						Block(funcContext.Statements)
-					);			
+					);
 
 			if (parameters.Any())
 			{
@@ -132,8 +132,8 @@ namespace IronBlock.Blocks.Text
 							ParameterList(syntaxList)
 						);
 			}
-			
-			context.Statements.Add(methodDeclaration);
+
+			context.Functions[name] = methodDeclaration;
 
 			return base.Generate(context);
 		}

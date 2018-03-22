@@ -16,7 +16,7 @@ namespace IronBlock.Blocks.Text
           
             if (!context.Functions.ContainsKey(name)) throw new MissingMethodException($"Method '{name}' not defined");
 
-            var statement = context.Functions[name];
+            var statement = (IFragment)context.Functions[name];
 
             var funcContext = new Context() { Parent = context };
             funcContext.Functions = context.Functions;

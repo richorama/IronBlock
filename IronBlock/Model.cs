@@ -4,6 +4,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Collections.Generic;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using System;
 
 namespace IronBlock
 {
@@ -52,10 +53,19 @@ namespace IronBlock
 					statement = ExpressionStatement(syntaxNode as ExpressionSyntax);
 				}
 
-				context.Statements.Insert(0, statement);
+				context.Statements.Add(statement);
 			}
 
-			foreach (var variable in context.Variables)
+			foreach (var function in context.Functions.Reverse())
+			{
+				var methodDeclaration = function.Value as LocalFunctionStatementSyntax;
+				if (methodDeclaration == null)
+					continue;
+
+				context.Statements.Insert(0, methodDeclaration);
+			}
+
+			foreach (var variable in context.Variables.Reverse())
 			{
 				var variableDeclaration = GenerateVariableDeclaration(variable.Key);
 				context.Statements.Insert(0, variableDeclaration);
@@ -117,6 +127,29 @@ namespace IronBlock
 			}
 			return null;
 		}
+
+		protected SyntaxNode Statement(SyntaxNode syntaxNode, SyntaxNode nextSyntaxNode, Context context)
+		{
+			if (nextSyntaxNode == null)
+				return syntaxNode;
+
+			StatementSyntax statementSyntax = null;
+
+			if (syntaxNode is ExpressionSyntax expressionSyntax)
+			{
+				statementSyntax = ExpressionStatement(expressionSyntax);
+			}
+			else if (syntaxNode is StatementSyntax statement)
+			{
+				statementSyntax = statement;
+			}
+
+			if (statementSyntax == null)
+				throw new ApplicationException($"Unknown statement.");
+
+			context.Statements.Insert(0, statementSyntax);
+			return nextSyntaxNode;
+		}
 	}
 
     public class Statement : IFragment
@@ -171,14 +204,14 @@ namespace IronBlock
         public Context()
         {
             this.Variables = new Dictionary<string,object>();
-            this.Functions = new Dictionary<string,IFragment>();
+            this.Functions = new Dictionary<string,object>();
 
 			this.Statements = new List<StatementSyntax>();
 		}
 
 		public IDictionary<string, object> Variables { get; set; }
 
-        public IDictionary<string, IFragment> Functions { get; set; }
+        public IDictionary<string, object> Functions { get; set; }
 
         public EscapeMode EscapeMode { get; set; }
         		
