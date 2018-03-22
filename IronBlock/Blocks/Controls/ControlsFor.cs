@@ -54,9 +54,10 @@ namespace IronBlock.Blocks.Controls
 
 			var statement = this.Statements.FirstOrDefault();
 
-			if (!context.Variables.ContainsKey(variableName))
+			var rootContext = context.GetRootContext();
+			if (!rootContext.Variables.ContainsKey(variableName))
 			{
-				context.Variables[variableName] = null;
+				rootContext.Variables[variableName] = null;
 			}
 
 			var forContext = new Context() { Parent = context };
@@ -98,10 +99,8 @@ namespace IronBlock.Blocks.Controls
 									)
 								)
 							);
-			
-			context.Statements.Add(forStatement);
 
-			return base.Generate(context);
+			return Statement(forStatement, base.Generate(context), context);
 		}
 	}
 

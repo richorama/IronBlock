@@ -11,7 +11,9 @@
     <PackageTags>blockly netcore scratch interpreter</PackageTags>
     <Description>A .net core interpreter for blockly programs</Description>
     <Copyright>Richard Astbury 2018</Copyright>
-    <Version>1.0.1</Version>
+    <Version>$(VersionSuffix)</Version>
+    <PackageVersion>$(Version)</PackageVersion>
+    <PackageId>BlocklyGenerator</PackageId>
   </PropertyGroup>
 
   <ItemGroup>
