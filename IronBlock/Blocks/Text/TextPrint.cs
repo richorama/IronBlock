@@ -23,7 +23,8 @@ namespace IronBlock.Blocks.Text
 			var expression = syntaxNode as ExpressionSyntax;
 			if (expression == null) throw new ApplicationException($"Unknown expression for text.");
 
-			return InvocationExpression(
+			var invocationExpression =
+				InvocationExpression(
 						MemberAccessExpression(
 							SyntaxKind.SimpleMemberAccessExpression,
 							IdentifierName("Console"),
@@ -38,7 +39,14 @@ namespace IronBlock.Blocks.Text
 								)
 							)
 						)
-					);
+					);			
+
+			var next = base.Generate(context);
+			if (next == null)
+				return invocationExpression;
+
+			context.Statements.Insert(0, ExpressionStatement(invocationExpression));
+			return next;
 		}
 	}
 

@@ -1,4 +1,9 @@
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System;
 using System.Linq;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace IronBlock.Blocks.Controls
 {
@@ -29,6 +34,73 @@ namespace IronBlock.Blocks.Controls
                 
             return base.Evaluate(context);
         }
-    }
+		
+		public override SyntaxNode Generate(Context context)
+		{
+			var timesExpression = this.Values.Generate("TIMES", context) as ExpressionSyntax;
+			if (timesExpression == null) throw new ApplicationException($"Unknown expression for times.");
+
+			if (!this.Statements.Any(x => x.Name == "DO")) return base.Generate(context);
+
+			var statement = this.Statements.Get("DO");
+
+			var forContext = new Context() { Parent = context };
+			if (statement?.Block != null)
+			{
+				var statementSyntax = statement.Block.GenerateStatement(forContext);
+				if (statementSyntax != null)
+				{
+					forContext.Statements.Add(statementSyntax);
+				}
+			}
+
+			var forStatement =
+					ForStatement(
+								Block(forContext.Statements)
+							)
+							.WithDeclaration(
+								VariableDeclaration(
+									PredefinedType(
+										Token(SyntaxKind.IntKeyword)
+									)
+								)
+								.WithVariables(
+									SingletonSeparatedList<VariableDeclaratorSyntax>(
+										VariableDeclarator(
+											Identifier("count")
+										)
+										.WithInitializer(
+											EqualsValueClause(
+												LiteralExpression(
+													SyntaxKind.NumericLiteralExpression,
+													Literal(0)
+												)
+											)
+										)
+									)
+								)
+							)
+							.WithCondition(
+								BinaryExpression(
+									SyntaxKind.LessThanExpression,
+									IdentifierName("count"),
+									timesExpression
+								)
+							)
+							.WithIncrementors(
+								SingletonSeparatedList<ExpressionSyntax>(
+									PostfixUnaryExpression(
+										SyntaxKind.PostIncrementExpression,
+										IdentifierName("count")
+									)
+								)
+							);
+
+
+			context.Statements.Add(forStatement);
+
+			return base.Generate(context);
+		}
+	}
 
 }

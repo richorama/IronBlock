@@ -1,9 +1,12 @@
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 namespace IronBlock.Blocks.Controls
 {
-    public class ControlsForEach : IBlock
+	public class ControlsForEach : IBlock
     {
         public override object Evaluate(Context context)
         {
@@ -29,6 +32,41 @@ namespace IronBlock.Blocks.Controls
 
             return base.Evaluate(context);
         }
-    }
+
+		public override SyntaxNode Generate(Context context)
+		{
+			var variableName = this.Fields.Get("VAR");
+			var listExpression = this.Values.Generate("LIST", context) as ExpressionSyntax;
+			if (listExpression == null) throw new ApplicationException($"Unknown expression for list.");
+
+			var statement = this.Statements.Where(x => x.Name == "DO").FirstOrDefault();
+
+			if (null == statement) return base.Generate(context);
+
+			var forEachContext = new Context() { Parent = context };
+			if (statement?.Block != null)
+			{
+				var statementSyntax = statement.Block.GenerateStatement(forEachContext);
+				if (statementSyntax != null)
+				{
+					forEachContext.Statements.Add(statementSyntax);
+				}
+			}
+
+			var forEachStatement =
+					ForEachStatement(
+							IdentifierName("var"),
+							Identifier(variableName),
+							listExpression,
+							Block(
+								forEachContext.Statements
+							)
+						);
+
+			context.Statements.Add(forEachStatement);
+
+			return base.Generate(context);
+		}
+	}
 
 }

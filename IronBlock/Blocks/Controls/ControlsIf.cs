@@ -57,8 +57,7 @@ namespace IronBlock.Blocks.Controls
 				ifCount = int.Parse(elseIf) + 1;
 			}
 
-			IfStatementSyntax ifStatement = null;
-			IfStatementSyntax elseIfStatement = null;
+			var ifStatements = new List<IfStatementSyntax>();
 
 			for (var i = 0; i < ifCount; i++)
 			{
@@ -66,35 +65,47 @@ namespace IronBlock.Blocks.Controls
 				if (conditional == null) throw new ApplicationException($"Unknown expression for condition.");
 
 				var statement = this.Statements.Get($"DO{i}");
-				var statementExp = statement.Generate(context) as ExpressionSyntax;
-				if (statementExp == null) throw new ApplicationException($"Unknown expression for statement.");
-
-				if (ifStatement == null)
-				{
-					ifStatement = IfStatement(conditional, ExpressionStatement(statementExp));
-				}
-				else
-				{
-					elseIfStatement = IfStatement(conditional, ExpressionStatement(statementExp));
-					ifStatement.WithElse(ElseClause(elseIfStatement));
-				}
+				var statementSyntax = statement.GenerateStatement(context);
+				if (statementSyntax == null) throw new ApplicationException($"Unknown expression for statement.");
+				
+				var newIfStatement = IfStatement(conditional, statementSyntax);
+				ifStatements.Add(newIfStatement);
 			}
 
 			string elseMutation = this.Mutations.GetValue("else");
-			if (string.IsNullOrEmpty(elseMutation))
-				return ifStatement;
-
 			if (elseMutation == "1")
 			{
 				var statement = this.Statements.Get("ELSE");
 				var elseStatement = statement.Generate(context) as ExpressionSyntax;
 				if (elseStatement == null) throw new ApplicationException($"Unknown expression for else statement.");
 
-				var latestIfStatement = elseIfStatement ?? ifStatement;
-				latestIfStatement.WithElse(ElseClause(ExpressionStatement(elseStatement)));
+				int lastIndex = ifStatements.Count - 1;
+				if (lastIndex >= 0)
+				{
+					var lastIfStatement = ifStatements[lastIndex];
+					ifStatements[lastIndex] = lastIfStatement.WithElse(ElseClause(ExpressionStatement(elseStatement)));
+				}
 			}
 
-			return ifStatement;
+			for (int index = ifStatements.Count - 1; index >= 0; index--)
+			{
+				var currentIfStatement = ifStatements[index];
+				if (index > 0)
+				{
+					var previousIfStatement = ifStatements[index - 1];
+					ifStatements[index - 1] = previousIfStatement.WithElse(ElseClause(currentIfStatement));
+				}		
+			}
+
+
+			var ifStatement = ifStatements.FirstOrDefault();
+
+			var next = base.Generate(context);
+			if (next == null)
+				return ifStatement;
+
+			context.Statements.Add(ifStatement);
+			return next;
 		}
 	}
 }

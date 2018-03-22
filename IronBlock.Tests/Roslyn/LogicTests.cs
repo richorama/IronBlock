@@ -1,14 +1,10 @@
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using IronBlock.Blocks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.CodeAnalysis;
-using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace IronBlock.Tests.Roslyn
 {
-    [TestClass]
+	[TestClass]
     public class LogicTests
     {
         [TestMethod]
@@ -89,7 +85,7 @@ namespace IronBlock.Tests.Roslyn
 				.Generate();
 
 			string code = output.NormalizeWhitespace().ToFullString();
-			Assert.IsTrue(code.Contains(";"));
+			Assert.IsTrue(code.Contains("(false || true);"));
 		}
 
             [TestMethod]
@@ -119,7 +115,7 @@ namespace IronBlock.Tests.Roslyn
 				.Generate();
 
 			string code = output.NormalizeWhitespace().ToFullString();
-			Assert.IsTrue(code.Contains(";"));
+			Assert.IsTrue(code.Contains("(false && true);"));
 		}
 
         [TestMethod]
@@ -143,7 +139,7 @@ namespace IronBlock.Tests.Roslyn
 				.Generate();
 
 			string code = output.NormalizeWhitespace().ToFullString();
-			Assert.IsTrue(code.Contains(";"));
+			Assert.IsTrue(code.Contains("!true;"));
 		}
 
         [TestMethod]
@@ -161,7 +157,7 @@ namespace IronBlock.Tests.Roslyn
 				.Generate();
 
 			string code = output.NormalizeWhitespace().ToFullString();
-			Assert.IsTrue(code.Contains(";"));
+			Assert.IsTrue(code.Contains("null;"));
 		}
 
         [TestMethod]
@@ -195,7 +191,7 @@ namespace IronBlock.Tests.Roslyn
 				.Generate();
 
 			string code = output.NormalizeWhitespace().ToFullString();
-			Assert.IsTrue(code.Contains(";"));
+			Assert.IsTrue(code.Contains("true ? false : true;"));
 		}
     }
 }
