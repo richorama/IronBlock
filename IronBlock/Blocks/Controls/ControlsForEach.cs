@@ -63,9 +63,7 @@ namespace IronBlock.Blocks.Controls
 							)
 						);
 
-			context.Statements.Add(forEachStatement);
-
-			return base.Generate(context);
+			return Statement(forEachStatement, base.Generate(context), context);
 		}
 	}
 
