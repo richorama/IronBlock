@@ -43,6 +43,53 @@ namespace IronBlock.Tests.Roslyn
 		}
 
 		[TestMethod]
+		public void Test_Procedure_No_Params_Multiple_Statements()
+		{
+			const string xml = @"
+<xml xmlns=""http://www.w3.org/1999/xhtml"" id=""workspaceBlocks"" style=""display:none"">
+  <variables>
+    <variable id=""px6p$Rn#{{${?B:OIE[v"" type="""">a</variable>
+  </variables>
+  <block id=""h3UdCI~n5)/pHX6A1Tl4"" type=""procedures_defnoreturn"" x=""-112"" y=""-187"">
+    <field name=""NAME"">init</field>
+    <comment pinned=""false"" h=""80"" w=""160"">Describe this function...</comment>
+    <statement name=""STACK"">
+      <block type=""text_print"">
+        <value name=""TEXT"">
+            <shadow type=""text"">
+            <field name=""TEXT"">abc</field>
+            </shadow>
+            <block type=""variables_get"">
+            <field name=""VAR"" variabletype="""">x</field>
+            </block>
+        </value>
+        <next>
+            <block type=""variables_set"">
+            <field name=""VAR"" variabletype="""">x</field>
+            <value name=""VALUE"">
+                <block type=""math_number"">
+                <field name=""NUM"">1</field>
+                </block>
+            </value>
+            </block>
+        </next>
+	  </block>
+    </statement>
+  </block>
+</xml>
+";
+
+			var output = new Parser()
+				.AddStandardBlocks()
+				.Parse(xml)
+				.Generate();
+
+			string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
+			Assert.IsTrue(code.Contains("void init() { Console.WriteLine(x); x = 1; }"));
+		}
+
+
+		[TestMethod]
         public void Test_Procedure_Params()
         {
             const string xml = @"

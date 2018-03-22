@@ -1,5 +1,8 @@
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
-using System.Collections.Generic;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace IronBlock.Blocks.Logic
 {
@@ -10,6 +13,14 @@ namespace IronBlock.Blocks.Logic
             return null;
         }
 
-    }
+		public override SyntaxNode Generate(Context context)
+		{
+			return ReturnStatement(
+						LiteralExpression(
+							SyntaxKind.NullLiteralExpression
+						)
+					);
+		}
+	}
 
 }

@@ -1,6 +1,6 @@
+using Microsoft.CodeAnalysis;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace IronBlock.Blocks.Controls
 {
@@ -15,7 +15,6 @@ namespace IronBlock.Blocks.Controls
                 return null;
             }
 
-
             if (flow == "BREAK")
             {
                 context.EscapeMode = EscapeMode.Break;
@@ -24,6 +23,22 @@ namespace IronBlock.Blocks.Controls
 
             throw new NotSupportedException($"{flow} flow is not supported");
         }
-    }
+
+		public override SyntaxNode Generate(Context context)
+		{
+			var flow = this.Fields.Get("FLOW");
+			if (flow == "CONTINUE")
+			{
+				return ContinueStatement();
+			}
+
+			if (flow == "BREAK")
+			{
+				return BreakStatement();
+			}
+
+			throw new NotSupportedException($"{flow} flow is not supported");
+		}
+	}
 
 }

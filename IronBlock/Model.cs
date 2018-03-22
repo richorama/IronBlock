@@ -52,7 +52,7 @@ namespace IronBlock
 					statement = ExpressionStatement(syntaxNode as ExpressionSyntax);
 				}
 
-				context.Statements.Add(statement);
+				context.Statements.Insert(0, statement);
 			}
 
 			foreach (var variable in context.Variables)
