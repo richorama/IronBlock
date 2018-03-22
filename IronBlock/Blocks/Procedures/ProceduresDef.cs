@@ -96,8 +96,8 @@ namespace IronBlock.Blocks.Text
 
 			var funcContext = new Context() { Parent = context };
 			if (statement?.Block != null)
-			{				
-				var statementSyntax = statement.Block.Generate(funcContext) as StatementSyntax;
+			{
+				var statementSyntax = statement.Block.GenerateStatement(funcContext);
 				if (statementSyntax != null)
 				{
 					funcContext.Statements.Add(statementSyntax);
@@ -135,7 +135,7 @@ namespace IronBlock.Blocks.Text
 			
 			context.Statements.Add(methodDeclaration);
 
-			return null;
+			return base.Generate(context);
 		}
 
 		static IBlock FindEndOfChain(IBlock block)

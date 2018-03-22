@@ -44,11 +44,14 @@ namespace IronBlock.Blocks.Variables
 								SyntaxKind.SimpleAssignmentExpression,
 									IdentifierName(variableName),
 									valueExpression
-								);
+								);					
+
+			var next = base.Generate(context);
+			if (next == null)
+				return assignment;
 
 			context.Statements.Add(ExpressionStatement(assignment));
-
-			return base.Generate(context);
+			return next;
 		}
 	}
 
