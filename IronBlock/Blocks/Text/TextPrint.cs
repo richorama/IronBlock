@@ -40,13 +40,8 @@ namespace IronBlock.Blocks.Text
 							)
 						)
 					);			
-
-			var next = base.Generate(context);
-			if (next == null)
-				return invocationExpression;
-
-			context.Statements.Insert(0, ExpressionStatement(invocationExpression));
-			return next;
+			
+			return Statement(invocationExpression, base.Generate(context), context);
 		}
 	}
 

@@ -68,7 +68,7 @@ namespace IronBlock.Blocks.Controls
 				var statementSyntax = statement.GenerateStatement(context);
 				if (statementSyntax == null) throw new ApplicationException($"Unknown expression for statement.");
 				
-				var newIfStatement = IfStatement(conditional, statementSyntax);
+				var newIfStatement = IfStatement(conditional, Block(statementSyntax));
 				ifStatements.Add(newIfStatement);
 			}
 
@@ -83,7 +83,7 @@ namespace IronBlock.Blocks.Controls
 				if (lastIndex >= 0)
 				{
 					var lastIfStatement = ifStatements[lastIndex];
-					ifStatements[lastIndex] = lastIfStatement.WithElse(ElseClause(ExpressionStatement(elseStatement)));
+					ifStatements[lastIndex] = lastIfStatement.WithElse(ElseClause(Block(ExpressionStatement(elseStatement))));
 				}
 			}
 
@@ -100,12 +100,7 @@ namespace IronBlock.Blocks.Controls
 
 			var ifStatement = ifStatements.FirstOrDefault();
 
-			var next = base.Generate(context);
-			if (next == null)
-				return ifStatement;
-
-			context.Statements.Add(ifStatement);
-			return next;
+			return Statement(ifStatement, base.Generate(context), context);
 		}
 	}
 }

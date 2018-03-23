@@ -1,0 +1,59 @@
+<xml xmlns="http://www.w3.org/1999/xhtml">
+  <variables>
+    <variable type="" id="stAFvyV:p9Z0;k@U|;~?">x</variable>
+    <variable type="" id="k[B#f7N}9byVT}t}gH8~">y</variable>
+    <variable type="" id="c6//UNP?rUqP}@9bPpd1">result</variable>
+  </variables>
+  <block type="procedures_defreturn" id="oSuTg4lZFOV_a$$ysq:e" x="-410" y="-124">
+    <mutation statements="false">
+      <arg name="x"></arg>
+      <arg name="y"></arg>
+    </mutation>
+    <field name="NAME">add</field>
+    <comment pinned="false" h="80" w="160">Describe this function...</comment>
+    <value name="RETURN">
+      <block type="math_arithmetic" id="|#;X`kmVKG{-Lv|,+Q%N">
+        <field name="OP">ADD</field>
+        <value name="A">
+          <shadow type="math_number" id=",w!bibmcVc}oufa|c.W~">
+            <field name="NUM">1</field>
+          </shadow>
+          <block type="variables_get" id="*vw*|=5^5]aF4lqcOgh!">
+            <field name="VAR" id="stAFvyV:p9Z0;k@U|;~?" variabletype="">x</field>
+          </block>
+        </value>
+        <value name="B">
+          <shadow type="math_number" id="GK.e$C3n-9iM$Z@=2LB6">
+            <field name="NUM">1</field>
+          </shadow>
+          <block type="variables_get" id="/_Q{a-F1I#!%N#IV@Hr6">
+            <field name="VAR" id="k[B#f7N}9byVT}t}gH8~" variabletype="">y</field>
+          </block>
+        </value>
+      </block>
+    </value>
+  </block>
+  <block type="text_print" id=".^Fy|z+*ML#gI{Q*:X!o" x="38" y="138">
+    <value name="TEXT">
+      <shadow type="text" id=";K}4@^Jh+!m.tqENhDSO">
+        <field name="TEXT">abc</field>
+      </shadow>    
+      <block type="procedures_callreturn" id="yu]Wtu1_A6`Ck/9EN/Cs">
+        <mutation name="add">
+          <arg name="x"></arg>
+          <arg name="y"></arg>
+        </mutation>
+        <value name="ARG0">
+          <block type="math_number" id="6xryheF.#l6pS,+IN|L^">
+            <field name="NUM">1</field>
+          </block>
+        </value>
+        <value name="ARG1">
+          <block type="math_number" id="GyH$-B~S(7t{i$eE7;Oa">
+            <field name="NUM">2</field>
+          </block>
+        </value>
+      </block>
+    </value>
+  </block>
+</xml>
