@@ -40,26 +40,26 @@ namespace IronBlock.Blocks.Math
 			var opValue = this.Fields.Get("OP");
             if (opValue == "POWER")
             {
-                expression = InvocationExpression(
-                    MemberAccessExpression(
-                        SyntaxKind.SimpleMemberAccessExpression,
-                        IdentifierName("Math"),
-                        IdentifierName("Pow")
-                    )
-                )
-                .WithArgumentList(
-                    ArgumentList(
-                        SeparatedList<ArgumentSyntax>(
-                            new SyntaxNodeOrToken[]{
-                                Argument(
-                                    firstExpression),
-                                Token(SyntaxKind.CommaToken),
-                                Argument(
-                                    secondExpression)
-                            }
-                        )
-                    )
-                );
+				expression = InvocationExpression(
+					MemberAccessExpression(
+						SyntaxKind.SimpleMemberAccessExpression,
+						IdentifierName(nameof(System.Math)),
+						IdentifierName(nameof(System.Math.Pow))
+					)
+				)
+				.WithArgumentList(
+					ArgumentList(
+						SeparatedList<ArgumentSyntax>(
+							new SyntaxNodeOrToken[]{
+								Argument(
+									firstExpression),
+								Token(SyntaxKind.CommaToken),
+								Argument(
+									secondExpression)
+							}
+						)
+					)
+				);
             }
             else
             {
