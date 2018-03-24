@@ -1,11 +1,9 @@
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+using System;
 using IronBlock.Blocks;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace IronBlock.Tests
+namespace IronBlock.Tests.Roslyn
 {
     [TestClass]
     public class MathTests
@@ -26,13 +24,14 @@ namespace IronBlock.Tests
   </block>        
 </xml>
 ";
-            var output = new Parser()
-                .AddStandardBlocks()
-                .Parse(xml)
-                .Evaluate();
-            
-            Assert.AreEqual(3.0, output);
-        }
+			var output = new Parser()
+				.AddStandardBlocks()
+				.Parse(xml)
+				.Generate();
+			
+			string code = output.NormalizeWhitespace().ToFullString();
+			Assert.IsTrue(code.Contains("Math.Sqrt(9);"));
+		}
 
         [TestMethod]
         public void Test_Math_Sin()
@@ -50,12 +49,13 @@ namespace IronBlock.Tests
   </block>        
 </xml>
 ";
-            var output = new Parser()
-                .AddStandardBlocks()
-                .Parse(xml)
-                .Evaluate();
-            
-            Assert.AreEqual(System.Math.Sin(System.Math.PI / 4), output);
+			var output = new Parser()
+				.AddStandardBlocks()
+				.Parse(xml)
+				.Generate();
+			
+			string code = output.NormalizeWhitespace().ToFullString();
+			Assert.IsTrue(code.Contains("Math.Sin(45 / (180 * Math.PI));"));
         }
 
         [TestMethod]
@@ -69,16 +69,14 @@ namespace IronBlock.Tests
   </block>        
 </xml>
 ";
-            var workspace = new Parser()
-                .AddStandardBlocks()
-                .Parse(xml);
+			var output = new Parser()
+				.AddStandardBlocks()
+				.Parse(xml)
+				.Generate();
 
-            var output = workspace.Evaluate();
-            Assert.AreEqual(System.Math.PI, output);
-
-            var csharp = workspace.Generate().NormalizeWhitespace().ToFullString();
-			Assert.IsTrue(csharp.Contains("Math.PI"));
-        }
+			string code = output.NormalizeWhitespace().ToFullString();
+			Assert.IsTrue(code.Contains("Math.PI;"));
+		}
 
 
         [TestMethod]
@@ -98,13 +96,14 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            var output = new Parser()
-                .AddStandardBlocks()
-                .Parse(xml)
-                .Evaluate();
-            
-            Assert.AreEqual(true, (bool) output);
-        }
+			var output = new Parser()
+				.AddStandardBlocks()
+				.Parse(xml)
+				.Generate();
+
+			string code = output.NormalizeWhitespace().ToFullString();
+			Assert.IsTrue(code.Contains("4 % 2 == 0;"));
+		}
 
         [TestMethod]
         public void Test_Math_Number_Property_Odd()
@@ -123,13 +122,14 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            var output = new Parser()
-                .AddStandardBlocks()
-                .Parse(xml)
-                .Evaluate();
-            
-            Assert.AreEqual(true, (bool) output);
-        }
+			var output = new Parser()
+				.AddStandardBlocks()
+				.Parse(xml)
+				.Generate();
+
+			string code = output.NormalizeWhitespace().ToFullString();
+			Assert.IsTrue(code.Contains("3 % 2 == 1;"));
+		}
 
 
         [TestMethod]
@@ -149,12 +149,13 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            var output = new Parser()
-                .AddStandardBlocks()
-                .Parse(xml)
-                .Evaluate();
-            
-            Assert.AreEqual(true, (bool) output);
+            Assert.ThrowsException<NotImplementedException>(() =>
+			{
+				new Parser()
+					.AddStandardBlocks()
+					.Parse(xml)
+					.Generate();
+			});
         }
 
         [TestMethod]
@@ -174,13 +175,14 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            var output = new Parser()
-                .AddStandardBlocks()
-                .Parse(xml)
-                .Evaluate();
-            
-            Assert.AreEqual(true, (bool) output);
-        }
+			var output = new Parser()
+				.AddStandardBlocks()
+				.Parse(xml)
+				.Generate();
+
+			string code = output.NormalizeWhitespace().ToFullString();
+			Assert.IsTrue(code.Contains("7 % 1 == 0;"));
+		}
 
         [TestMethod]
         public void Test_Math_Number_Property_Whole_False()
@@ -199,13 +201,14 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            var output = new Parser()
-                .AddStandardBlocks()
-                .Parse(xml)
-                .Evaluate();
-            
-            Assert.AreEqual(false, (bool) output);
-        }
+			var output = new Parser()
+				.AddStandardBlocks()
+				.Parse(xml)
+				.Generate();
+
+			string code = output.NormalizeWhitespace().ToFullString();
+			Assert.IsTrue(code.Contains("7.1 % 1 == 0;"));
+		}
 
         [TestMethod]
         public void Test_Math_Number_Property_Positive()
@@ -224,13 +227,14 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            var output = new Parser()
-                .AddStandardBlocks()
-                .Parse(xml)
-                .Evaluate();
-            
-            Assert.AreEqual(true, (bool) output);
-        }
+			var output = new Parser()
+				.AddStandardBlocks()
+				.Parse(xml)
+				.Generate();
+
+			string code = output.NormalizeWhitespace().ToFullString();
+			Assert.IsTrue(code.Contains("7.1 > 0;"));
+		}
 
         [TestMethod]
         public void Test_Math_Number_Property_Negative()
@@ -249,13 +253,14 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            var output = new Parser()
-                .AddStandardBlocks()
-                .Parse(xml)
-                .Evaluate();
-            
-            Assert.AreEqual(false, (bool) output);
-        }
+			var output = new Parser()
+				.AddStandardBlocks()
+				.Parse(xml)
+				.Generate();
+
+			string code = output.NormalizeWhitespace().ToFullString();
+			Assert.IsTrue(code.Contains("7.1 < 0;"));
+		}
 
         [TestMethod]
         public void Test_Math_Number_Property_Divisible_By()
@@ -279,13 +284,14 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            var output = new Parser()
-                .AddStandardBlocks()
-                .Parse(xml)
-                .Evaluate();
-            
-            Assert.AreEqual(true, (bool) output);
-        }
+			var output = new Parser()
+				.AddStandardBlocks()
+				.Parse(xml)
+				.Generate();
+
+			string code = output.NormalizeWhitespace().ToFullString();
+			Assert.IsTrue(code.Contains("9 % 3 == 0;"));
+		}
 
         [TestMethod]
         public void Test_Math_Number_Round()
@@ -303,13 +309,14 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            var output = new Parser()
-                .AddStandardBlocks()
-                .Parse(xml)
-                .Evaluate();
-            
-            Assert.AreEqual(3.0, (double) output);
-        }
+			var output = new Parser()
+				.AddStandardBlocks()
+				.Parse(xml)
+				.Generate();
+
+			string code = output.NormalizeWhitespace().ToFullString();
+			Assert.IsTrue(code.Contains("Math.Round(3.1);"));
+		}
 
         [TestMethod]
         public void Test_Math_Number_Round_Up()
@@ -327,13 +334,14 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            var output = new Parser()
-                .AddStandardBlocks()
-                .Parse(xml)
-                .Evaluate();
-            
-            Assert.AreEqual(4.0, (double) output);
-        }
+			var output = new Parser()
+				.AddStandardBlocks()
+				.Parse(xml)
+				.Generate();
+
+			string code = output.NormalizeWhitespace().ToFullString();
+			Assert.IsTrue(code.Contains("Math.Ceiling(3.1);"));
+		}
 
 
         [TestMethod]
@@ -352,13 +360,14 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            var output = new Parser()
-                .AddStandardBlocks()
-                .Parse(xml)
-                .Evaluate();
-            
-            Assert.AreEqual(3.0, (double) output);
-        }
+			var output = new Parser()
+				.AddStandardBlocks()
+				.Parse(xml)
+				.Generate();
+
+			string code = output.NormalizeWhitespace().ToFullString();
+			Assert.IsTrue(code.Contains("Math.Floor(3.1);"));
+		}
 
 
         [TestMethod]
@@ -387,13 +396,14 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            var output = new Parser()
-                .AddStandardBlocks()
-                .Parse(xml)
-                .Evaluate();
-            
-            Assert.AreEqual(15, (double) output);
-        }
+			var output = new Parser()
+				.AddStandardBlocks()
+				.Parse(xml)
+				.Generate();
+
+			string code = output.NormalizeWhitespace().ToFullString();
+			Assert.IsTrue(code.Contains("Enumerable.Repeat(3, 5).Sum();"));
+		}
 
 
         [TestMethod]
@@ -422,13 +432,14 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            var output = new Parser()
-                .AddStandardBlocks()
-                .Parse(xml)
-                .Evaluate();
-            
-            Assert.AreEqual(3 , (double) output);
-        }
+			Assert.ThrowsException<NotImplementedException>(() =>
+			{
+				new Parser()
+					.AddStandardBlocks()
+					.Parse(xml)
+					.Generate();
+			});
+		}
 
 
         [TestMethod]
@@ -457,13 +468,14 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            var output = new Parser()
-                .AddStandardBlocks()
-                .Parse(xml)
-                .Evaluate();
-            
-            Assert.AreEqual(3 , (double) output);
-        }
+			Assert.ThrowsException<NotImplementedException>(() =>
+			{
+				new Parser()
+					.AddStandardBlocks()
+					.Parse(xml)
+					.Generate();
+			});
+		}
 
         [TestMethod]
         public void Test_Math_Constrain()
@@ -490,13 +502,14 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            var output = new Parser()
-                .AddStandardBlocks()
-                .Parse(xml)
-                .Evaluate();
-            
-            Assert.AreEqual(100 , (double) output);
-        }
+			var output = new Parser()
+				.AddStandardBlocks()
+				.Parse(xml)
+				.Generate();
+
+			string code = output.NormalizeWhitespace().ToFullString();
+			Assert.IsTrue(code.Contains("Math.Min(Math.Max(110, 1), 100);"));
+		}
 
         [TestMethod]
         public void Test_Math_Moduluo()
@@ -519,13 +532,14 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            var output = new Parser()
-                .AddStandardBlocks()
-                .Parse(xml)
-                .Evaluate();
-            
-            Assert.AreEqual(4 , (double) output);
-        }
+			var output = new Parser()
+				.AddStandardBlocks()
+				.Parse(xml)
+				.Generate();
+
+			string code = output.NormalizeWhitespace().ToFullString();
+			Assert.IsTrue(code.Contains("64 % 10;"));
+		}
 
 /*
 

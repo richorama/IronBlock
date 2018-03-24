@@ -48,109 +48,50 @@ namespace IronBlock.Blocks.Lists
 				case "SPLIT":
 					return
 						InvocationExpression(
-									MemberAccessExpression(
-										SyntaxKind.SimpleMemberAccessExpression,
-										InvocationExpression(
-											MemberAccessExpression(
-												SyntaxKind.SimpleMemberAccessExpression,
-												InvocationExpression(
-													MemberAccessExpression(
-														SyntaxKind.SimpleMemberAccessExpression,
-														inputExpression,
-														IdentifierName("ToString")
-													)
-												),
-												IdentifierName("Split")
-											)
-										)
-										.WithArgumentList(
-											ArgumentList(
-												SingletonSeparatedList(
-													Argument(
-														delimExpression
-													)
-												)
-											)
-										),
-										IdentifierName("ToList")
-									)
-								);
-
-
-				case "JOIN":
-					return
-						ExpressionStatement(
+							MemberAccessExpression(
+								SyntaxKind.SimpleMemberAccessExpression,
 								InvocationExpression(
 									MemberAccessExpression(
 										SyntaxKind.SimpleMemberAccessExpression,
-										PredefinedType(
-											Token(SyntaxKind.StringKeyword)
-										),
-										IdentifierName("Join")
+										inputExpression,
+										IdentifierName(nameof(object.ToString))
+									)
+								),
+								IdentifierName(nameof(string.Split))
+							)
+						)
+						.WithArgumentList(
+							ArgumentList(
+								SingletonSeparatedList(
+									Argument(
+										delimExpression
 									)
 								)
-								.WithArgumentList(
-									ArgumentList(
-										SingletonSeparatedList(
-											Argument(
-												InvocationExpression(
-													MemberAccessExpression(
-														SyntaxKind.SimpleMemberAccessExpression,
-														InvocationExpression(
-															delimExpression
-														)
-														.WithArgumentList(
-															ArgumentList(
-																SingletonSeparatedList<ArgumentSyntax>(
-																	Argument(
-																		BinaryExpression(
-																			SyntaxKind.AsExpression,
-																			inputExpression,
-																			GenericName(
-																				Identifier("IEnumerable")
-																			)
-																			.WithTypeArgumentList(
-																				TypeArgumentList(
-																					SingletonSeparatedList<TypeSyntax>(
-																						PredefinedType(
-																							Token(SyntaxKind.ObjectKeyword)
-																						)
-																					)
-																				)
-																			)
-																		)
-																	)
-																)
-															)
-														),
-														IdentifierName("Select")
-													)
-												)
-												.WithArgumentList(
-													ArgumentList(
-														SingletonSeparatedList<ArgumentSyntax>(
-															Argument(
-																SimpleLambdaExpression(
-																	Parameter(
-																		Identifier("x")
-																	),
-																	InvocationExpression(
-																		MemberAccessExpression(
-																			SyntaxKind.SimpleMemberAccessExpression,
-																			IdentifierName("x"),
-																			IdentifierName("ToString")
-																		)
-																	)
-																)
-															)
-														)
-													)
-												)
-											)
-										)
-									)
+							)
+						);
+
+				case "JOIN":
+					return
+						InvocationExpression(
+							MemberAccessExpression(
+								SyntaxKind.SimpleMemberAccessExpression,
+								PredefinedType(
+									Token(SyntaxKind.StringKeyword)
+								),
+								IdentifierName(nameof(string.Join))
+							)
+						)
+						.WithArgumentList(
+							ArgumentList(
+								SeparatedList<ArgumentSyntax>(
+									new SyntaxNodeOrToken[]{
+										Argument(delimExpression),
+										Token(SyntaxKind.CommaToken),
+										Argument(inputExpression)
+									}
 								)
-							);
+							)
+						);
 
 				default:
 					throw new NotSupportedException($"unknown mode: {mode}");

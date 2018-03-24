@@ -1,6 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace IronBlock.Blocks.Math
 {
@@ -24,8 +26,66 @@ namespace IronBlock.Blocks.Math
             }
         }
 
+		public override SyntaxNode Generate(Context context)
+		{
+			var op = this.Fields.Get("PROPERTY");
+			var numberExpression = this.Values.Generate("NUMBER_TO_CHECK", context) as ExpressionSyntax;
+			if (numberExpression == null) throw new ApplicationException($"Unknown expression for number.");
 
-        static bool IsPrime(int number)
+			switch (op)
+			{
+				case "EVEN":
+					return CompareModulo(numberExpression, LiteralValue(2), 0);
+				case "ODD":
+					return CompareModulo(numberExpression, LiteralValue(2), 1);
+				case "PRIME":
+					throw new NotImplementedException($"OP {op} not implemented");
+				case "WHOLE":
+					return CompareModulo(numberExpression, LiteralValue(1), 0);
+				case "POSITIVE":
+					return BinaryExpression(
+						SyntaxKind.GreaterThanExpression,
+						numberExpression,
+						LiteralValue(0)
+					);
+				case "NEGATIVE":
+					return BinaryExpression(
+						SyntaxKind.LessThanExpression,
+						numberExpression,
+						LiteralValue(0)
+					);
+				case "DIVISIBLE_BY":
+					var divisorExpression = this.Values.Generate("DIVISOR", context) as ExpressionSyntax;
+					if (divisorExpression == null) throw new ApplicationException($"Unknown expression for divisor.");
+
+					return CompareModulo(numberExpression, divisorExpression, 0);
+				default: throw new ApplicationException($"Unknown PROPERTY {op}");
+			}
+		}
+
+		private LiteralExpressionSyntax LiteralValue(double value)
+		{
+			return LiteralExpression(
+				SyntaxKind.NumericLiteralExpression,
+				Literal(value)
+			);
+		}
+
+		private SyntaxNode CompareModulo(ExpressionSyntax numberExpression, ExpressionSyntax moduloValueExpression, double compareValue)
+		{
+			return
+				BinaryExpression(
+					SyntaxKind.EqualsExpression,
+					BinaryExpression(
+						SyntaxKind.ModuloExpression,
+						numberExpression,
+						moduloValueExpression
+					),
+					LiteralValue(compareValue)
+				);
+		}
+
+		static bool IsPrime(int number)
         {
             if (number == 1) return false;
             if (number == 2) return true;

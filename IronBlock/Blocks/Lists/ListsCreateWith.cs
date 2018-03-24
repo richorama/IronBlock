@@ -1,7 +1,10 @@
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace IronBlock.Blocks.Lists
 {
@@ -18,5 +21,38 @@ namespace IronBlock.Blocks.Lists
             return list;
 
          }
-    }
+
+		public override SyntaxNode Generate(Context context)
+		{
+			var expressions = new List<ExpressionSyntax>();
+
+			foreach (var value in this.Values)
+			{
+				var itemExpression = value.Generate(context) as ExpressionSyntax;
+				if (itemExpression == null) throw new ApplicationException($"Unknown expression for item.");
+
+				expressions.Add(itemExpression);
+			}
+
+			return
+				ObjectCreationExpression(
+					GenericName(
+						Identifier("List")
+					)
+					.WithTypeArgumentList(
+						TypeArgumentList(
+							SingletonSeparatedList<TypeSyntax>(
+								IdentifierName("dynamic")
+							)
+						)
+					)
+				)
+				.WithInitializer(
+					InitializerExpression(
+						SyntaxKind.CollectionInitializerExpression,
+						SeparatedList(expressions)
+					)
+				);
+		}
+	}
 }
