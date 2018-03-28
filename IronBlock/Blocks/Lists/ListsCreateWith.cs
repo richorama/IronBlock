@@ -37,7 +37,7 @@ namespace IronBlock.Blocks.Lists
 			return
 				ObjectCreationExpression(
 					GenericName(
-						Identifier("List")
+						Identifier(nameof(List))
 					)
 					.WithTypeArgumentList(
 						TypeArgumentList(

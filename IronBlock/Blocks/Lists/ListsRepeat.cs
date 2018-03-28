@@ -35,9 +35,12 @@ namespace IronBlock.Blocks.Lists
 			if (numExpression == null) throw new ApplicationException($"Unknown expression for number.");
 
 			return SyntaxGenerator.MethodInvokeExpression(
-				IdentifierName(nameof(Enumerable)), 
-				nameof(Enumerable.Repeat),
-				new[] { itemExpression, numExpression }
+				SyntaxGenerator.MethodInvokeExpression(
+					IdentifierName(nameof(Enumerable)),
+					nameof(Enumerable.Repeat),
+					new[] { itemExpression, numExpression }
+				),
+				nameof(Enumerable.ToList)
 			);
 		}
 	}
