@@ -82,6 +82,7 @@ namespace IronBlock.Runner
 					string code = syntaxTree.NormalizeWhitespace().ToFullString();
 					var script = GenerateScript(code);
 
+					Console.WriteLine("Executing script...");
 					ExecuteAsync(script).Wait();
 				}
 				else

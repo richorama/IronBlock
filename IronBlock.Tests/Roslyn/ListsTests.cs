@@ -71,9 +71,9 @@ namespace IronBlock.Tests.Roslyn
 				.Generate();
 
 			string code = output.NormalizeWhitespace().ToFullString();
-			Assert.IsTrue(code.Contains("\"x,y,z\".ToString().Split(\",\");"));
-
+			Assert.IsTrue(code.Contains("\"x,y,z\".ToString(CultureInfo.InvariantCulture).Split(\",\");"));
 		}
+
 
         [TestMethod]
         public void Test_Lists_Join()
@@ -155,7 +155,7 @@ namespace IronBlock.Tests.Roslyn
 				.Generate();
 			
 			string code = output.NormalizeWhitespace().ToFullString();
-			Assert.IsTrue(code.Contains("\"a,b,c\".ToString().Split(\",\").Any();"));
+			Assert.IsTrue(code.Contains("\"a,b,c\".ToString(CultureInfo.InvariantCulture).Split(\",\").Length;"));
 		}
 
 

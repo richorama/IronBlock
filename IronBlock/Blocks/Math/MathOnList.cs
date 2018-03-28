@@ -1,3 +1,4 @@
+using IronBlock.Utils;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -45,13 +46,13 @@ namespace IronBlock.Blocks.Math
 			switch (op)
 			{
 				case "SUM":
-					return ListMethod(listExpression, "Sum");
+					return SyntaxGenerator.MethodInvokeExpression(listExpression, "Sum");
 				case "MIN":
-					return ListMethod(listExpression, "Min");
+					return SyntaxGenerator.MethodInvokeExpression(listExpression, "Min");
 				case "MAX":
-					return ListMethod(listExpression, "Max");
+					return SyntaxGenerator.MethodInvokeExpression(listExpression, "Max");
 				case "AVERAGE":
-					return ListMethod(listExpression, "Average");
+					return SyntaxGenerator.MethodInvokeExpression(listExpression, "Average");
 				case "MEDIAN": 
 				case "RANDOM": 
 				case "MODE": 
@@ -60,17 +61,6 @@ namespace IronBlock.Blocks.Math
 
 				default: throw new ApplicationException($"Unknown OP {op}");
 			}
-		}
-
-		private static SyntaxNode ListMethod(ExpressionSyntax listExpression, string methodName)
-		{
-			return InvocationExpression(
-				MemberAccessExpression(
-					SyntaxKind.SimpleMemberAccessExpression,
-					listExpression,
-					IdentifierName(methodName)
-				)
-			);
 		}
 
 		object Median(IEnumerable<double> values)

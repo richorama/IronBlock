@@ -1,3 +1,4 @@
+using IronBlock.Utils;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -96,10 +97,9 @@ namespace IronBlock.Blocks.Math
 								SyntaxKind.NumericLiteralExpression,
 								Literal(180)
 							),
-							MemberAccessExpression(
-								SyntaxKind.SimpleMemberAccessExpression,
+							SyntaxGenerator.PropertyAccessExpression(
 								IdentifierName(nameof(System.Math)),
-								IdentifierName(nameof(System.Math.PI))
+								nameof(System.Math.PI)
 							)
 						)
 					)
@@ -108,23 +108,7 @@ namespace IronBlock.Blocks.Math
 
 		public static InvocationExpressionSyntax MathFunction(string functionName, ExpressionSyntax numberExpression)
 		{
-			return InvocationExpression(
-				MemberAccessExpression(
-					SyntaxKind.SimpleMemberAccessExpression,
-					IdentifierName(nameof(System.Math)),
-					IdentifierName(functionName)
-				)
-			)
-			.WithArgumentList(
-				ArgumentList(
-					SingletonSeparatedList(
-						Argument(
-							numberExpression
-						)
-					)
-				)
-			);
+			return SyntaxGenerator.MethodInvokeExpression(IdentifierName(nameof(System.Math)), functionName, numberExpression);
 		}
 	}
-
 }

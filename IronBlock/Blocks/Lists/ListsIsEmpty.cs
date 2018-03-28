@@ -1,5 +1,5 @@
+using IronBlock.Utils;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Collections.Generic;
@@ -23,14 +23,7 @@ namespace IronBlock.Blocks.Lists
 			var valueExpression = this.Values.Generate("VALUE", context) as ExpressionSyntax;
 			if (valueExpression == null) throw new ApplicationException($"Unknown expression for value.");
 
-			return
-				InvocationExpression(
-					MemberAccessExpression(
-						SyntaxKind.SimpleMemberAccessExpression,
-						valueExpression,
-						IdentifierName("Any")
-					)
-				);
+			return SyntaxGenerator.MethodInvokeExpression(valueExpression, nameof(Enumerable.Any));
 		}
 	}
 }

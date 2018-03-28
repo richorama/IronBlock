@@ -1,8 +1,10 @@
+using IronBlock.Utils;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
@@ -47,50 +49,27 @@ namespace IronBlock.Blocks.Lists
 			{
 				case "SPLIT":
 					return
-						InvocationExpression(
-							MemberAccessExpression(
-								SyntaxKind.SimpleMemberAccessExpression,
-								InvocationExpression(
-									MemberAccessExpression(
-										SyntaxKind.SimpleMemberAccessExpression,
-										inputExpression,
-										IdentifierName(nameof(object.ToString))
-									)
-								),
-								IdentifierName(nameof(string.Split))
-							)
-						)
-						.WithArgumentList(
-							ArgumentList(
-								SingletonSeparatedList(
-									Argument(
-										delimExpression
-									)
+						SyntaxGenerator.MethodInvokeExpression(
+							SyntaxGenerator.MethodInvokeExpression(
+								inputExpression,
+								nameof(object.ToString),
+								SyntaxGenerator.PropertyAccessExpression(
+									IdentifierName(nameof(CultureInfo)),
+									nameof(CultureInfo.InvariantCulture)
 								)
-							)
+							),
+							nameof(string.Split),
+							delimExpression
 						);
 
 				case "JOIN":
 					return
-						InvocationExpression(
-							MemberAccessExpression(
-								SyntaxKind.SimpleMemberAccessExpression,
-								PredefinedType(
-									Token(SyntaxKind.StringKeyword)
-								),
-								IdentifierName(nameof(string.Join))
-							)
-						)
-						.WithArgumentList(
-							ArgumentList(
-								SeparatedList<ArgumentSyntax>(
-									new SyntaxNodeOrToken[]{
-										Argument(delimExpression),
-										Token(SyntaxKind.CommaToken),
-										Argument(inputExpression)
-									}
-								)
-							)
+						SyntaxGenerator.MethodInvokeExpression(
+							PredefinedType(
+								Token(SyntaxKind.StringKeyword)
+							),
+							nameof(string.Join),
+							new[] { delimExpression, inputExpression }
 						);
 
 				default:

@@ -1,3 +1,4 @@
+using IronBlock.Utils;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -33,25 +34,11 @@ namespace IronBlock.Blocks.Lists
 			var numExpression = this.Values.Generate("NUM", context) as ExpressionSyntax;
 			if (numExpression == null) throw new ApplicationException($"Unknown expression for number.");
 
-			return
-				InvocationExpression(
-					MemberAccessExpression(
-						SyntaxKind.SimpleMemberAccessExpression,
-						IdentifierName(nameof(Enumerable)),
-						IdentifierName(nameof(Enumerable.Repeat))
-					)
-				)
-				.WithArgumentList(
-					ArgumentList(
-						SeparatedList<ArgumentSyntax>(
-							new SyntaxNodeOrToken[]{
-								Argument(itemExpression),
-								Token(SyntaxKind.CommaToken),
-								Argument(numExpression)
-							}
-						)
-					)
-				);
+			return SyntaxGenerator.MethodInvokeExpression(
+				IdentifierName(nameof(Enumerable)), 
+				nameof(Enumerable.Repeat),
+				new[] { itemExpression, numExpression }
+			);
 		}
 	}
 }
