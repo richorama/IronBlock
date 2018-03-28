@@ -1,6 +1,6 @@
 using System;
+using IronBlock.Utils;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
@@ -29,42 +29,18 @@ namespace IronBlock.Blocks.Math
 			if (highExpression == null) throw new ApplicationException($"Unknown expression for high.");
 
 			return
-				InvocationExpression(
-					MemberAccessExpression(
-						SyntaxKind.SimpleMemberAccessExpression,
-						IdentifierName(nameof(System.Math)),
-						IdentifierName(nameof(System.Math.Min))
-					)
-				)
-				.WithArgumentList(
-					ArgumentList(
-						SeparatedList<ArgumentSyntax>(
-							new SyntaxNodeOrToken[]{
-								Argument(
-									InvocationExpression(
-										MemberAccessExpression(
-											SyntaxKind.SimpleMemberAccessExpression,
-											IdentifierName(nameof(System.Math)),
-											IdentifierName(nameof(System.Math.Max))
-										)
-									)
-									.WithArgumentList(
-										ArgumentList(
-											SeparatedList<ArgumentSyntax>(
-												new SyntaxNodeOrToken[]{
-													Argument(valueExpression),
-													Token(SyntaxKind.CommaToken),
-													Argument(lowExpression)
-												}
-											)
-										)
-									)
-								),
-								Token(SyntaxKind.CommaToken),
-								Argument(highExpression)
-							}
-						)
-					)
+				SyntaxGenerator.MethodInvokeExpression(
+					IdentifierName(nameof(System.Math)), 
+					nameof(System.Math.Min),
+					new[]
+					{
+						SyntaxGenerator.MethodInvokeExpression(
+							IdentifierName(nameof(System.Math)),
+							nameof(System.Math.Max),
+							new [] { valueExpression, lowExpression }
+						),
+						highExpression
+					}
 				);
 		}
 	}

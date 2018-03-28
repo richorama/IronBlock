@@ -440,7 +440,7 @@ namespace IronBlock.Tests.Roslyn
 				.Generate();
 
 			string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
-			Assert.IsTrue(code.Contains(@"foreach (var i in ""a,b,c"".ToString().Split("","")) { Console.WriteLine(i); }"));
+			Assert.IsTrue(code.Contains(@"foreach (var i in ""a,b,c"".ToString(CultureInfo.InvariantCulture).Split("","")) { Console.WriteLine(i); }"));
 		}
 
 

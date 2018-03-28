@@ -152,6 +152,7 @@ namespace IronBlock.Blocks
 			parser.AddBlock<ListsLength>("lists_length");
 			parser.AddBlock<ListsRepeat>("lists_repeat");
 			parser.AddBlock<ListsIsEmpty>("lists_isEmpty");
+			parser.AddBlock<ListsGetIndex>("lists_getIndex");
 
 			return parser;
 		}

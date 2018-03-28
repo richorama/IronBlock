@@ -1,10 +1,11 @@
+using IronBlock.Utils;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace IronBlock.Blocks.Text
 {
-    public class TextTrim : IBlock
+	public class TextTrim : IBlock
     {
         public override object Evaluate(Context context)
         {
@@ -19,8 +20,22 @@ namespace IronBlock.Blocks.Text
                 case "RIGHT": return text.TrimEnd();
                 default: throw new ApplicationException("unknown mode");
             }
-
         }
-    }
 
+		public override SyntaxNode Generate(Context context)
+		{
+			var textExpression = this.Values.Generate("TEXT", context) as ExpressionSyntax;
+			if (textExpression == null) throw new ApplicationException($"Unknown expression for text.");
+
+			var mode = this.Fields.Get("MODE");
+
+			switch (mode)
+			{
+				case "BOTH": return SyntaxGenerator.MethodInvokeExpression(textExpression, nameof(string.Trim));
+				case "LEFT": return SyntaxGenerator.MethodInvokeExpression(textExpression, nameof(string.TrimStart));
+				case "RIGHT": return SyntaxGenerator.MethodInvokeExpression(textExpression, nameof(string.TrimEnd));
+				default: throw new ApplicationException("unknown mode");
+			}
+		}
+	}
 }
