@@ -1,9 +1,13 @@
-using System.Collections.Generic;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System;
 using System.Linq;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace IronBlock.Blocks.Controls
 {
-    public class ControlsFor : IBlock
+	public class ControlsFor : IBlock
     {
         public override object Evaluate(Context context)
         {
@@ -34,6 +38,70 @@ namespace IronBlock.Blocks.Controls
 
             return base.Evaluate(context);
         }
-    }
+
+		public override SyntaxNode Generate(Context context)
+		{
+			var variableName = this.Fields.Get("VAR");
+
+			var fromValueExpression = this.Values.Generate("FROM", context) as ExpressionSyntax;
+			if (fromValueExpression == null) throw new ApplicationException($"Unknown expression for from value.");
+
+			var toValueExpression = this.Values.Generate("TO", context) as ExpressionSyntax;
+			if (toValueExpression == null) throw new ApplicationException($"Unknown expression for to value.");
+
+			var byValueExpression = this.Values.Generate("BY", context) as ExpressionSyntax;
+			if (byValueExpression == null) throw new ApplicationException($"Unknown expression for by value.");
+
+			var statement = this.Statements.FirstOrDefault();
+
+			var rootContext = context.GetRootContext();
+			if (!rootContext.Variables.ContainsKey(variableName))
+			{
+				rootContext.Variables[variableName] = null;
+			}
+
+			var forContext = new Context() { Parent = context };
+			if (statement?.Block != null)
+			{
+				var statementSyntax = statement.Block.GenerateStatement(forContext);
+				if (statementSyntax != null)
+				{
+					forContext.Statements.Add(statementSyntax);
+				}
+			}
+
+			var forStatement =
+					ForStatement(
+								Block(forContext.Statements)
+							)
+							.WithInitializers(
+								SingletonSeparatedList<ExpressionSyntax>(
+									AssignmentExpression(
+										SyntaxKind.SimpleAssignmentExpression,
+										IdentifierName(variableName),
+										fromValueExpression
+									)
+								)
+							)
+							.WithCondition(
+								BinaryExpression(
+									SyntaxKind.LessThanOrEqualExpression,
+									IdentifierName(variableName),
+									toValueExpression
+								)
+							)
+							.WithIncrementors(
+								SingletonSeparatedList<ExpressionSyntax>(
+									AssignmentExpression(
+										SyntaxKind.AddAssignmentExpression,
+										IdentifierName(variableName),
+										byValueExpression
+									)
+								)
+							);
+
+			return Statement(forStatement, base.Generate(context), context);
+		}
+	}
 
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using IronBlock.Blocks;
 using Microsoft.CodeAnalysis;
@@ -80,6 +81,8 @@ namespace IronBlock.Runner
 					var syntaxTree = parser.Generate();
 					string code = syntaxTree.NormalizeWhitespace().ToFullString();
 					var script = GenerateScript(code);
+
+					Console.WriteLine("Executing script...");
 					ExecuteAsync(script).Wait();
 				}
 				else
@@ -113,7 +116,15 @@ namespace IronBlock.Runner
 
 		public static Script<object> GenerateScript(string code)
 		{
-			return CSharpScript.Create<object>(code, ScriptOptions.Default.WithImports("System", "System.Math"));
+			var dynamicRuntimeReference = MetadataReference.CreateFromFile(typeof(System.Runtime.CompilerServices.DynamicAttribute).Assembly.Location);
+			var runtimeBinderReference = MetadataReference.CreateFromFile(typeof(Microsoft.CSharp.RuntimeBinder.CSharpArgumentInfo).Assembly.Location);
+
+			var scriptOptions =
+					ScriptOptions.Default
+						.WithImports("System", "System.Linq", "System.Math")
+						.AddReferences(dynamicRuntimeReference, runtimeBinderReference);
+
+			return CSharpScript.Create<object>(code, scriptOptions);
 		}
 
 		public static async Task<object> ExecuteAsync(Script<object> script)

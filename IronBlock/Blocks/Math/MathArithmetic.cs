@@ -1,4 +1,5 @@
 using System;
+using IronBlock.Utils;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -40,26 +41,12 @@ namespace IronBlock.Blocks.Math
 			var opValue = this.Fields.Get("OP");
             if (opValue == "POWER")
             {
-                expression = InvocationExpression(
-                    MemberAccessExpression(
-                        SyntaxKind.SimpleMemberAccessExpression,
-                        IdentifierName("Math"),
-                        IdentifierName("Pow")
-                    )
-                )
-                .WithArgumentList(
-                    ArgumentList(
-                        SeparatedList<ArgumentSyntax>(
-                            new SyntaxNodeOrToken[]{
-                                Argument(
-                                    firstExpression),
-                                Token(SyntaxKind.CommaToken),
-                                Argument(
-                                    secondExpression)
-                            }
-                        )
-                    )
-                );
+				expression =
+					SyntaxGenerator.MethodInvokeExpression(
+						IdentifierName(nameof(System.Math)),
+						nameof(System.Math.Pow),
+						new[] { firstExpression, secondExpression }
+					);				
             }
             else
             {

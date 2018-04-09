@@ -135,7 +135,7 @@ namespace IronBlock.Tests.Roslyn
             .Generate();
         
         string code = output.NormalizeWhitespace().ToFullString();
-        Assert.IsTrue(code.Contains("(64 % 10);"));
+        Assert.IsTrue(code.Contains("64 % 10;"), code);
     }
 
 

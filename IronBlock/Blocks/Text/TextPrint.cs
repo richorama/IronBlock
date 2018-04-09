@@ -1,4 +1,5 @@
 using System;
+using IronBlock.Utils;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -23,22 +24,10 @@ namespace IronBlock.Blocks.Text
 			var expression = syntaxNode as ExpressionSyntax;
 			if (expression == null) throw new ApplicationException($"Unknown expression for text.");
 
-			return InvocationExpression(
-						MemberAccessExpression(
-							SyntaxKind.SimpleMemberAccessExpression,
-							IdentifierName("Console"),
-							IdentifierName("WriteLine")
-						)
-					)
-					.WithArgumentList(
-						ArgumentList(
-							SingletonSeparatedList(
-								Argument(
-									expression
-								)
-							)
-						)
-					);
+			var invocationExpression =
+				SyntaxGenerator.MethodInvokeExpression(IdentifierName(nameof(Console)), nameof(Console.WriteLine), expression);
+			
+			return Statement(invocationExpression, base.Generate(context), context);
 		}
 	}
 

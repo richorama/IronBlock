@@ -38,17 +38,15 @@ namespace IronBlock.Blocks.Variables
 			if (valueExpression == null)
 				throw new ApplicationException($"Unknown expression for value.");
 
-			variables[variableName] = valueExpression;
+			context.GetRootContext().Variables[variableName] = valueExpression;
 
 			var assignment = AssignmentExpression(
 								SyntaxKind.SimpleAssignmentExpression,
 									IdentifierName(variableName),
 									valueExpression
-								);
+								);					
 
-			context.Statements.Add(ExpressionStatement(assignment));
-
-			return base.Generate(context);
+			return Statement(assignment, base.Generate(context), context);
 		}
 	}
 

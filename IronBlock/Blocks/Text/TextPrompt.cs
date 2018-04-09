@@ -1,4 +1,5 @@
 using System;
+using IronBlock.Utils;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -38,21 +39,10 @@ namespace IronBlock.Blocks.Text
 			{
 				context.Statements.Add(
 					ExpressionStatement(
-						InvocationExpression(
-						MemberAccessExpression(
-								SyntaxKind.SimpleMemberAccessExpression,
-								IdentifierName("Console"),
-								IdentifierName("WriteLine")
-							)
-						)
-						.WithArgumentList(
-							ArgumentList(
-								SingletonSeparatedList(
-									Argument(
-										expression
-									)
-								)
-							)
+						SyntaxGenerator.MethodInvokeExpression(
+							IdentifierName(nameof(Console)),
+							nameof(Console.WriteLine),
+							expression
 						)
 					)
 				);
@@ -64,18 +54,15 @@ namespace IronBlock.Blocks.Text
 						IdentifierName("var")
 					)
 					.WithVariables(
-						SingletonSeparatedList<VariableDeclaratorSyntax>(
+						SingletonSeparatedList(
 							VariableDeclarator(
 								Identifier("value")
 							)
 							.WithInitializer(
 								EqualsValueClause(
-									InvocationExpression(
-										MemberAccessExpression(
-											SyntaxKind.SimpleMemberAccessExpression,
-											IdentifierName("Console"),
-											IdentifierName("ReadLine")
-										)
+									SyntaxGenerator.MethodInvokeExpression(
+										IdentifierName(nameof(Console)), 
+										nameof(Console.ReadLine)
 									)
 								)
 							)
@@ -87,22 +74,12 @@ namespace IronBlock.Blocks.Text
 			if (inputType == "NUMBER")
 			{
 				return
-					InvocationExpression(
-						MemberAccessExpression(
-							SyntaxKind.SimpleMemberAccessExpression,
-							PredefinedType(
-								Token(SyntaxKind.IntKeyword)),
-							IdentifierName("Parse")
-						)
-					)
-					.WithArgumentList(
-						ArgumentList(
-							SingletonSeparatedList(
-								Argument(
-									IdentifierName("value")
-								)
-							)
-						)
+					SyntaxGenerator.MethodInvokeExpression(
+						PredefinedType(
+							Token(SyntaxKind.IntKeyword)
+						), 
+						nameof(int.Parse),
+						IdentifierName("value")
 					);
 			}
 
