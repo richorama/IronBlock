@@ -215,8 +215,47 @@ namespace IronBlock.Tests
 
         }
 
+        [TestMethod]
+        public void Test_Lists_IndexOf()
+        {
+            const string xml = @"
+<xml xmlns=""http://www.w3.org/1999/xhtml"">
+  <variables></variables>
+  <block type=""lists_indexOf"">
+    <field name=""END"">FIRST</field>
+    <value name=""VALUE"">
+      <block type=""lists_split"">
+        <mutation mode=""SPLIT""></mutation>
+        <field name=""MODE"">SPLIT</field>
+        <value name=""INPUT"">
+          <block type=""text"">
+            <field name=""TEXT"">foo,bar,baz</field>
+          </block>
+        </value>
+        <value name=""DELIM"">
+          <shadow type=""text"">
+            <field name=""TEXT"">,</field>
+          </shadow>
+        </value>
+      </block>
+    </value>
+    <value name=""FIND"">
+      <block type=""text"">
+        <field name=""TEXT"">bar</field>
+      </block>
+    </value>
+  </block>
+</xml>
+";
 
+            var output = new Parser()
+              .AddStandardBlocks()
+              .Parse(xml)
+              .Evaluate();
+            
+            Assert.AreEqual(2, (int) output);
 
+        }
 
 
     }
