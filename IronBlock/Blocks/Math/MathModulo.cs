@@ -1,6 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace IronBlock.Blocks.Math
 {
@@ -14,6 +18,18 @@ namespace IronBlock.Blocks.Math
             return dividend % divisor;
         }
 
-    }
+        public override SyntaxNode Generate(Context context)
+		{
+			var dividendExpression = this.Values.Generate("DIVIDEND", context) as ExpressionSyntax;
+			if (dividendExpression == null) throw new ApplicationException($"Unknown expression for value DIVIDEND.");
 
+			var divisorExpression = this.Values.Generate("DIVISOR", context) as ExpressionSyntax;
+			if (divisorExpression == null) throw new ApplicationException($"Unknown expression for value DIVISOR.");
+
+            var expression = BinaryExpression(SyntaxKind.ModuloExpression, dividendExpression, divisorExpression);
+			
+			return ParenthesizedExpression(expression);
+		}
+
+    }
 }

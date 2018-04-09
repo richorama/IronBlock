@@ -106,5 +106,38 @@ namespace IronBlock.Tests.Roslyn
 			string code = output.NormalizeWhitespace().ToFullString();
 			Assert.IsTrue(code.Contains("((2 + 4) * 5);"));
 		}
+
+
+    [TestMethod]
+    public void Test_Math_Operation_Moduluo()
+    {
+
+        const string xml = @"
+<xml xmlns=""http://www.w3.org/1999/xhtml"">
+<variables></variables>
+<block type=""math_modulo"">
+<value name=""DIVIDEND"">
+  <shadow type=""math_number"">
+    <field name=""NUM"">64</field>
+  </shadow>
+</value>
+<value name=""DIVISOR"">
+  <shadow type=""math_number"">
+    <field name=""NUM"">10</field>
+  </shadow>
+</value>
+</block>
+</xml>
+";
+        var output = new Parser()
+            .AddStandardBlocks()
+            .Parse(xml)
+            .Generate();
+        
+        string code = output.NormalizeWhitespace().ToFullString();
+        Assert.IsTrue(code.Contains("(64 % 10);"));
+    }
+
+
 	}
 }
