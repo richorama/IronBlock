@@ -24,11 +24,13 @@ namespace IronBlock.Blocks.Lists
                     return input
                         .ToString()
                         .Split(new string[] {delim.ToString() }, StringSplitOptions.None)
+						.Select(x => x as object)
                         .ToList();
 
                 case "JOIN":
                     return string
-                        .Join(delim.ToString(), (input as IEnumerable<object>).Select(x => x.ToString()));
+                        .Join(delim.ToString(), (input as IEnumerable<object>)
+						.Select(x => x.ToString()));
 
                 default:
                     throw new NotSupportedException($"unknown mode: {mode}");

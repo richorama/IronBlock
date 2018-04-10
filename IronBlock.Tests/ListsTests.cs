@@ -73,7 +73,7 @@ namespace IronBlock.Tests
               .Parse(xml)
               .Evaluate();
             
-            Assert.AreEqual("x,y,z", string.Join(",", output as IEnumerable<string>));
+            Assert.AreEqual("x,y,z", string.Join(",", output as IEnumerable<object>));
 
         }
 
@@ -257,6 +257,48 @@ namespace IronBlock.Tests
 
         }
 
+        [TestMethod]
+        public void Test_Lists_GetIndex()
+        {
+            const string xml = @"
+<xml xmlns=""http://www.w3.org/1999/xhtml"">
+  <block type=""lists_getIndex"">
+    <mutation statement=""false"" at=""true""></mutation>
+    <field name=""MODE"">GET</field>
+    <field name=""WHERE"">FROM_START</field>
+    <value name=""VALUE"">
+      <block type=""lists_split"">
+        <mutation mode=""SPLIT""></mutation>
+        <field name=""MODE"">SPLIT</field>
+        <value name=""INPUT"">
+          <block type=""text"">
+            <field name=""TEXT"">foo,bar,baz</field>
+          </block>
+        </value>
+        <value name=""DELIM"">
+          <shadow type=""text"">
+            <field name=""TEXT"">,</field>
+          </shadow>
+        </value>
+      </block>
+    </value>
+    <value name=""AT"">
+      <block type=""math_number"">
+        <field name=""NUM"">2</field>
+      </block>
+    </value>
+  </block>
+</xml>
+";
+
+            var output = new Parser()
+              .AddStandardBlocks()
+              .Parse(xml)
+              .Evaluate();
+            
+            Assert.AreEqual("bar", (string) output);
+
+        }
 
     }
 }

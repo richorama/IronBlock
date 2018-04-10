@@ -11,9 +11,61 @@ namespace IronBlock.Blocks.Lists
 {
 	public class ListsGetIndex : IBlock
 	{
+		static Random rnd = new Random();
+
 		public override object Evaluate(Context context)
 		{
-			throw new NotImplementedException();
+			
+			var values = this.Values.Evaluate("VALUE", context) as List<object>;
+			var mode = this.Fields.Get("MODE");
+			var where = this.Fields.Get("WHERE");
+
+			var index = -1;
+			switch (where)
+			{
+				case "FROM_START":
+					index = Convert.ToInt32(this.Values.Evaluate("AT", context)) - 1;
+					break;
+
+				case "FROM_END":
+					index = values.Count - Convert.ToInt32(this.Values.Evaluate("AT", context));
+					break;
+
+				case "FIRST":
+					index = 0;
+					break;
+
+				case "LAST":
+					index = values.Count - 1;
+					break;					
+				
+				case "RANDOM":
+					index = rnd.Next(values.Count);
+					break;
+
+				default: 		
+					throw new NotSupportedException($"unsupported where ({where})");
+			}
+
+			switch(mode)
+			{
+				case "GET":
+					return values[index];
+
+				case "GET_REMOVE":
+					var value = values[index];
+					values.RemoveAt(index);
+					return value;
+
+				case "REMOVE":
+					values.RemoveAt(index);
+					return null;
+
+				default:
+					throw new NotSupportedException($"unsupported mode ({mode})");
+			}
+
+			
 		}
 
 		public override SyntaxNode Generate(Context context)
