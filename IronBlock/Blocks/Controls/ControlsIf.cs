@@ -65,10 +65,18 @@ namespace IronBlock.Blocks.Controls
 				if (conditional == null) throw new ApplicationException($"Unknown expression for condition.");
 
 				var statement = this.Statements.Get($"DO{i}");
-				var statementSyntax = statement.GenerateStatement(context);
-				if (statementSyntax == null) throw new ApplicationException($"Unknown expression for statement.");
+
+				var ifContext = new Context() { Parent = context };
+				if (statement?.Block != null)
+				{
+					var statementSyntax = statement.Block.GenerateStatement(ifContext);
+					if (statementSyntax != null)
+					{
+						ifContext.Statements.Add(statementSyntax);
+					}
+				}
 				
-				var newIfStatement = IfStatement(conditional, Block(statementSyntax));
+				var newIfStatement = IfStatement(conditional, Block(ifContext.Statements));
 				ifStatements.Add(newIfStatement);
 			}
 
@@ -76,14 +84,22 @@ namespace IronBlock.Blocks.Controls
 			if (elseMutation == "1")
 			{
 				var statement = this.Statements.Get("ELSE");
-				var elseStatement = statement.Generate(context) as ExpressionSyntax;
-				if (elseStatement == null) throw new ApplicationException($"Unknown expression for else statement.");
+
+				var elseContext = new Context() { Parent = context };
+				if (statement?.Block != null)
+				{
+					var statementSyntax = statement.Block.GenerateStatement(elseContext);
+					if (statementSyntax != null)
+					{
+						elseContext.Statements.Add(statementSyntax);
+					}
+				}
 
 				int lastIndex = ifStatements.Count - 1;
 				if (lastIndex >= 0)
 				{
 					var lastIfStatement = ifStatements[lastIndex];
-					ifStatements[lastIndex] = lastIfStatement.WithElse(ElseClause(Block(ExpressionStatement(elseStatement))));
+					ifStatements[lastIndex] = lastIfStatement.WithElse(ElseClause(Block(elseContext.Statements)));
 				}
 			}
 
