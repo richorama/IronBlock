@@ -37,7 +37,7 @@ namespace IronBlock.Blocks.Text
 
 		public override SyntaxNode Generate(Context context)
 		{
-			var methodName = Mutations.GetValue("name");
+			var methodName = Mutations.GetValue("name").CreateValidName();
 
 			var arguments = new List<ArgumentSyntax>();
 

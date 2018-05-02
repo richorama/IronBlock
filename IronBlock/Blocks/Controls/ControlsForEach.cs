@@ -35,7 +35,7 @@ namespace IronBlock.Blocks.Controls
 
 		public override SyntaxNode Generate(Context context)
 		{
-			var variableName = this.Fields.Get("VAR");
+			var variableName = this.Fields.Get("VAR").CreateValidName();
 			var listExpression = this.Values.Generate("LIST", context) as ExpressionSyntax;
 			if (listExpression == null) throw new ApplicationException($"Unknown expression for list.");
 

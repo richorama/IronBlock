@@ -94,6 +94,10 @@ namespace IronBlock.Blocks
 
 			return context;
 		}
+		public static string CreateValidName(this string name)
+		{
+			return name?.Replace(" ", "_");
+		}
 
 		public static Parser AddStandardBlocks(this Parser parser)
 		{

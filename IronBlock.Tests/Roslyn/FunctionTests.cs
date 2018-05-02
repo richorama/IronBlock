@@ -200,7 +200,7 @@ namespace IronBlock.Tests.Roslyn
       <arg name=""x"" varId=""/nfn$6v1kaV^fYdm2o+X""></arg>
       <arg name=""y"" varId=""a$*^qf,V!$QH2Te:HGKi""></arg>
     </mutation>
-    <field name=""NAME"">dosomething</field>
+    <field name=""NAME"">do something</field>
     <comment pinned=""false"" h=""80"" w=""160"">Describe this function...</comment>
     <statement name=""STACK"">
       <block id=""Wnj49+_QDK^5[u.84uRh"" type=""variables_set"">
@@ -267,7 +267,7 @@ namespace IronBlock.Tests.Roslyn
 				.Generate();
 
 			string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
-			Assert.IsTrue(code.Contains("dynamic dosomething(dynamic x, dynamic y) { a = (x * y); a = (Math.Pow(a, x)); return (x + 1); }"));
+			Assert.IsTrue(code.Contains("dynamic do_something(dynamic x, dynamic y) { a = (x * y); a = (Math.Pow(a, x)); return (x + 1); }"));
 		}
 
 		[TestMethod]
