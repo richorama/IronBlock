@@ -53,7 +53,7 @@ namespace IronBlock.Blocks.Text
 
 		public override SyntaxNode Generate(Context context)
 		{
-			var name = this.Fields.Get("NAME");
+			var name = this.Fields.Get("NAME").CreateValidName();
 			var statement = this.Statements.FirstOrDefault(x => x.Name == "STACK");
 
 			if (string.IsNullOrWhiteSpace(name)) return null;
@@ -84,9 +84,11 @@ namespace IronBlock.Blocks.Text
 
 			foreach (var mutation in this.Mutations.Where(x => x.Domain == "arg" && x.Name == "name"))
 			{
+				string parameterName = mutation.Value.CreateValidName();
+
 				parameters.Add(
 					Parameter(
-						Identifier(mutation.Value)
+						Identifier(parameterName)
 					)
 					.WithType(
 						IdentifierName("dynamic")

@@ -41,7 +41,7 @@ namespace IronBlock.Blocks.Controls
 
 		public override SyntaxNode Generate(Context context)
 		{
-			var variableName = this.Fields.Get("VAR");
+			var variableName = this.Fields.Get("VAR").CreateValidName();
 
 			var fromValueExpression = this.Values.Generate("FROM", context) as ExpressionSyntax;
 			if (fromValueExpression == null) throw new ApplicationException($"Unknown expression for from value.");

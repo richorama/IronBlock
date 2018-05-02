@@ -32,7 +32,7 @@ namespace IronBlock.Blocks.Variables
 		{
 			var variables = context.Variables;
 
-			var variableName = this.Fields.Get("VAR");
+			var variableName = this.Fields.Get("VAR").CreateValidName();
 
 			var valueExpression = this.Values.Generate("VALUE", context) as ExpressionSyntax;
 			if (valueExpression == null)

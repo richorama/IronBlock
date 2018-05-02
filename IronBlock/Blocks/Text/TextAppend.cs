@@ -29,7 +29,7 @@ namespace IronBlock.Blocks.Text
 		public override SyntaxNode Generate(Context context)
 		{
 			var variables = context.Variables;
-			var variableName = this.Fields.Get("VAR");
+			var variableName = this.Fields.Get("VAR").CreateValidName();
 
 			var textExpression = this.Values.Generate("TEXT", context) as ExpressionSyntax;
 			if (textExpression == null)
