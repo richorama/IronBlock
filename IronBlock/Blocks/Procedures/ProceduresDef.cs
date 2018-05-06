@@ -82,33 +82,35 @@ namespace IronBlock.Blocks.Text
 
 			var parameters = new List<ParameterSyntax>();
 
+			var procedureContext = new ProcedureContext() { Parent = context };		
+
 			foreach (var mutation in this.Mutations.Where(x => x.Domain == "arg" && x.Name == "name"))
 			{
 				string parameterName = mutation.Value.CreateValidName();
 
-				parameters.Add(
-					Parameter(
-						Identifier(parameterName)
-					)
-					.WithType(
-						IdentifierName("dynamic")
-					)
+				ParameterSyntax parameter = Parameter(
+					Identifier(parameterName)
+				)
+				.WithType(
+					IdentifierName("dynamic")
 				);
-			}
 
-			var funcContext = new Context() { Parent = context };
+				parameters.Add(parameter);
+				procedureContext.Parameters[parameterName] = parameter;
+			}
+			
 			if (statement?.Block != null)
 			{
-				var statementSyntax = statement.Block.GenerateStatement(funcContext);
+				var statementSyntax = statement.Block.GenerateStatement(procedureContext);
 				if (statementSyntax != null)
 				{
-					funcContext.Statements.Add(statementSyntax);
+					procedureContext.Statements.Add(statementSyntax);
 				}
 			}
 
 			if (returnStatement != null)
 			{
-				funcContext.Statements.Add(returnStatement);
+				procedureContext.Statements.Add(returnStatement);
 			}
 
 			LocalFunctionStatementSyntax methodDeclaration = null;
@@ -121,7 +123,7 @@ namespace IronBlock.Blocks.Text
 						Identifier(name)
 					)
 					.WithBody(
-						Block(funcContext.Statements)
+						Block(procedureContext.Statements)
 					);
 
 			if (parameters.Any())
