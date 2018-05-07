@@ -218,8 +218,18 @@ namespace IronBlock
         public Context Parent { get; set; }
     }
 
-    public class Mutation
-    {
+	public class ProcedureContext : Context
+	{
+		public ProcedureContext()
+		{
+			this.Parameters = new Dictionary<string, object>();
+		}
+
+		public IDictionary<string, object> Parameters { get; set; }
+	}
+
+	public class Mutation
+	{
         public Mutation(string domain, string name, string value)
         {
             this.Domain = domain;
