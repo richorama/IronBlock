@@ -434,6 +434,87 @@ namespace IronBlock.Tests.Roslyn
 			string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
 			Assert.IsTrue(code.Contains("a = add(a, 1);"));
 		}
+
+		[TestMethod]
+		public void Test_Procedure_Call_With_Next_Blocks()
+		{
+			const string xml = @"
+<xml xmlns=""http://www.w3.org/1999/xhtml"">
+  <variables>
+    <variable id=""dMG6oKpWbgrw(IZWtJ,K"" type="""">result</variable>
+  </variables>
+  <block id=""2(,el)x8wxO00%uQeVpR"" type=""procedures_defnoreturn"" y=""-137"" x=""-1212"">
+    <field name=""NAME"">do something</field>
+    <comment pinned=""false"" h=""80"" w=""160"">Describe this function...</comment>
+  </block>
+  <block id=""gL.=CY_}N5X5J(|cB2TW"" type=""procedures_callnoreturn"" y=""-62"" x=""-1212"">
+    <mutation name=""do something""></mutation>
+    <next>
+      <block id=""8f0,x;DF5i=kYS=@*dQ8"" type=""variables_set"">
+        <field id=""dMG6oKpWbgrw(IZWtJ,K"" name=""VAR"" variabletype="""">result</field>
+        <value name=""VALUE"">
+          <block id=""1e*#EfQV?Od5_-7[%ozh"" type=""math_number"">
+            <field name=""NUM"">123</field>
+          </block>
+        </value>
+      </block>
+    </next>
+  </block>
+</xml>
+";
+
+			var output = new Parser()
+				.AddStandardBlocks()
+				.Parse(xml)
+				.Generate();
+
+			string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
+			Assert.IsTrue(code.Contains("do_something(); result = 123;"));
+		}
+
+		[TestMethod]
+		public void Test_Procedure_If_Return_With_Next_Blocks()
+		{
+			const string xml = @"
+<xml xmlns=""http://www.w3.org/1999/xhtml"">
+  <variables>
+    <variable id=""dMG6oKpWbgrw(IZWtJ,K"" type="""">result</variable>
+  </variables>
+  <block id=""2(,el)x8wxO00%uQeVpR"" type=""procedures_defnoreturn"" y=""-162"" x=""-1187"">
+    <field name=""NAME"">do something</field>
+    <comment pinned=""false"" h=""80"" w=""160"">Describe this function...</comment>
+    <statement name=""STACK"">
+      <block id=""=4}!M(:0t9tFE2`(;UEZ"" type=""procedures_ifreturn"">
+        <mutation value=""0""></mutation>
+        <value name=""CONDITION"">
+          <block id=""o2Z]dxf9BAVBcb0#z=/E"" type=""logic_boolean"">
+            <field name=""BOOL"">TRUE</field>
+          </block>
+        </value>
+        <next>
+          <block id=""8f0,x;DF5i=kYS=@*dQ8"" type=""variables_set"">
+            <field id=""dMG6oKpWbgrw(IZWtJ,K"" name=""VAR"" variabletype="""">result</field>
+            <value name=""VALUE"">
+              <block id=""1e*#EfQV?Od5_-7[%ozh"" type=""math_number"">
+                <field name=""NUM"">123</field>
+              </block>
+            </value>
+          </block>
+        </next>
+      </block>
+    </statement>
+  </block>
+</xml>
+";
+
+			var output = new Parser()
+				.AddStandardBlocks()
+				.Parse(xml)
+				.Generate();
+
+			string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
+			Assert.IsTrue(code.Contains("if (true) return; result = 123;"));
+		}
 	}
 }
 
