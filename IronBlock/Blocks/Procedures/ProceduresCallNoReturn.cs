@@ -71,7 +71,7 @@ namespace IronBlock.Blocks.Text
 						);
 			}
 
-			return methodInvocation;
+			return Statement(methodInvocation, base.Generate(context), context);
 		}
 	}
 
