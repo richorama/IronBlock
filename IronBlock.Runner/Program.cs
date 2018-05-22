@@ -19,14 +19,15 @@ namespace IronBlock.Runner
             {
                 if (args.Length < 2) 
                 {
-                    Console.WriteLine("Specify an XML file as the first argument");
-					Console.WriteLine();
-					Console.WriteLine("Specify any of the following as second argument");
-					Console.WriteLine("-e (evaluate)");
-					Console.WriteLine("-g (generate)");
-					Console.WriteLine("-c (compile)");
-					Console.WriteLine("-ex (execute)");
-					Console.ReadKey();
+                    Console.WriteLine(
+@"Specify an XML file as the first argument
+
+Specify any of the following as a second argument
+  -e (evaluate)
+  -g (generate)
+  -c (compile)
+  -ex (execute)
+");
 					Environment.ExitCode = 1;
                     return;
                 }
