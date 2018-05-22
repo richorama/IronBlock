@@ -53,7 +53,7 @@ namespace IronBlock.Blocks.Text
 
 		public override SyntaxNode Generate(Context context)
 		{
-			var name = this.Fields.Get("NAME");
+			var name = this.Fields.Get("NAME").CreateValidName();
 			var statement = this.Statements.FirstOrDefault(x => x.Name == "STACK");
 
 			if (string.IsNullOrWhiteSpace(name)) return null;
@@ -82,31 +82,35 @@ namespace IronBlock.Blocks.Text
 
 			var parameters = new List<ParameterSyntax>();
 
+			var procedureContext = new ProcedureContext() { Parent = context };		
+
 			foreach (var mutation in this.Mutations.Where(x => x.Domain == "arg" && x.Name == "name"))
 			{
-				parameters.Add(
-					Parameter(
-						Identifier(mutation.Value)
-					)
-					.WithType(
-						IdentifierName("dynamic")
-					)
-				);
-			}
+				string parameterName = mutation.Value.CreateValidName();
 
-			var funcContext = new Context() { Parent = context };
+				ParameterSyntax parameter = Parameter(
+					Identifier(parameterName)
+				)
+				.WithType(
+					IdentifierName("dynamic")
+				);
+
+				parameters.Add(parameter);
+				procedureContext.Parameters[parameterName] = parameter;
+			}
+			
 			if (statement?.Block != null)
 			{
-				var statementSyntax = statement.Block.GenerateStatement(funcContext);
+				var statementSyntax = statement.Block.GenerateStatement(procedureContext);
 				if (statementSyntax != null)
 				{
-					funcContext.Statements.Add(statementSyntax);
+					procedureContext.Statements.Add(statementSyntax);
 				}
 			}
 
 			if (returnStatement != null)
 			{
-				funcContext.Statements.Add(returnStatement);
+				procedureContext.Statements.Add(returnStatement);
 			}
 
 			LocalFunctionStatementSyntax methodDeclaration = null;
@@ -119,7 +123,7 @@ namespace IronBlock.Blocks.Text
 						Identifier(name)
 					)
 					.WithBody(
-						Block(funcContext.Statements)
+						Block(procedureContext.Statements)
 					);
 
 			if (parameters.Any())

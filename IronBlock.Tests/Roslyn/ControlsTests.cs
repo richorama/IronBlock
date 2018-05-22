@@ -40,7 +40,97 @@ namespace IronBlock.Tests.Roslyn
 			string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
 			Assert.IsTrue(code.Contains("if (true) { Console.WriteLine(\"success\"); }"));
 		}
-		
+
+		[TestMethod]
+		public void Test_Controls_If_With_Multiple_Statements()
+		{
+
+			const string xml = @"
+<xml xmlns=""http://www.w3.org/1999/xhtml"" id=""workspaceBlocks"" style=""display:none"">
+  <variables>
+    <variable id=""7seVex*HL`I8akO#+j43"" type="""">a</variable>
+  </variables>
+	<block type=""controls_if"" id=""?Vh{B;q]Zx,[Cl/K1.Do"">
+		<mutation else=""0""></mutation>
+		<value name=""IF0"">
+			<block type=""logic_compare"" id=""jNve*u*W9:JIn,$Co.o/"">
+			<field name=""OP"">EQ</field>
+			<value name=""A"">
+				<block type=""variables_get"" id=""Z]wX?pFC:tI4||uMuYae"">
+				<field name=""VAR"" id=""ZTehd]{#`4*+7b[uPJm%"" variabletype="""">a</field>
+				</block>
+			</value>
+			<value name=""B"">
+				<block type=""math_number"" id=""zO8=[jO}EFqF3o;8lImQ"">
+				<field name=""NUM"">-1</field>
+				</block>
+			</value>
+			</block>
+		</value>
+		<statement name=""DO0"">
+			<block type=""variables_set"" id=""zD2*Uxlv?!U|W=l5]#xI"">
+			<field name=""VAR"" id=""9-K`U~5St6)ng:17Zrg+"" variabletype="""">b</field>
+			<value name=""VALUE"">
+				<block type=""math_arithmetic"" id=""A1:}bPuT.PVpyuFIm)rt"">
+				<field name=""OP"">MINUS</field>
+				<value name=""A"">
+					<shadow type=""math_number"" id="",X;/Pu2oUlTNj,y);wfS"">
+					<field name=""NUM"">1</field>
+					</shadow>
+					<block type=""variables_get"" id=""$?FI`[n`|ixg).7l18hp"">
+					<field name=""VAR"" id=""#6UXH8E3PGjS#*s}vKBQ"" variabletype="""">c</field>
+					</block>
+				</value>
+				<value name=""B"">
+					<shadow type=""math_number"" id=""9srs=@WH(W@jVNbf_Ja!"">
+					<field name=""NUM"">1</field>
+					</shadow>
+					<block type=""variables_get"" id=""_rlq1U`Tb}4Sf8~7!;KF"">
+					<field name=""VAR"" id=""=EDX~Ygl)2wyZ;s%$6=c"" variabletype="""">d</field>
+					</block>
+				</value>
+				</block>
+			</value>
+			<next>
+				<block type=""variables_set"" id=""|xILzaGV0UYNll=+8eB:"">
+				<field name=""VAR"" id=""XASWE:Rx@n|F/AaGbYY="" variabletype="""">e</field>
+				<value name=""VALUE"">
+					<block type=""math_arithmetic"" id=""~w,mE(SS[kF3_={2|0W("">
+					<field name=""OP"">MINUS</field>
+					<value name=""A"">
+						<shadow type=""math_number"" id="",X;/Pu2oUlTNj,y);wfS"">
+						<field name=""NUM"">1</field>
+						</shadow>
+						<block type=""variables_get"" id=""FIc4mz*g+4l$$xm%)V]K"">
+						<field name=""VAR"" id=""B1!.gal@ti)3gS+8a5=~"" variabletype="""">f</field>
+						</block>
+					</value>
+					<value name=""B"">
+						<shadow type=""math_number"" id=""9srs=@WH(W@jVNbf_Ja!"">
+						<field name=""NUM"">1</field>
+						</shadow>
+						<block type=""variables_get"" id=""j75d3I*5UZRN]tnth+fz"">
+						<field name=""VAR"" id=""rgKD$#zq%gJ7l)ric,2."" variabletype="""">g</field>
+						</block>
+					</value>
+					</block>
+				</value>
+				</block>
+			</next>
+			</block>
+		</statement>
+	</block>
+</xml>
+";
+			var output = new Parser()
+				.AddStandardBlocks()
+				.Parse(xml)
+				.Generate();
+
+			string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
+			Assert.IsTrue(code.Contains("if ((a == -1)) { b = (c - d); e = (f - g); }"));
+		}
+
 		[TestMethod]
 		public void Test_Controls_If_Else()
 		{

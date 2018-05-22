@@ -94,6 +94,10 @@ namespace IronBlock.Blocks
 
 			return context;
 		}
+		public static string CreateValidName(this string name)
+		{
+			return name?.Replace(" ", "_");
+		}
 
 		public static Parser AddStandardBlocks(this Parser parser)
 		{
@@ -153,6 +157,7 @@ namespace IronBlock.Blocks
 			parser.AddBlock<ListsRepeat>("lists_repeat");
 			parser.AddBlock<ListsIsEmpty>("lists_isEmpty");
 			parser.AddBlock<ListsGetIndex>("lists_getIndex");
+			parser.AddBlock<ListsSetIndex>("lists_setIndex");
 			parser.AddBlock<ListsIndexOf>("lists_indexOf");
 
 			return parser;

@@ -35,7 +35,8 @@ namespace IronBlock.Blocks.Text
 				returnStatement = ReturnStatement(statement);
 			}
 
-			return SyntaxFactory.IfStatement(condition, returnStatement);
+			var ifStatement = IfStatement(condition, returnStatement);
+			return Statement(ifStatement, base.Generate(context), context);			
 		}
 	}
 }
