@@ -17,16 +17,16 @@ namespace IronBlock.Runner
         {
             try
             {
-                if (args.Length < 2) 
+                if (args.Length < 1) 
                 {
                     Console.WriteLine(
 @"Specify an XML file as the first argument
 
 Specify any of the following as a second argument
-  -e (evaluate)
-  -g (generate)
-  -c (compile)
-  -ex (execute)
+  -e  (evaluate)
+  -g  (generate)
+  -co (compile)
+  -ex (execute) (default)
 ");
 					Environment.ExitCode = 1;
                     return;
@@ -54,7 +54,7 @@ Specify any of the following as a second argument
 					string code = syntaxTree.NormalizeWhitespace().ToFullString();
 					Console.WriteLine(code);
 				}
-				else if (mode?.Equals("-c") ?? false)
+				else if (mode?.Equals("-co") ?? false)
 				{
 					var syntaxTree = parser.Generate();
 					string code = syntaxTree.NormalizeWhitespace().ToFullString();
@@ -77,21 +77,21 @@ Specify any of the following as a second argument
 						}
 					}
 				}
-				else if (mode?.Equals("-ex") ?? false)
+				else if (mode?.Equals("-e") ?? false)
 				{
+					parser.Evaluate();
+				}
+				else // -ex
+				{
+					// execute
 					var syntaxTree = parser.Generate();
 					string code = syntaxTree.NormalizeWhitespace().ToFullString();
 					var script = GenerateScript(code);
 
-					Console.WriteLine("Executing script...");
 					ExecuteAsync(script).Wait();
 				}
-				else
-				{
-					parser.Evaluate();
-				}
 
-				Console.ReadKey();
+				//Console.ReadKey();
 			}
             catch (Exception ex)
             {
