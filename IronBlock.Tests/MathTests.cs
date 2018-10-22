@@ -527,10 +527,25 @@ namespace IronBlock.Tests
             Assert.AreEqual(4 , (double) output);
         }
 
-/*
+        [TestMethod]
+        public void Test_Math_Random_Fraction()
+        {
 
+            const string xml = @"
+<xml xmlns=""http://www.w3.org/1999/xhtml"">
+  <variables></variables>
+   <block type=""math_random_float""></block>
+</xml>
+";
+            var output = new Parser()
+                .AddStandardBlocks()
+                .Parse(xml)
+                .Evaluate();
+            
+            Assert.IsTrue((double) output >= 0.0);
+            Assert.IsTrue((double) output <= 1.0);            
+        }
 
- */
 
     }
 }
