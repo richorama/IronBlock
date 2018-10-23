@@ -546,6 +546,35 @@ namespace IronBlock.Tests
             Assert.IsTrue((double) output <= 1.0);            
         }
 
+        [TestMethod]
+        public void Test_Math_Random_Int()
+        {
+
+            const string xml = @"
+<xml xmlns=""http://www.w3.org/1999/xhtml"">
+  <block type=""math_random_int"">
+    <value name=""FROM"">
+      <shadow type=""math_number"">
+        <field name=""NUM"">1</field>
+      </shadow>
+    </value>
+    <value name=""TO"">
+      <shadow type=""math_number"">
+        <field name=""NUM"">100</field>
+      </shadow>
+    </value>
+  </block>
+</xml>
+";
+            var output = new Parser()
+                .AddStandardBlocks()
+                .Parse(xml)
+                .Evaluate();
+            
+            Assert.IsTrue((double) output >= 1);
+            Assert.IsTrue((double)output <= 100);            
+        }
+
 
     }
 }

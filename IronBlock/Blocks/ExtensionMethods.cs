@@ -126,6 +126,7 @@ namespace IronBlock.Blocks
 			parser.AddBlock<MathConstrain>("math_constrain");
 			parser.AddBlock<MathModulo>("math_modulo");
 			parser.AddBlock<MathRandomFloat>("math_random_float");
+			parser.AddBlock<MathRandomInt>("math_random_int");
 
 			parser.AddBlock<TextBlock>("text");
 			parser.AddBlock<TextPrint>("text_print");
