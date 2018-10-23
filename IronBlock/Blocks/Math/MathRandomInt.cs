@@ -16,7 +16,6 @@ namespace IronBlock.Blocks.Math
 		{
 			var from = (double) this.Values.Evaluate("FROM", context);
 			var to = (double) this.Values.Evaluate("TO", context);
-			//return 2.2;
 			return (double) rand.Next((int)System.Math.Min(from, to), (int)System.Math.Max(from, to));
 		}
 
