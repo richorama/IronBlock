@@ -23,7 +23,7 @@ namespace IronBlock.Blocks.Text
 
             variables[variableName] = value + textToAppend;
 
-            return base.Evaluate(context);           
+            return base.Evaluate(context);
         }
 
 		public override SyntaxNode Generate(Context context)

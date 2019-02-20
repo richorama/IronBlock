@@ -212,7 +212,7 @@ namespace IronBlock
         public IDictionary<string, object> Functions { get; set; }
 
         public EscapeMode EscapeMode { get; set; }
-        		
+
 		public List<StatementSyntax> Statements { get; }
 
         public Context Parent { get; set; }

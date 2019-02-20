@@ -13,7 +13,7 @@ namespace IronBlock.Blocks.Text
         {
             var text = (this.Values.Evaluate("VALUE", context) ?? "").ToString();
 
-            return text.Length;
+            return (double) text.Length;
         }
 
 		public override SyntaxNode Generate(Context context)

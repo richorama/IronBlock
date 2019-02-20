@@ -16,8 +16,8 @@ namespace IronBlock.Blocks.Text
 
             switch (mode)
             {
-                case "FIRST": return text.IndexOf(term) + 1;
-                case "LAST": return text.LastIndexOf(term) + 1;
+                case "FIRST": return (double) text.IndexOf(term) + 1;
+                case "LAST": return (double) text.LastIndexOf(term) + 1;
                 default: throw new ApplicationException("unknown mode");
             }
         }

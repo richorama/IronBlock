@@ -28,8 +28,8 @@ namespace IronBlock.Tests
               .AddStandardBlocks()
               .Parse(xml)
               .Evaluate();
-            
-            Assert.AreEqual(3, output);
+
+            Assert.AreEqual(3.0, output);
 
         }
 
@@ -231,8 +231,8 @@ namespace IronBlock.Tests
               .AddStandardBlocks()
               .Parse(xml)
               .Evaluate();
-            
-            Assert.AreEqual(5, output);
+
+            Assert.AreEqual(5.0, output);
         }
 
     }
