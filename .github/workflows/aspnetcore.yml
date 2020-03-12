@@ -20,5 +20,5 @@ jobs:
         dotnet test
     - name: Publish
       run: |
-        ! dotnet nuget push **/IronBlock.3.*.nupkg --source 'https://api.nuget.org/v3/index.json' -k ${{ secrets.nuget }}
+        ! dotnet nuget push **/*.nupkg --source 'https://api.nuget.org/v3/index.json' -k ${{ secrets.nuget }}
       if: github.ref == 'refs/heads/master'
