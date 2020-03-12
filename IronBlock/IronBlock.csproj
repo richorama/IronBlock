@@ -10,8 +10,8 @@
     <RepositoryType>github</RepositoryType>
     <PackageTags>blockly netcore scratch interpreter</PackageTags>
     <Description>A .net core interpreter for blockly programs</Description>
-    <Copyright>Richard Astbury 2019</Copyright>
-    <Version>1.0.4</Version>
+    <Copyright>Richard Astbury 2020</Copyright>
+    <Version>1.0.5</Version>
   </PropertyGroup>
 
   <ItemGroup>

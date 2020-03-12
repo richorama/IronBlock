@@ -6,7 +6,7 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    
+
     steps:
     - uses: actions/checkout@v1
     - name: Setup .NET Core
@@ -18,3 +18,7 @@ jobs:
         dotnet build --configuration Release
         cd IronBlock.Tests
         dotnet test
+    - name: Publish
+      run: |
+        ! dotnet nuget push **/IronBlock.3.*.nupkg --source 'https://api.nuget.org/v3/index.json' -k ${{ secrets.nuget }}
+      if: github.ref == 'refs/heads/master'
