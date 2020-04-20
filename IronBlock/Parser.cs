@@ -23,9 +23,9 @@ namespace IronBlock
             this.blocks.Add(type, blockFactory);
         }
 
-        public Workspace Parse(string xml)
+        public Workspace Parse(string xml, bool preserveWhitespace = false)
         {
-            var xdoc = new XmlDocument();
+            var xdoc = new XmlDocument {PreserveWhitespace = preserveWhitespace};
             xdoc.LoadXml(xml);
 
             var workspace = new Workspace();
