@@ -78,7 +78,7 @@ namespace IronBlock.Tests
     }
 
     [TestMethod]
-    public void Test_Args()
+    public void Test_Args_Input()
     {
       const string xml = @"
 <xml>
@@ -102,6 +102,32 @@ namespace IronBlock.Tests
 
       Assert.AreEqual("Hello World", TestExtensions.GetDebugText().First());
     }
+
+  [TestMethod]
+    public void Test_Args_Output()
+    {
+      const string xml = @"
+<xml>
+  <block type=""variables_set"" inline=""true"">
+    <field name=""VAR"">output</field>
+    <value name=""VALUE"">
+      <block type=""text"">
+        <field name=""TEXT"">Hello World</field>
+      </block>
+    </value>
+  </block>
+</xml>";
+
+      var args = new Dictionary<string,object>();
+
+      new Parser()
+        .AddStandardBlocks()
+        .Parse(xml)
+        .Evaluate(args);
+
+      Assert.AreEqual("Hello World", args["output"]);
+    }
+
   }
 
 }
