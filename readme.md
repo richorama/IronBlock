@@ -60,6 +60,14 @@ var workspace = parser.Parse(xml);
 var output = workspace.Evaluate();
 
 // "Hello World"
+
+// you can optionally pass in a dictionary of variables
+var args = new Dictionary<string,object>();
+args.Add("message", "Hello!");
+workspace.Evaluate(args);
+
+// if your program sets any variable values,
+// you can read then out of the args dictionary 
 ```
 
 ## Custom Blocks
