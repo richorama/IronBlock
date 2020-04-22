@@ -5,7 +5,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>richorama</Authors>
     <PackageProjectUrl>https://github.com/richorama/IronBlock</PackageProjectUrl>
-    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <License>MIT</License>
     <RepositoryUrl>https://github.com/richorama/IronBlock</RepositoryUrl>
     <RepositoryType>github</RepositoryType>
     <PackageTags>blockly netcore scratch interpreter</PackageTags>

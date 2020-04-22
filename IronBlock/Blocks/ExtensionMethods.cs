@@ -54,9 +54,14 @@ namespace IronBlock.Blocks
 			return mut.Value;
 		}
 
-		public static object Evaluate(this Workspace workspace)
+		public static object Evaluate(this Workspace workspace, IDictionary<string,object> arguments = null)
 		{
-			return workspace.Evaluate(new Context());
+			var ctx = new Context();
+			if (null != arguments)
+			{
+				ctx.Variables = arguments;
+			}
+			return workspace.Evaluate(ctx);
 		}
 
 		public static SyntaxNode Generate(this Workspace workspace)
