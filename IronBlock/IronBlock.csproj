@@ -5,13 +5,13 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>richorama</Authors>
     <PackageProjectUrl>https://github.com/richorama/IronBlock</PackageProjectUrl>
-    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <License>MIT</License>
     <RepositoryUrl>https://github.com/richorama/IronBlock</RepositoryUrl>
     <RepositoryType>github</RepositoryType>
     <PackageTags>blockly netcore scratch interpreter</PackageTags>
     <Description>A .net core interpreter for blockly programs</Description>
     <Copyright>Richard Astbury 2020</Copyright>
-    <Version>1.0.7</Version>
+    <Version>1.0.8</Version>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>keyPair.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
