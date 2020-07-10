@@ -8,19 +8,27 @@ namespace IronBlock
     {
         IDictionary<string,Func<IBlock>> blocks = new Dictionary<string,Func<IBlock>>();
 
-        public void AddBlock<T>(string type) where T : IBlock, new()
+        public Parser AddBlock<T>(string type) where T : IBlock, new()
         {
             this.AddBlock(type, () => new T());
+            return this;
         }
 
-        public void AddBlock(string type, Func<IBlock> blockFactory)
+        public Parser AddBlock<T>(string type, T block) where T : IBlock
+        {
+            this.AddBlock(type, () => block);
+            return this;
+        }
+
+        public Parser AddBlock(string type, Func<IBlock> blockFactory)
         {
             if (this.blocks.ContainsKey(type))
             {
                 this.blocks[type] = blockFactory;
-                return;
+                return this;
             }
             this.blocks.Add(type, blockFactory);
+            return this;
         }
 
         public Workspace Parse(string xml, bool preserveWhitespace = false)
