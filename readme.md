@@ -2,7 +2,7 @@
 
 # IronBlock
 
-A .net core interpreter for [blockly](https://developers.google.com/blockly) programs. 
+A .net core interpreter for [blockly](https://developers.google.com/blockly), allowing you to execute blockly programs in .NET.
 
 ## Installation
 
@@ -44,7 +44,7 @@ The XML will look something like this:
 
 You'll need to pass this XML to your .NET server using an Ajax call or similar.
 
-You can then parse the XML, and execute the Blockly program from .NET.
+You can then parse the XML, and execute the Blockly program in .NET.
 
 ```cs
 // create a parser
