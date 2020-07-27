@@ -45,11 +45,15 @@
     <script>
         window.BlocklyFunctions = {
             createDemoWorkspace: function (blocklyDiv, toolbox, startBlocks) {
+
                 var demoWorkspace = Blockly.inject(blocklyDiv,
                     {
                         media: 'media/',
                         toolbox: toolbox
                     });
+
+                Blockly.Xml.domToWorkspace(startBlocks,
+                    demoWorkspace);
             }
         };
     </script>
@@ -59,7 +63,7 @@
     <script src="javascript/blocks_compressed.js"></script>
     <script src="javascript/javascript_compressed.js"></script>
     <script src="javascript/msg/js/en.js"></script>
-    <script src="wait_block.js"></script>
+    <script src="javascript/wait_block.js"></script>
 
     <script src="_framework/blazor.server.js"></script>
 </body>
