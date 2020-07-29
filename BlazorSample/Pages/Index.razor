@@ -5,12 +5,15 @@
 @inject IJSRuntime JSRuntime
 
 <h1>Hello, world!</h1>
-
+<button class="btn btn-primary" @onclick="GetXML">
+    Get XML
+</button>
 <div style="width: 100%">
     <div @ref="@blocklyDiv"
          style="display: inline-block; height: 480px; width: 58%"></div>
     <textarea @ref="@output" disabled="disabled"
               style="display: inline-block; height: 480px; width: 38%;">
+@XMLText
     </textarea>
 </div>
 
@@ -115,7 +118,7 @@
     private ElementReference output;
     private ElementReference toolbox;
     private ElementReference startBlocks;
-
+    string XMLText = "";
     protected override async Task
         OnAfterRenderAsync(bool firstRender)
     {
@@ -128,5 +131,10 @@
                 startBlocks
                 );
         }
+    }
+
+    private async Task GetXML()
+    {
+        XMLText = await Interop.GetXML(JSRuntime);
     }
 }

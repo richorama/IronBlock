@@ -18,5 +18,12 @@ namespace BlazorSample
                 toolbox,
                 startBlocks);
         }
+
+        internal static ValueTask<string> GetXML(
+            IJSRuntime jsRuntime)
+        {
+            return jsRuntime.InvokeAsync<string>(
+                "BlocklyFunctions.getXML");
+        }
     }
 }
