@@ -4,18 +4,59 @@
 @using Microsoft.JSInterop
 @inject IJSRuntime JSRuntime
 
-<h1>Hello, world!</h1>
-<button class="btn btn-primary" @onclick="GetXML">
-    Get XML
+<h1>Blazor Blockly</h1>
+
+<button class="btn btn-primary" @onclick="GetXML" disabled="@ViewXML">
+    XML
+</button>
+<button class="btn btn-primary" @onclick="GetCode" disabled="@ViewCode">
+    C# Code
 </button>
 <div style="width: 100%">
-    <div @ref="@blocklyDiv"
-         style="display: inline-block; height: 480px; width: 58%"></div>
-    <textarea @ref="@output" disabled="disabled"
-              style="display: inline-block; height: 480px; width: 38%;">
-@XMLText
-    </textarea>
+    <div @ref="@blocklyDiv" style="display: inline-block; height: 480px; width: 100%"></div>
 </div>
+
+@if (ViewXML)
+{
+    <div class="modal" tabindex="-1" style="display:block;background-color:gainsboro" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">View XML</h3>
+                    <!-- Button to close the popup -->
+                    <button type="button" class="close"
+                            @onclick="ClosePopup">
+                        <span aria-hidden="true">X</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <textarea disabled="disabled" style="display: inline-block; height: 480px; width: 100%;">@XMLText</textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@if (ViewCode)
+{
+    <div class="modal" tabindex="-1" style="display:block;background-color:gainsboro" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">View Code</h3>
+                    <!-- Button to close the popup -->
+                    <button type="button" class="close"
+                            @onclick="ClosePopup">
+                        <span aria-hidden="true">X</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>ViewCode = @ViewCode</p>
+                </div>
+            </div>
+        </div>
+    </div>
+}
 
 <xml xmlns="https://developers.google.com/blockly/xml" @ref="@toolbox" style="display: none">
     <category name="Logic" colour="%{BKY_LOGIC_HUE}">
@@ -115,10 +156,14 @@
 
 @code {
     private ElementReference blocklyDiv;
-    private ElementReference output;
     private ElementReference toolbox;
     private ElementReference startBlocks;
+
+    bool ViewXML = false;
+    bool ViewCode = false;
+
     string XMLText = "";
+
     protected override async Task
         OnAfterRenderAsync(bool firstRender)
     {
@@ -133,8 +178,23 @@
         }
     }
 
+    void ClosePopup()
+    {
+        // Close Popups
+        ViewXML = false;
+        ViewCode = false;
+    }
+
     private async Task GetXML()
     {
+        ViewXML = true;
+        ViewCode = false;
         XMLText = await Interop.GetXML(JSRuntime);
+    }
+
+    private void GetCode()
+    {
+        ViewXML = false;
+        ViewCode = true;
     }
 }
