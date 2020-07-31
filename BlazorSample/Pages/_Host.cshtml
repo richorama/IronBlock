@@ -57,7 +57,7 @@
             getXML: function () {
                 var xml = Blockly.Xml.workspaceToDom(demoWorkspace);
                 var xml_text = Blockly.Xml.domToText(xml);
-                return JSON.stringify(xml_text);
+                return xml_text;
             }
         };
     </script>

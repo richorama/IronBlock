@@ -2,6 +2,15 @@
 @using System.Net.Http
 @using System.Threading.Tasks
 @using Microsoft.JSInterop
+@using System.Collections.Generic;
+@using System.IO;
+@using System.Linq;
+@using System.Reflection;
+@using IronBlock
+@using IronBlock.Blocks;
+@using Microsoft.CodeAnalysis;
+@using Microsoft.CodeAnalysis.CSharp.Scripting;
+@using Microsoft.CodeAnalysis.Scripting;
 @inject IJSRuntime JSRuntime
 
 <h1>Blazor Blockly</h1>
@@ -51,7 +60,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>ViewCode = @ViewCode</p>
+                    <textarea disabled="disabled" style="display: inline-block; height: 480px; width: 100%;">@CodeText</textarea>
                 </div>
             </div>
         </div>
@@ -101,52 +110,30 @@
 </xml>
 
 <xml xmlns="https://developers.google.com/blockly/xml" @ref="@startBlocks" style="display: none">
+    <variables>
+        <variable id="~kJbZ`y-lliSTC6sw2A6">n</variable>
+    </variables>
     <block type="variables_set" id="set_n_initial" inline="true" x="20" y="20">
-        <field name="VAR">n</field>
+        <field name="VAR" id="~kJbZ`y-lliSTC6sw2A6">n</field>
         <value name="VALUE">
-            <block type="math_number">
+            <block type="math_number" id="_kK+DXHB*8,OLm{4-jOe">
                 <field name="NUM">1</field>
             </block>
         </value>
         <next>
             <block type="controls_repeat_ext" id="repeat" inline="true">
                 <value name="TIMES">
-                    <block type="math_number">
+                    <block type="math_number" id="K3^#nAy~lxtrhUl#2T{B">
                         <field name="NUM">4</field>
                     </block>
                 </value>
                 <statement name="DO">
-                    <block type="wait_seconds" id="wait">
-                        <field name="SECONDS">1.0</field>
-                        <next>
-                            <block type="variables_set" id="set_n_update" inline="true">
-                                <field name="VAR">n</field>
-                                <value name="VALUE">
-                                    <block type="math_arithmetic" inline="true">
-                                        <field name="OP">MULTIPLY</field>
-                                        <value name="A">
-                                            <block type="variables_get">
-                                                <field name="VAR">n</field>
-                                            </block>
-                                        </value>
-                                        <value name="B">
-                                            <block type="math_number">
-                                                <field name="NUM">2</field>
-                                            </block>
-                                        </value>
-                                    </block>
-                                </value>
-                                <next>
-                                    <block type="text_print" id="print" inline="false">
-                                        <value name="TEXT">
-                                            <block type="variables_get">
-                                                <field name="VAR">n</field>
-                                            </block>
-                                        </value>
-                                    </block>
-                                </next>
+                    <block type="text_print" id="-KXHAx](KV-qmA[_}~uq">
+                        <value name="TEXT">
+                            <block type="variables_get" id="x`fF-ca~6ZmjAE1](tt)">
+                                <field name="VAR" id="~kJbZ`y-lliSTC6sw2A6">n</field>
                             </block>
-                        </next>
+                        </value>
                     </block>
                 </statement>
             </block>
@@ -163,9 +150,9 @@
     bool ViewCode = false;
 
     string XMLText = "";
+    string CodeText = "";
 
-    protected override async Task
-        OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
@@ -192,9 +179,50 @@
         XMLText = await Interop.GetXML(JSRuntime);
     }
 
-    private void GetCode()
+    private async Task GetCode()
     {
         ViewXML = false;
         ViewCode = true;
+        CodeText = "";
+
+        XMLText = await Interop.GetXML(JSRuntime);
+
+        var parser = new Parser().AddStandardBlocks().Parse(XMLText);
+
+        var syntaxTree = parser.Generate();
+        string code = syntaxTree.NormalizeWhitespace().ToFullString();
+        var script = GenerateScript(code);
+
+        CodeText = script.Code;
+    }
+
+    // Utility
+
+    public static IEnumerable<Diagnostic> Compile(Script<object> script)
+    {
+        if (script == null)
+            return Enumerable.Empty<Diagnostic>();
+
+        try
+        {
+            return script.Compile();
+        }
+        catch (CompilationErrorException compilationErrorException)
+        {
+            return compilationErrorException.Diagnostics;
+        }
+    }
+
+    public static Script<object> GenerateScript(string code)
+    {
+        var dynamicRuntimeReference = MetadataReference.CreateFromFile(typeof(System.Runtime.CompilerServices.DynamicAttribute).Assembly.Location);
+        var runtimeBinderReference = MetadataReference.CreateFromFile(typeof(Microsoft.CSharp.RuntimeBinder.CSharpArgumentInfo).Assembly.Location);
+
+        var scriptOptions =
+                ScriptOptions.Default
+                    .WithImports("System", "System.Linq", "System.Math")
+                    .AddReferences(dynamicRuntimeReference, runtimeBinderReference);
+
+        return CSharpScript.Create<object>(code, scriptOptions);
     }
 }
