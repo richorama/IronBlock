@@ -21,9 +21,16 @@
 <button class="btn btn-primary" @onclick="GetCode" disabled="@ViewCode">
     C# Code
 </button>
+<button class="btn btn-primary" @onclick="Run" disabled="@ViewCode">
+    Run
+</button>
 <div style="width: 100%">
     <div @ref="@blocklyDiv" style="display: inline-block; height: 480px; width: 100%"></div>
 </div>
+
+Output:
+<pre>@Output</pre>
+
 
 @if (ViewXML)
 {
@@ -110,38 +117,70 @@
 </xml>
 
 <xml xmlns="https://developers.google.com/blockly/xml" @ref="@startBlocks" style="display: none">
-    <variables>
-        <variable id="~kJbZ`y-lliSTC6sw2A6">n</variable>
-    </variables>
-    <block type="variables_set" id="set_n_initial" inline="true" x="20" y="20">
-        <field name="VAR" id="~kJbZ`y-lliSTC6sw2A6">n</field>
-        <value name="VALUE">
-            <block type="math_number" id="_kK+DXHB*8,OLm{4-jOe">
-                <field name="NUM">1</field>
-            </block>
-        </value>
-        <next>
-            <block type="controls_repeat_ext" id="repeat" inline="true">
-                <value name="TIMES">
-                    <block type="math_number" id="K3^#nAy~lxtrhUl#2T{B">
-                        <field name="NUM">4</field>
-                    </block>
-                </value>
-                <statement name="DO">
-                    <block type="text_print" id="-KXHAx](KV-qmA[_}~uq">
-                        <value name="TEXT">
-                            <block type="variables_get" id="x`fF-ca~6ZmjAE1](tt)">
-                                <field name="VAR" id="~kJbZ`y-lliSTC6sw2A6">n</field>
-                            </block>
-                        </value>
-                    </block>
-                </statement>
-            </block>
-        </next>
+<variables>
+  <variable id="~kJbZ`y-lliSTC6sw2A6">n</variable>
+</variables>
+<block type="variables_set" id="set_n_initial" inline="true" x="20" y="20">
+  <field name="VAR" id="~kJbZ`y-lliSTC6sw2A6">n</field>
+  <value name="VALUE">
+    <block type="math_number" id="_kK+DXHB*8,OLm{4-jOe">
+      <field name="NUM">1</field>
     </block>
+  </value>
+  <next>
+    <block type="controls_repeat_ext" id="repeat" inline="true">
+      <value name="TIMES">
+        <block type="math_number" id="K3^#nAy~lxtrhUl#2T{B">
+          <field name="NUM">4</field>
+        </block>
+      </value>
+      <statement name="DO">
+        <block type="text_print" id="-KXHAx](KV-qmA[_}~uq">
+          <value name="TEXT">
+            <block type="variables_get" id="x`fF-ca~6ZmjAE1](tt)">
+              <field name="VAR" id="~kJbZ`y-lliSTC6sw2A6">n</field>
+            </block>
+          </value>
+          <next>
+            <block type="variables_set" id="/]^d{RkBSg7196Fgeng|">
+              <field name="VAR" id="~kJbZ`y-lliSTC6sw2A6">n</field>
+              <value name="VALUE">
+                <block type="math_arithmetic" id="O`Yn9;s/8q^$T0R-BZA4">
+                  <field name="OP">ADD</field>
+                  <value name="A">
+                    <block type="variables_get" id="~b9dR+EbL-mXJxcU*(`=">
+                      <field name="VAR" id="~kJbZ`y-lliSTC6sw2A6">n</field>
+                    </block>
+                  </value>
+                  <value name="B">
+                    <block type="math_number" id="">
+                      <field name="NUM">1</field>
+                    </block>
+                  </value>
+                </block>
+              </value>
+            </block>
+          </next>
+        </block>
+      </statement>
+    </block>
+  </next>
+</block>
 </xml>
 
 @code {
+
+    internal class CustomPrintBlock : IBlock
+    {
+        public List<string> Text { get; set; } = new List<string>();
+
+        public override object Evaluate(Context context)
+        {
+            Text.Add((this.Values.FirstOrDefault(x => x.Name == "TEXT")?.Evaluate(context) ?? "").ToString());
+            return base.Evaluate(context);
+        }
+    }
+
     private ElementReference blocklyDiv;
     private ElementReference toolbox;
     private ElementReference startBlocks;
@@ -151,78 +190,96 @@
 
     string XMLText = "";
     string CodeText = "";
+    string Output = "";
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender)
-        {
-            await Interop.DemoWorkspace(
-                JSRuntime,
-                blocklyDiv,
-                toolbox,
-                startBlocks
-                );
-        }
+      if (firstRender)
+      {
+    await Interop.DemoWorkspace(
+        JSRuntime,
+        blocklyDiv,
+        toolbox,
+        startBlocks
+        );
+      }
     }
 
     void ClosePopup()
     {
-        // Close Popups
-        ViewXML = false;
-        ViewCode = false;
+      // Close Popups
+      ViewXML = false;
+      ViewCode = false;
     }
 
     private async Task GetXML()
     {
-        ViewXML = true;
-        ViewCode = false;
-        XMLText = await Interop.GetXML(JSRuntime);
+      ViewXML = true;
+      ViewCode = false;
+      XMLText = await Interop.GetXML(JSRuntime);
     }
 
     private async Task GetCode()
     {
-        ViewXML = false;
-        ViewCode = true;
-        CodeText = "";
+      ViewXML = false;
+      ViewCode = true;
+      CodeText = "";
 
-        XMLText = await Interop.GetXML(JSRuntime);
+      XMLText = await Interop.GetXML(JSRuntime);
 
-        var parser = new Parser().AddStandardBlocks().Parse(XMLText);
+      var parser = new Parser().AddStandardBlocks().Parse(XMLText);
 
-        var syntaxTree = parser.Generate();
-        string code = syntaxTree.NormalizeWhitespace().ToFullString();
-        var script = GenerateScript(code);
+      var syntaxTree = parser.Generate();
+      string code = syntaxTree.NormalizeWhitespace().ToFullString();
+      var script = GenerateScript(code);
 
-        CodeText = script.Code;
+      CodeText = script.Code;
+    }
+
+    private async Task Run()
+    {
+      this.Output = "";
+
+      var xml = await Interop.GetXML(JSRuntime);
+      var printBlock = new CustomPrintBlock();
+
+      new Parser()
+      .AddStandardBlocks()
+      .AddBlock("text_print", printBlock)
+      .Parse(xml)
+      .Evaluate();
+
+      this.Output = string.Join('\n', printBlock.Text);
+
     }
 
     // Utility
 
     public static IEnumerable<Diagnostic> Compile(Script<object> script)
     {
-        if (script == null)
-            return Enumerable.Empty<Diagnostic>();
+      if (script == null)
+    return Enumerable.Empty<Diagnostic>();
 
-        try
-        {
-            return script.Compile();
-        }
-        catch (CompilationErrorException compilationErrorException)
-        {
-            return compilationErrorException.Diagnostics;
-        }
+      try
+      {
+    return script.Compile();
+      }
+      catch (CompilationErrorException compilationErrorException)
+      {
+    return compilationErrorException.Diagnostics;
+      }
     }
 
     public static Script<object> GenerateScript(string code)
     {
-        var dynamicRuntimeReference = MetadataReference.CreateFromFile(typeof(System.Runtime.CompilerServices.DynamicAttribute).Assembly.Location);
-        var runtimeBinderReference = MetadataReference.CreateFromFile(typeof(Microsoft.CSharp.RuntimeBinder.CSharpArgumentInfo).Assembly.Location);
+      var dynamicRuntimeReference = MetadataReference.CreateFromFile(typeof(System.Runtime.CompilerServices.DynamicAttribute).Assembly.Location);
+      var runtimeBinderReference = MetadataReference.CreateFromFile(typeof(Microsoft.CSharp.RuntimeBinder.CSharpArgumentInfo).Assembly.Location);
 
-        var scriptOptions =
-                ScriptOptions.Default
-                    .WithImports("System", "System.Linq", "System.Math")
-                    .AddReferences(dynamicRuntimeReference, runtimeBinderReference);
+      var scriptOptions =
+      ScriptOptions.Default
+          .WithImports("System", "System.Linq", "System.Math")
+          .AddReferences(dynamicRuntimeReference, runtimeBinderReference);
 
-        return CSharpScript.Create<object>(code, scriptOptions);
+      return CSharpScript.Create<object>(code, scriptOptions);
     }
 }
