@@ -1,0 +1,71 @@
+﻿@page "/"
+@namespace BlazorSample.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BlazorSample</title>
+    <base href="~/" />
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
+    <link href="css/site.css" rel="stylesheet" />    
+    <style>
+        body {
+            background-color: #fff;
+            font-family: sans-serif;
+        }
+
+        h1 {
+            font-weight: normal;
+            font-size: 140%;
+        }
+    </style>
+</head>
+<body>
+    <app>
+        <component type="typeof(App)" render-mode="ServerPrerendered" />
+    </app>
+
+    <div id="blazor-error-ui">
+        <environment include="Staging,Production">
+            An error has occurred. This application may no longer respond until reloaded.
+        </environment>
+        <environment include="Development">
+            An unhandled exception has occurred. See browser dev tools for details.
+        </environment>
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+
+    <script>
+        var demoWorkspace;
+        window.BlocklyFunctions = {
+            createDemoWorkspace: function (blocklyDiv, toolbox, startBlocks) {
+                demoWorkspace = Blockly.inject(blocklyDiv,
+                    {
+                        media: 'media/',
+                        toolbox: toolbox
+                    });
+                Blockly.Xml.domToWorkspace(startBlocks,
+                    demoWorkspace);
+            },
+            getXML: function () {
+                var xml = Blockly.Xml.workspaceToDom(demoWorkspace);
+                var xml_text = Blockly.Xml.domToText(xml);
+                return xml_text;
+            }
+        };
+    </script>
+
+    <script src="javascript/blockly_compressed.js"></script>
+    <script src="javascript/blocks_compressed.js"></script>
+    <script src="javascript/msg/js/en.js"></script>
+
+    <script src="_framework/blazor.server.js"></script>
+</body>
+</html>

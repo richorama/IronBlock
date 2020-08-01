@@ -1,0 +1,228 @@
+﻿@page "/"
+@using System.Net.Http
+@using System.Threading.Tasks
+@using Microsoft.JSInterop
+@using System.Collections.Generic;
+@using System.IO;
+@using System.Linq;
+@using System.Reflection;
+@using IronBlock
+@using IronBlock.Blocks;
+@using Microsoft.CodeAnalysis;
+@using Microsoft.CodeAnalysis.CSharp.Scripting;
+@using Microsoft.CodeAnalysis.Scripting;
+@inject IJSRuntime JSRuntime
+
+<h1>Blazor Blockly</h1>
+
+<button class="btn btn-primary" @onclick="GetXML" disabled="@ViewXML">
+    XML
+</button>
+<button class="btn btn-primary" @onclick="GetCode" disabled="@ViewCode">
+    C# Code
+</button>
+<div style="width: 100%">
+    <div @ref="@blocklyDiv" style="display: inline-block; height: 480px; width: 100%"></div>
+</div>
+
+@if (ViewXML)
+{
+    <div class="modal" tabindex="-1" style="display:block;background-color:gainsboro" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">View XML</h3>
+                    <!-- Button to close the popup -->
+                    <button type="button" class="close"
+                            @onclick="ClosePopup">
+                        <span aria-hidden="true">X</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <textarea disabled="disabled" style="display: inline-block; height: 480px; width: 100%;">@XMLText</textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@if (ViewCode)
+{
+    <div class="modal" tabindex="-1" style="display:block;background-color:gainsboro" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">View Code</h3>
+                    <!-- Button to close the popup -->
+                    <button type="button" class="close"
+                            @onclick="ClosePopup">
+                        <span aria-hidden="true">X</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <textarea disabled="disabled" style="display: inline-block; height: 480px; width: 100%;">@CodeText</textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<xml xmlns="https://developers.google.com/blockly/xml" @ref="@toolbox" style="display: none">
+    <category name="Logic" colour="%{BKY_LOGIC_HUE}">
+        <block type="controls_if"></block>
+        <block type="logic_compare"></block>
+        <block type="logic_operation"></block>
+        <block type="logic_negate"></block>
+        <block type="logic_boolean"></block>
+    </category>
+    <category name="Loops" colour="%{BKY_LOOPS_HUE}">
+        <block type="controls_repeat_ext">
+            <value name="TIMES">
+                <block type="math_number">
+                    <field name="NUM">10</field>
+                </block>
+            </value>
+        </block>
+        <block type="controls_whileUntil"></block>
+    </category>
+    <category name="Math" colour="%{BKY_MATH_HUE}">
+        <block type="math_number">
+            <field name="NUM">123</field>
+        </block>
+        <block type="math_arithmetic"></block>
+        <block type="math_single"></block>
+    </category>
+    <category name="Text" colour="%{BKY_TEXTS_HUE}">
+        <block type="text"></block>
+        <block type="text_length"></block>
+        <block type="text_print"></block>
+        <block type="text_prompt_ext">
+            <value name="TEXT">
+                <block type="text"></block>
+            </value>
+        </block>
+    </category>
+    <sep></sep>
+    <category name="Variables" custom="VARIABLE" colour="%{BKY_VARIABLES_HUE}">
+    </category>
+    <category name="Functions" custom="PROCEDURE" colour="%{BKY_PROCEDURES_HUE}">
+    </category>
+</xml>
+
+<xml xmlns="https://developers.google.com/blockly/xml" @ref="@startBlocks" style="display: none">
+    <variables>
+        <variable id="~kJbZ`y-lliSTC6sw2A6">n</variable>
+    </variables>
+    <block type="variables_set" id="set_n_initial" inline="true" x="20" y="20">
+        <field name="VAR" id="~kJbZ`y-lliSTC6sw2A6">n</field>
+        <value name="VALUE">
+            <block type="math_number" id="_kK+DXHB*8,OLm{4-jOe">
+                <field name="NUM">1</field>
+            </block>
+        </value>
+        <next>
+            <block type="controls_repeat_ext" id="repeat" inline="true">
+                <value name="TIMES">
+                    <block type="math_number" id="K3^#nAy~lxtrhUl#2T{B">
+                        <field name="NUM">4</field>
+                    </block>
+                </value>
+                <statement name="DO">
+                    <block type="text_print" id="-KXHAx](KV-qmA[_}~uq">
+                        <value name="TEXT">
+                            <block type="variables_get" id="x`fF-ca~6ZmjAE1](tt)">
+                                <field name="VAR" id="~kJbZ`y-lliSTC6sw2A6">n</field>
+                            </block>
+                        </value>
+                    </block>
+                </statement>
+            </block>
+        </next>
+    </block>
+</xml>
+
+@code {
+    private ElementReference blocklyDiv;
+    private ElementReference toolbox;
+    private ElementReference startBlocks;
+
+    bool ViewXML = false;
+    bool ViewCode = false;
+
+    string XMLText = "";
+    string CodeText = "";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await Interop.DemoWorkspace(
+                JSRuntime,
+                blocklyDiv,
+                toolbox,
+                startBlocks
+                );
+        }
+    }
+
+    void ClosePopup()
+    {
+        // Close Popups
+        ViewXML = false;
+        ViewCode = false;
+    }
+
+    private async Task GetXML()
+    {
+        ViewXML = true;
+        ViewCode = false;
+        XMLText = await Interop.GetXML(JSRuntime);
+    }
+
+    private async Task GetCode()
+    {
+        ViewXML = false;
+        ViewCode = true;
+        CodeText = "";
+
+        XMLText = await Interop.GetXML(JSRuntime);
+
+        var parser = new Parser().AddStandardBlocks().Parse(XMLText);
+
+        var syntaxTree = parser.Generate();
+        string code = syntaxTree.NormalizeWhitespace().ToFullString();
+        var script = GenerateScript(code);
+
+        CodeText = script.Code;
+    }
+
+    // Utility
+
+    public static IEnumerable<Diagnostic> Compile(Script<object> script)
+    {
+        if (script == null)
+            return Enumerable.Empty<Diagnostic>();
+
+        try
+        {
+            return script.Compile();
+        }
+        catch (CompilationErrorException compilationErrorException)
+        {
+            return compilationErrorException.Diagnostics;
+        }
+    }
+
+    public static Script<object> GenerateScript(string code)
+    {
+        var dynamicRuntimeReference = MetadataReference.CreateFromFile(typeof(System.Runtime.CompilerServices.DynamicAttribute).Assembly.Location);
+        var runtimeBinderReference = MetadataReference.CreateFromFile(typeof(Microsoft.CSharp.RuntimeBinder.CSharpArgumentInfo).Assembly.Location);
+
+        var scriptOptions =
+                ScriptOptions.Default
+                    .WithImports("System", "System.Linq", "System.Math")
+                    .AddReferences(dynamicRuntimeReference, runtimeBinderReference);
+
+        return CSharpScript.Create<object>(code, scriptOptions);
+    }
+}
