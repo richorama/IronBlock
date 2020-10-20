@@ -9,6 +9,7 @@
     <script src="javascript/blockly_compressed.js"></script>
     <script src="javascript/blocks_compressed.js"></script>
     <script src="javascript/msg/js/en.js"></script>
+
 </head>
 
 <body>
@@ -21,11 +22,65 @@
                 <a class="btn btn-primary" href="javascript:void(0);" onclick="evalProgram()">Run</a>
             </div>
             <div style="padding:8px;">
-                <pre id="output"></pre>
+                <h3>Output from IronBlock .net core interpreter</h3>
+                <pre id="output" style="padding: 24px;background: #212529;color: whitesmoke;border-radius: 4px;"></pre>
+            </div>
+            <div style="padding:8px;">
+                <a href="https://github.com/richorama/IronBlock/">Source</a>
             </div>
         </div>
     </div>
     </div>
+
+
+    <xml id="defaultProgram" style="display: none">
+        <block type="variables_set" id="set_n_initial" inline="true" x="20" y="20">
+            <field name="VAR">n</field>
+            <value name="VALUE">
+                <block type="math_number">
+                    <field name="NUM">1</field>
+                </block>
+            </value>
+            <next>
+                <block type="controls_repeat_ext" id="repeat" inline="true">
+                    <value name="TIMES">
+                        <block type="math_number">
+                            <field name="NUM">4</field>
+                        </block>
+                    </value>
+                    <statement name="DO">
+                        <block type="variables_set" id="set_n_update" inline="true">
+                            <field name="VAR">n</field>
+                            <value name="VALUE">
+                                <block type="math_arithmetic" inline="true">
+                                    <field name="OP">MULTIPLY</field>
+                                    <value name="A">
+                                        <block type="variables_get">
+                                            <field name="VAR">n</field>
+                                        </block>
+                                    </value>
+                                    <value name="B">
+                                        <block type="math_number">
+                                            <field name="NUM">2</field>
+                                        </block>
+                                    </value>
+                                </block>
+                            </value>
+                            <next>
+                                <block type="text_print" id="print">
+                                    <value name="TEXT">
+                                        <block type="variables_get">
+                                            <field name="VAR">n</field>
+                                        </block>
+                                    </value>
+                                </block>
+                            </next>
+                        </block>
+                    </statement>
+                </block>
+            </next>
+        </block>
+    </xml>
 
     <xml id="toolbox" style="display: none">
         <category name="Logic" colour="210">
@@ -250,25 +305,12 @@
     </xml>
 
     <script lang="JavaScript">
-        /*
-
-        Blockly.Blocks['temp'] = {
-            init: function () {
-                this.appendDummyInput()
-                    .appendField("temperature in");
-                this.appendValueInput("CITY")
-                    .setCheck("String");
-                this.appendDummyInput();
-                this.setOutput(true, "Number");
-                this.setColour(60);
-            }
-        };
-        */
-
         var workspace = Blockly.inject('blocklyDiv', {
             media: 'media/',
             toolbox: document.getElementById('toolbox')
         });
+
+        Blockly.Xml.domToWorkspace(document.getElementById('defaultProgram'), workspace);
 
         function evalProgram() {
             setOutput("");
@@ -286,7 +328,6 @@
                 .then(cb)
                 .catch(err => console.error(err))
         }
-
     </script>
 
     <script src="_framework/blazor.webassembly.js"></script>
