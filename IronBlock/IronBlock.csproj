@@ -11,13 +11,13 @@
     <PackageTags>blockly netcore scratch interpreter</PackageTags>
     <Description>A .net core interpreter for blockly programs</Description>
     <Copyright>Richard Astbury 2020</Copyright>
-    <Version>1.0.9</Version>
+    <Version>1.0.10</Version>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>keyPair.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="3.4.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="3.8.0" />
   </ItemGroup>
 
 </Project>
