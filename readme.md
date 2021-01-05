@@ -1,4 +1,4 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/yk44w5v19lvq65lc/branch/master?svg=true)](https://ci.appveyor.com/project/richorama/ironblock/branch/master)
+![ASP.NET Core CI](https://github.com/richorama/IronBlock/workflows/ASP.NET%20Core%20CI/badge.svg)
 
 # IronBlock
 
