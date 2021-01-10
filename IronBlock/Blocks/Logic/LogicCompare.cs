@@ -17,6 +17,7 @@ namespace IronBlock.Blocks.Logic
 
 			if (a is string) return Compare(opValue, a as string, b as string);
 			if (a is double) return Compare(opValue, (double)a, (double)b);
+			if (a is bool) return Compare(opValue, (bool)a, (bool)b);
 
 			throw new ApplicationException("unexpected value type");
 		}
@@ -64,6 +65,16 @@ namespace IronBlock.Blocks.Logic
 				default: throw new ApplicationException($"Unknown OP {op}");
 			}
 		}
+
+        bool Compare(string op, bool a, bool b)
+        {
+            switch (op)
+            {
+                case "EQ": return a == b;
+                case "NEQ": return a != b;
+                default: throw new ApplicationException($"Unknown OP {op}");
+            }
+        }
 
 		private SyntaxKind GetBinaryOperator(string opValue)
 		{
