@@ -7,68 +7,68 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace IronBlock.Blocks.Math
 {
-    public class MathArithmetic : IBlock
+  public class MathArithmetic : IBlock
+  {
+    public override object Evaluate(Context context)
     {
-        public override object Evaluate(Context context)
-        {
-            var a = (double) this.Values.Evaluate("A", context);
-            var b = (double) this.Values.Evaluate("B", context);
-            
-            var opValue = this.Fields.Get("OP");
+      var a = (double)this.Values.Evaluate("A", context);
+      var b = (double)this.Values.Evaluate("B", context);
 
-            switch (opValue)
-            {
-                case "MULTIPLY": return a * b;
-                case "DIVIDE": return a / b;
-                case "ADD": return a + b;
-                case "MINUS": return a - b;
-                case "POWER": return System.Math.Pow(a, b);
+      var opValue = this.Fields.Get("OP");
 
-                default: throw new ApplicationException($"Unknown OP {opValue}");
-            }
-        }
+      switch (opValue)
+      {
+        case "MULTIPLY": return a * b;
+        case "DIVIDE": return a / b;
+        case "ADD": return a + b;
+        case "MINUS": return a - b;
+        case "POWER": return System.Math.Pow(a, b);
 
-		public override SyntaxNode Generate(Context context)
-		{
-			var firstExpression = this.Values.Generate("A", context) as ExpressionSyntax;
-			if (firstExpression == null) throw new ApplicationException($"Unknown expression for value A.");
+        default: throw new ApplicationException($"Unknown OP {opValue}");
+      }
+    }
 
-			var secondExpression = this.Values.Generate("B", context) as ExpressionSyntax;
-			if (secondExpression == null) throw new ApplicationException($"Unknown expression for value B.");
+    public override SyntaxNode Generate(Context context)
+    {
+      var firstExpression = this.Values.Generate("A", context) as ExpressionSyntax;
+      if (firstExpression == null) throw new ApplicationException($"Unknown expression for value A.");
 
-            ExpressionSyntax expression = null;
+      var secondExpression = this.Values.Generate("B", context) as ExpressionSyntax;
+      if (secondExpression == null) throw new ApplicationException($"Unknown expression for value B.");
 
-			var opValue = this.Fields.Get("OP");
-            if (opValue == "POWER")
-            {
-				expression =
-					SyntaxGenerator.MethodInvokeExpression(
-						IdentifierName(nameof(System.Math)),
-						nameof(System.Math.Pow),
-						new[] { firstExpression, secondExpression }
-					);				
-            }
-            else
-            {
-                var binaryOperator = GetBinaryOperator(opValue);
-                expression = BinaryExpression(binaryOperator, firstExpression, secondExpression);
-            }
-			
-			return ParenthesizedExpression(expression);
-		}
+      ExpressionSyntax expression = null;
 
-		private SyntaxKind GetBinaryOperator(string opValue)
-		{
-			switch (opValue)
-			{
-				case "MULTIPLY": return SyntaxKind.MultiplyExpression;
-				case "DIVIDE": return SyntaxKind.DivideExpression;
-				case "ADD": return SyntaxKind.AddExpression;
-				case "MINUS": return SyntaxKind.SubtractExpression;
+      var opValue = this.Fields.Get("OP");
+      if (opValue == "POWER")
+      {
+        expression =
+          SyntaxGenerator.MethodInvokeExpression(
+            IdentifierName(nameof(System.Math)),
+            nameof(System.Math.Pow),
+            new[] { firstExpression, secondExpression }
+          );
+      }
+      else
+      {
+        var binaryOperator = GetBinaryOperator(opValue);
+        expression = BinaryExpression(binaryOperator, firstExpression, secondExpression);
+      }
 
-                default: throw new ApplicationException($"Unknown OP {opValue}");
-			}
-		}
-	}
+      return ParenthesizedExpression(expression);
+    }
+
+    private SyntaxKind GetBinaryOperator(string opValue)
+    {
+      switch (opValue)
+      {
+        case "MULTIPLY": return SyntaxKind.MultiplyExpression;
+        case "DIVIDE": return SyntaxKind.DivideExpression;
+        case "ADD": return SyntaxKind.AddExpression;
+        case "MINUS": return SyntaxKind.SubtractExpression;
+
+        default: throw new ApplicationException($"Unknown OP {opValue}");
+      }
+    }
+  }
 
 }

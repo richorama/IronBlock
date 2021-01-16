@@ -4,12 +4,12 @@ using System.Linq;
 
 namespace IronBlock.Blocks.Text
 {
-    public class ColourPicker : IBlock
+  public class ColourPicker : IBlock
+  {
+    public override object Evaluate(Context context)
     {
-        public override object Evaluate(Context context)
-        {
-            return this.Fields.Get("COLOUR") ?? "#000000";
-        }
+      return this.Fields.Get("COLOUR") ?? "#000000";
     }
+  }
 
 }

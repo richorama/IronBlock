@@ -7,72 +7,72 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace IronBlock.Blocks.Text
 {
-    public class ProceduresCallNoReturn : IBlock
+  public class ProceduresCallNoReturn : IBlock
+  {
+    public override object Evaluate(Context context)
     {
-        public override object Evaluate(Context context)
-        {
-            // todo: add guard for missing name
+      // todo: add guard for missing name
 
-            var name = this.Mutations.GetValue("name");
-          
-            if (!context.Functions.ContainsKey(name)) throw new MissingMethodException($"Method ${name} not defined");
+      var name = this.Mutations.GetValue("name");
 
-            var statement = (IFragment)context.Functions[name];
+      if (!context.Functions.ContainsKey(name)) throw new MissingMethodException($"Method ${name} not defined");
 
-            var funcContext = new Context() { Parent = context };
-            funcContext.Functions = context.Functions;
-            
-            var counter = 0;
-            foreach (var mutation in this.Mutations.Where(x => x.Domain == "arg" && x.Name == "name"))
-            {   
-                var value = this.Values.Evaluate($"ARG{counter}", context);
-                funcContext.Variables.Add(mutation.Value, value);
-                counter++;
-            }
+      var statement = (IFragment)context.Functions[name];
 
-            statement.Evaluate(funcContext);
+      var funcContext = new Context() { Parent = context };
+      funcContext.Functions = context.Functions;
 
-            return base.Evaluate(context);
-        }
+      var counter = 0;
+      foreach (var mutation in this.Mutations.Where(x => x.Domain == "arg" && x.Name == "name"))
+      {
+        var value = this.Values.Evaluate($"ARG{counter}", context);
+        funcContext.Variables.Add(mutation.Value, value);
+        counter++;
+      }
 
-		public override SyntaxNode Generate(Context context)
-		{
-			var methodName = Mutations.GetValue("name").CreateValidName();
+      statement.Evaluate(funcContext);
 
-			var arguments = new List<ArgumentSyntax>();
+      return base.Evaluate(context);
+    }
 
-			var counter = 0;
-			foreach (var mutation in Mutations.Where(x => x.Domain == "arg" && x.Name == "name"))
-			{
-				var argumentExpression = this.Values.Generate($"ARG{counter}", context) as ExpressionSyntax;
-				if (argumentExpression == null)
-					throw new ApplicationException($"Unknown argument expression for ARG{counter}.");
+    public override SyntaxNode Generate(Context context)
+    {
+      var methodName = Mutations.GetValue("name").CreateValidName();
 
-				arguments.Add(Argument(argumentExpression));
-				counter++;
-			}
+      var arguments = new List<ArgumentSyntax>();
 
-			var methodInvocation = 
-				InvocationExpression(
-					IdentifierName(methodName)
-				);
+      var counter = 0;
+      foreach (var mutation in Mutations.Where(x => x.Domain == "arg" && x.Name == "name"))
+      {
+        var argumentExpression = this.Values.Generate($"ARG{counter}", context) as ExpressionSyntax;
+        if (argumentExpression == null)
+          throw new ApplicationException($"Unknown argument expression for ARG{counter}.");
 
-			
-			if (arguments.Any())
-			{
-				var syntaxList = SeparatedList(arguments);
+        arguments.Add(Argument(argumentExpression));
+        counter++;
+      }
 
-				methodInvocation = 
-					methodInvocation
-						.WithArgumentList(
-							ArgumentList(
-								syntaxList
-							)
-						);
-			}
+      var methodInvocation =
+        InvocationExpression(
+          IdentifierName(methodName)
+        );
 
-			return Statement(methodInvocation, base.Generate(context), context);
-		}
-	}
+
+      if (arguments.Any())
+      {
+        var syntaxList = SeparatedList(arguments);
+
+        methodInvocation =
+          methodInvocation
+            .WithArgumentList(
+              ArgumentList(
+                syntaxList
+              )
+            );
+      }
+
+      return Statement(methodInvocation, base.Generate(context), context);
+    }
+  }
 
 }

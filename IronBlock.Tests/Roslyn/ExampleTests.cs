@@ -51,5 +51,17 @@ namespace IronBlock.Tests.Roslyn
 			string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
 			Assert.IsTrue(code.Contains("dynamic a; dynamic b; dynamic i; void test(dynamic x) { a = 2; b = (a * b); b = (b / 2); if ((b > 6)) { for (i = 1; i <= 10; i += 2) { a = (a * i); b = (1 + x); } }  a = (b * x); }  test(11);"));
 		}
+
+		[TestMethod]
+		public void Test_Example4()
+		{
+			var xml = File.ReadAllText("../../../Examples/example4.xml");
+
+			var output = new Parser()
+				.AddStandardBlocks()
+				.Parse(xml)
+				.Evaluate();
+
+		}
 	}
 }

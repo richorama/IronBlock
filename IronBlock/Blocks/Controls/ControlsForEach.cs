@@ -6,65 +6,65 @@ using System.Linq;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 namespace IronBlock.Blocks.Controls
 {
-	public class ControlsForEach : IBlock
+  public class ControlsForEach : IBlock
+  {
+    public override object Evaluate(Context context)
     {
-        public override object Evaluate(Context context)
+      var variableName = this.Fields.Get("VAR");
+      var list = this.Values.Evaluate("LIST", context) as IEnumerable<object>;
+
+      var statement = this.Statements.Where(x => x.Name == "DO").FirstOrDefault();
+
+      if (null == statement) return base.Evaluate(context);
+
+      foreach (var item in list)
+      {
+        if (context.Variables.ContainsKey(variableName))
         {
-            var variableName = this.Fields.Get("VAR");
-            var list = this.Values.Evaluate("LIST",context) as IEnumerable<object>;
-
-            var statement = this.Statements.Where(x => x.Name == "DO").FirstOrDefault();
-
-            if (null == statement) return base.Evaluate(context);
-
-            foreach (var item in list)
-            {
-                if (context.Variables.ContainsKey(variableName))
-                {
-                    context.Variables[variableName] = item;
-                }
-                else
-                {
-                    context.Variables.Add(variableName, item);
-                }
-                statement.Evaluate(context);
-            }
-
-            return base.Evaluate(context);
+          context.Variables[variableName] = item;
         }
+        else
+        {
+          context.Variables.Add(variableName, item);
+        }
+        statement.Evaluate(context);
+      }
 
-		public override SyntaxNode Generate(Context context)
-		{
-			var variableName = this.Fields.Get("VAR").CreateValidName();
-			var listExpression = this.Values.Generate("LIST", context) as ExpressionSyntax;
-			if (listExpression == null) throw new ApplicationException($"Unknown expression for list.");
+      return base.Evaluate(context);
+    }
 
-			var statement = this.Statements.Where(x => x.Name == "DO").FirstOrDefault();
+    public override SyntaxNode Generate(Context context)
+    {
+      var variableName = this.Fields.Get("VAR").CreateValidName();
+      var listExpression = this.Values.Generate("LIST", context) as ExpressionSyntax;
+      if (listExpression == null) throw new ApplicationException($"Unknown expression for list.");
 
-			if (null == statement) return base.Generate(context);
+      var statement = this.Statements.Where(x => x.Name == "DO").FirstOrDefault();
 
-			var forEachContext = new Context() { Parent = context };
-			if (statement?.Block != null)
-			{
-				var statementSyntax = statement.Block.GenerateStatement(forEachContext);
-				if (statementSyntax != null)
-				{
-					forEachContext.Statements.Add(statementSyntax);
-				}
-			}
+      if (null == statement) return base.Generate(context);
 
-			var forEachStatement =
-					ForEachStatement(
-							IdentifierName("var"),
-							Identifier(variableName),
-							listExpression,
-							Block(
-								forEachContext.Statements
-							)
-						);
+      var forEachContext = new Context() { Parent = context };
+      if (statement?.Block != null)
+      {
+        var statementSyntax = statement.Block.GenerateStatement(forEachContext);
+        if (statementSyntax != null)
+        {
+          forEachContext.Statements.Add(statementSyntax);
+        }
+      }
 
-			return Statement(forEachStatement, base.Generate(context), context);
-		}
-	}
+      var forEachStatement =
+          ForEachStatement(
+              IdentifierName("var"),
+              Identifier(variableName),
+              listExpression,
+              Block(
+                forEachContext.Statements
+              )
+            );
+
+      return Statement(forEachStatement, base.Generate(context), context);
+    }
+  }
 
 }

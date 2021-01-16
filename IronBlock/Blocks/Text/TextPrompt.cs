@@ -7,84 +7,84 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace IronBlock.Blocks.Text
 {
-    public class TextPrompt : IBlock
+  public class TextPrompt : IBlock
+  {
+    public override object Evaluate(Context context)
     {
-        public override object Evaluate(Context context)
-        {
-            var inputType = this.Mutations.GetValue("type") ?? "TEXT";
+      var inputType = this.Mutations.GetValue("type") ?? "TEXT";
 
-            var text = (this.Values.Evaluate("TEXT", context) ?? "").ToString();
+      var text = (this.Values.Evaluate("TEXT", context) ?? "").ToString();
 
-            if (!string.IsNullOrWhiteSpace(text))
-            {
-                Console.Write($"{text}: ");
-            }
+      if (!string.IsNullOrWhiteSpace(text))
+      {
+        Console.Write($"{text}: ");
+      }
 
-            var value = Console.ReadLine();
+      var value = Console.ReadLine();
 
-            if (inputType == "NUMBER")
-            {
-                return int.Parse(value);                
-            }
+      if (inputType == "NUMBER")
+      {
+        return int.Parse(value);
+      }
 
-            return value;
-        }
+      return value;
+    }
 
-		public override SyntaxNode Generate(Context context)
-		{
-			var inputType = this.Mutations.GetValue("type") ?? "TEXT";
+    public override SyntaxNode Generate(Context context)
+    {
+      var inputType = this.Mutations.GetValue("type") ?? "TEXT";
 
-			var expression = this.Values.Generate("TEXT", context) as ExpressionSyntax;
-			if (expression != null)
-			{
-				context.Statements.Add(
-					ExpressionStatement(
-						SyntaxGenerator.MethodInvokeExpression(
-							IdentifierName(nameof(Console)),
-							nameof(Console.WriteLine),
-							expression
-						)
-					)
-				);
-			}
+      var expression = this.Values.Generate("TEXT", context) as ExpressionSyntax;
+      if (expression != null)
+      {
+        context.Statements.Add(
+          ExpressionStatement(
+            SyntaxGenerator.MethodInvokeExpression(
+              IdentifierName(nameof(Console)),
+              nameof(Console.WriteLine),
+              expression
+            )
+          )
+        );
+      }
 
-			context.Statements.Add(
-				LocalDeclarationStatement(
-					VariableDeclaration(
-						IdentifierName("var")
-					)
-					.WithVariables(
-						SingletonSeparatedList(
-							VariableDeclarator(
-								Identifier("value")
-							)
-							.WithInitializer(
-								EqualsValueClause(
-									SyntaxGenerator.MethodInvokeExpression(
-										IdentifierName(nameof(Console)), 
-										nameof(Console.ReadLine)
-									)
-								)
-							)
-						)
-					)
-				)
-			);
+      context.Statements.Add(
+        LocalDeclarationStatement(
+          VariableDeclaration(
+            IdentifierName("var")
+          )
+          .WithVariables(
+            SingletonSeparatedList(
+              VariableDeclarator(
+                Identifier("value")
+              )
+              .WithInitializer(
+                EqualsValueClause(
+                  SyntaxGenerator.MethodInvokeExpression(
+                    IdentifierName(nameof(Console)),
+                    nameof(Console.ReadLine)
+                  )
+                )
+              )
+            )
+          )
+        )
+      );
 
-			if (inputType == "NUMBER")
-			{
-				return
-					SyntaxGenerator.MethodInvokeExpression(
-						PredefinedType(
-							Token(SyntaxKind.IntKeyword)
-						), 
-						nameof(int.Parse),
-						IdentifierName("value")
-					);
-			}
+      if (inputType == "NUMBER")
+      {
+        return
+          SyntaxGenerator.MethodInvokeExpression(
+            PredefinedType(
+              Token(SyntaxKind.IntKeyword)
+            ),
+            nameof(int.Parse),
+            IdentifierName("value")
+          );
+      }
 
-			return IdentifierName("value");
-		}
-	}
+      return IdentifierName("value");
+    }
+  }
 
 }
