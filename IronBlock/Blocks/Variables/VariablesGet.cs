@@ -7,23 +7,23 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace IronBlock.Blocks.Variables
 {
-    public class VariablesGet : IBlock
+  public class VariablesGet : IBlock
+  {
+    public override object Evaluate(Context context)
     {
-        public override object Evaluate(Context context)
-        {
-            var variableName = this.Fields.Get("VAR");
+      var variableName = this.Fields.Get("VAR");
 
-            if (!context.Variables.ContainsKey(variableName)) return null;
-			
-            return context.Variables[variableName];
-        }
+      if (!context.Variables.ContainsKey(variableName)) return null;
 
-		public override SyntaxNode Generate(Context context)
-		{
-			var variableName = this.Fields.Get("VAR").CreateValidName();
+      return context.Variables[variableName];
+    }
 
-			return IdentifierName(variableName);
-		}
-	}
+    public override SyntaxNode Generate(Context context)
+    {
+      var variableName = this.Fields.Get("VAR").CreateValidName();
+
+      return IdentifierName(variableName);
+    }
+  }
 
 }

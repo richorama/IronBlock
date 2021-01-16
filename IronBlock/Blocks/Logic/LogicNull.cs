@@ -6,21 +6,21 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace IronBlock.Blocks.Logic
 {
-    public class LogicNull : IBlock
+  public class LogicNull : IBlock
+  {
+    public override object Evaluate(Context context)
     {
-        public override object Evaluate(Context context)
-        {
-            return null;
-        }
+      return null;
+    }
 
-		public override SyntaxNode Generate(Context context)
-		{
-			return ReturnStatement(
-						LiteralExpression(
-							SyntaxKind.NullLiteralExpression
-						)
-					);
-		}
-	}
+    public override SyntaxNode Generate(Context context)
+    {
+      return ReturnStatement(
+            LiteralExpression(
+              SyntaxKind.NullLiteralExpression
+            )
+          );
+    }
+  }
 
 }

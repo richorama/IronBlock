@@ -7,70 +7,70 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace IronBlock.Blocks.Controls
 {
-	public class ControlsWhileUntil : IBlock
+  public class ControlsWhileUntil : IBlock
+  {
+    public override object Evaluate(Context context)
     {
-        public override object Evaluate(Context context)
+      var mode = this.Fields.Get("MODE");
+      var value = this.Values.FirstOrDefault(x => x.Name == "BOOL");
+
+      if (!this.Statements.Any(x => x.Name == "DO") || null == value) return base.Evaluate(context);
+
+      var statement = this.Statements.Get("DO");
+
+      if (mode == "WHILE")
+      {
+        while ((bool)value.Evaluate(context))
         {
-            var mode = this.Fields.Get("MODE");
-            var value = this.Values.FirstOrDefault(x => x.Name == "BOOL");
-            
-            if (!this.Statements.Any(x => x.Name == "DO") || null == value) return base.Evaluate(context);
-            
-            var statement = this.Statements.Get("DO");
-
-            if (mode == "WHILE")
-            {
-                while((bool) value.Evaluate(context))
-                {
-                    statement.Evaluate(context);
-                }
-            }
-            else
-            {
-                while(!(bool) value.Evaluate(context))
-                {
-                    statement.Evaluate(context);
-                }
-            }
-
-            return base.Evaluate(context);
+          statement.Evaluate(context);
         }
+      }
+      else
+      {
+        while (!(bool)value.Evaluate(context))
+        {
+          statement.Evaluate(context);
+        }
+      }
 
-		public override SyntaxNode Generate(Context context)
-		{
-			var mode = this.Fields.Get("MODE");
-			var value = this.Values.FirstOrDefault(x => x.Name == "BOOL");
+      return base.Evaluate(context);
+    }
 
-			if (!this.Statements.Any(x => x.Name == "DO") || null == value) return base.Generate(context);
+    public override SyntaxNode Generate(Context context)
+    {
+      var mode = this.Fields.Get("MODE");
+      var value = this.Values.FirstOrDefault(x => x.Name == "BOOL");
 
-			var statement = this.Statements.Get("DO");
+      if (!this.Statements.Any(x => x.Name == "DO") || null == value) return base.Generate(context);
 
-			var conditionExpression = value.Generate(context) as ExpressionSyntax;
-			if (conditionExpression == null) throw new ApplicationException($"Unknown expression for condition.");
+      var statement = this.Statements.Get("DO");
 
-			var whileContext = new Context() { Parent = context };
-			if (statement?.Block != null)
-			{
-				var statementSyntax = statement.Block.GenerateStatement(whileContext);
-				if (statementSyntax != null)
-				{
-					whileContext.Statements.Add(statementSyntax);
-				}
-			}
+      var conditionExpression = value.Generate(context) as ExpressionSyntax;
+      if (conditionExpression == null) throw new ApplicationException($"Unknown expression for condition.");
 
-			if (mode != "WHILE")
-			{
-				conditionExpression = PrefixUnaryExpression(SyntaxKind.LogicalNotExpression, conditionExpression);
-			}
+      var whileContext = new Context() { Parent = context };
+      if (statement?.Block != null)
+      {
+        var statementSyntax = statement.Block.GenerateStatement(whileContext);
+        if (statementSyntax != null)
+        {
+          whileContext.Statements.Add(statementSyntax);
+        }
+      }
 
-			var whileStatement = 
-					WhileStatement(
-						conditionExpression,
-						Block(whileContext.Statements)
-					);			
+      if (mode != "WHILE")
+      {
+        conditionExpression = PrefixUnaryExpression(SyntaxKind.LogicalNotExpression, conditionExpression);
+      }
 
-			return Statement(whileStatement, base.Generate(context), context);
-		}
-	}
+      var whileStatement =
+          WhileStatement(
+            conditionExpression,
+            Block(whileContext.Statements)
+          );
+
+      return Statement(whileStatement, base.Generate(context), context);
+    }
+  }
 
 }
