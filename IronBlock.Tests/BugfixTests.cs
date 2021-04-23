@@ -65,7 +65,7 @@ namespace IronBlock.Tests
 
 
 
-[TestMethod]
+        [TestMethod]
         public void Issue_40()
         {
             const string xml = @"
@@ -106,6 +106,45 @@ namespace IronBlock.Tests
               .Evaluate();
 
             Assert.AreEqual("it worked", TestExtensions.GetDebugText().First());
+
+        }
+
+        [TestMethod]
+        public void Issue_44()
+        {
+
+            const string xml = @"<xml xmlns=""https://developers.google.com/blockly/xml"">
+  <block type=""controls_whileUntil"" id=""?NVqr1Vh{l~tzFs^`s#H"" x=""613"" y=""188"">
+    <field name=""MODE"">WHILE</field>
+    <value name=""BOOL"">
+      <block type=""logic_boolean"" id=""7;4?+s6l??{2zT|`64r/"">
+        <field name=""BOOL"">TRUE</field>
+      </block>
+    </value>
+    <statement name=""DO"">
+      <block type=""controls_flow_statements"" id=""GPzBz)WSSoAKey`9CPy;"">
+        <field name=""FLOW"">BREAK</field>
+      </block>
+    </statement>
+    <next>
+      <block type=""text_print"" id=""j~G/}$Lqui@:Ly0^duO+"">
+        <value name=""TEXT"">
+          <shadow type=""text"" id=""ztA6H1%N,in$*+.kd*3J"">
+            <field name=""TEXT"">it worked</field>
+          </shadow>
+        </value>
+      </block>
+    </next>
+  </block>
+</xml>";
+
+            var output = new Parser()
+              .AddStandardBlocks()
+              .AddDebugPrinter()
+              .Parse(xml)
+              .Evaluate();
+
+            Assert.AreEqual("it worked", TestExtensions.GetDebugText().FirstOrDefault());
 
         }
     }

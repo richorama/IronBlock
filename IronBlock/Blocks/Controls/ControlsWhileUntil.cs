@@ -22,6 +22,11 @@ namespace IronBlock.Blocks.Controls
       {
         while ((bool)value.Evaluate(context))
         {
+          if (context.EscapeMode == EscapeMode.Break)
+          {
+            context.EscapeMode = EscapeMode.None;
+            break;
+          }
           statement.Evaluate(context);
         }
       }
