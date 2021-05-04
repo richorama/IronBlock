@@ -11,18 +11,20 @@ namespace IronBlock.Blocks.Variables
     public override object Evaluate(Context context)
     {
       var variables = context.Variables;
+      var value = Values.Evaluate("VALUE", context);
+      var variableName = Fields.Get("VAR");
 
-      var value = this.Values.Evaluate("VALUE", context);
-
-      var variableName = this.Fields.Get("VAR");
-
+      // Fast-Solution
       if (variables.ContainsKey(variableName))
-      {
         variables[variableName] = value;
-      }
       else
       {
-        variables.Add(variableName, value);
+        var rootContext = context.GetRootContext();
+
+        if (rootContext.Variables.ContainsKey(variableName))
+          rootContext.Variables[variableName] = value;
+        else
+          variables.Add(variableName, value);
       }
 
       return base.Evaluate(context);
@@ -32,22 +34,21 @@ namespace IronBlock.Blocks.Variables
     {
       var variables = context.Variables;
 
-      var variableName = this.Fields.Get("VAR").CreateValidName();
+      var variableName = Fields.Get("VAR").CreateValidName();
 
-      var valueExpression = this.Values.Generate("VALUE", context) as ExpressionSyntax;
+      var valueExpression = Values.Generate("VALUE", context) as ExpressionSyntax;
       if (valueExpression == null)
-        throw new ApplicationException($"Unknown expression for value.");
+        throw new ApplicationException("Unknown expression for value.");
 
       context.GetRootContext().Variables[variableName] = valueExpression;
 
       var assignment = AssignmentExpression(
-                SyntaxKind.SimpleAssignmentExpression,
-                  IdentifierName(variableName),
-                  valueExpression
-                );
+          SyntaxKind.SimpleAssignmentExpression,
+          IdentifierName(variableName),
+          valueExpression
+      );
 
       return Statement(assignment, base.Generate(context), context);
     }
   }
-
 }
