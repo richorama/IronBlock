@@ -157,6 +157,34 @@ namespace IronBlock.Tests
     }
 
 
+   [TestMethod]
+    public void Test_Logic_Operation_Lte()
+    {
+
+      const string xml = @"
+<xml xmlns=""http://www.w3.org/1999/xhtml"">
+  <block type=""logic_operation"">
+    <field name=""OP"">OR</field>
+    <value name=""A"">
+      <block type=""logic_boolean"">
+        <field name=""BOOL"">FALSE</field>
+      </block>
+    </value>
+    <value name=""B"">
+      <block type=""logic_boolean"">
+        <field name=""BOOL"">TRUE</field>
+      </block>
+    </value>
+  </block>
+</xml>";
+
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Evaluate();
+
+      Assert.AreEqual(true, output);
+    }
 
 
 

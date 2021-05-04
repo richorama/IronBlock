@@ -1,18 +1,16 @@
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using IronBlock.Blocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace IronBlock.Tests
 {
-    [TestClass]
-    public class BugfixTests
+  [TestClass]
+  public class BugfixTests
+  {
+    [TestMethod]
+    public void Issue_17()
     {
-        [TestMethod]
-        public void Issue_17()
-        {
-            const string xml = @"
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"">
   <block type=""controls_if"" id=""`Du+(_vc^5di^SX-r)Gy"" x=""-563"" y=""-187"">
     <value name=""IF0"">
@@ -53,22 +51,22 @@ namespace IronBlock.Tests
 </xml>
 ";
 
-            var output = new Parser()
-              .AddStandardBlocks()
-              .AddDebugPrinter()
-              .Parse(xml)
-              .Evaluate();
+      var output = new Parser()
+        .AddStandardBlocks()
+        .AddDebugPrinter()
+        .Parse(xml)
+        .Evaluate();
 
-            Assert.AreEqual("it worked", TestExtensions.GetDebugText().First());
+      Assert.AreEqual("it worked", TestExtensions.GetDebugText().First());
 
-        }
+    }
 
 
 
-        [TestMethod]
-        public void Issue_40()
-        {
-            const string xml = @"
+    [TestMethod]
+    public void Issue_40()
+    {
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"">
   <block type=""controls_if"" id=""`Du+(_vc^5di^SX-r)Gy"" x=""-563"" y=""-187"">
     <value name=""IF0"">
@@ -99,21 +97,21 @@ namespace IronBlock.Tests
 </xml>
 ";
 
-            var output = new Parser()
-              .AddStandardBlocks()
-              .AddDebugPrinter()
-              .Parse(xml)
-              .Evaluate();
+      var output = new Parser()
+        .AddStandardBlocks()
+        .AddDebugPrinter()
+        .Parse(xml)
+        .Evaluate();
 
-            Assert.AreEqual("it worked", TestExtensions.GetDebugText().First());
+      Assert.AreEqual("it worked", TestExtensions.GetDebugText().First());
 
-        }
+    }
 
-        [TestMethod]
-        public void Issue_44()
-        {
+    [TestMethod]
+    public void Issue_44()
+    {
 
-            const string xml = @"<xml xmlns=""https://developers.google.com/blockly/xml"">
+      const string xml = @"<xml xmlns=""https://developers.google.com/blockly/xml"">
   <block type=""controls_whileUntil"" id=""?NVqr1Vh{l~tzFs^`s#H"" x=""613"" y=""188"">
     <field name=""MODE"">WHILE</field>
     <value name=""BOOL"">
@@ -138,16 +136,107 @@ namespace IronBlock.Tests
   </block>
 </xml>";
 
-            var output = new Parser()
-              .AddStandardBlocks()
-              .AddDebugPrinter()
-              .Parse(xml)
-              .Evaluate();
+      var output = new Parser()
+        .AddStandardBlocks()
+        .AddDebugPrinter()
+        .Parse(xml)
+        .Evaluate();
 
-            Assert.AreEqual("it worked", TestExtensions.GetDebugText().FirstOrDefault());
+      Assert.AreEqual("it worked", TestExtensions.GetDebugText().FirstOrDefault());
 
-        }
     }
+
+
+
+    [TestMethod]
+    public void Issue_45_1()
+    {
+      const string xml = @"
+<xml xmlns=""http://www.w3.org/1999/xhtml"">
+  <block type=""controls_if"" id=""`Du+(_vc^5di^SX-r)Gy"" x=""-563"" y=""-187"">
+    <value name=""IF0"">
+      <block type=""logic_compare"" id=""IzaPI5pFR:fkFMJ@)E]9"">
+        <field name=""OP"">LT</field>
+        <value name=""A"">
+          <block type=""logic_boolean"">
+            <field name=""BOOL"">FALSE</field>
+          </block>
+        </value>
+        <value name=""B"">
+          <block type=""logic_boolean"">
+            <field name=""BOOL"">TRUE</field>
+          </block>
+        </value>
+      </block>
+    </value>
+    <statement name=""DO0"">
+      <block type=""text_print"" id=""vhk7~#CLW_:TTeXy#.34"">
+        <value name=""TEXT"">
+          <shadow type=""text"" id=""x?1zGi1mkq)$XIq7*t_-"">
+            <field name=""TEXT"">it worked</field>
+          </shadow>
+        </value>
+      </block>
+    </statement>
+  </block>
+</xml>
+";
+
+      var output = new Parser()
+        .AddStandardBlocks()
+        .AddDebugPrinter()
+        .Parse(xml)
+        .Evaluate();
+
+      Assert.AreEqual("it worked", TestExtensions.GetDebugText().First());
+
+    }
+
+    [TestMethod]
+    public void Issue_45_2()
+    {
+      const string xml = @"
+<xml xmlns=""http://www.w3.org/1999/xhtml"">
+  <block type=""controls_if"" id=""`Du+(_vc^5di^SX-r)Gy"" x=""-563"" y=""-187"">
+    <value name=""IF0"">
+      <block type=""logic_compare"" id=""IzaPI5pFR:fkFMJ@)E]9"">
+        <field name=""OP"">LTE</field>
+        <value name=""A"">
+          <block type=""logic_boolean"">
+            <field name=""BOOL"">TRUE</field>
+          </block>
+        </value>
+        <value name=""B"">
+          <block type=""logic_boolean"">
+            <field name=""BOOL"">TRUE</field>
+          </block>
+        </value>
+      </block>
+    </value>
+    <statement name=""DO0"">
+      <block type=""text_print"" id=""vhk7~#CLW_:TTeXy#.34"">
+        <value name=""TEXT"">
+          <shadow type=""text"" id=""x?1zGi1mkq)$XIq7*t_-"">
+            <field name=""TEXT"">it worked</field>
+          </shadow>
+        </value>
+      </block>
+    </statement>
+  </block>
+</xml>
+";
+
+      var output = new Parser()
+        .AddStandardBlocks()
+        .AddDebugPrinter()
+        .Parse(xml)
+        .Evaluate();
+
+      Assert.AreEqual("it worked", TestExtensions.GetDebugText().First());
+
+    }
+
+  }
 }
 
 

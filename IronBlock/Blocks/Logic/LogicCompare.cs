@@ -72,6 +72,10 @@ namespace IronBlock.Blocks.Logic
       {
         case "EQ": return a == b;
         case "NEQ": return a != b;
+        case "LT": return Convert.ToByte(a) < Convert.ToByte(b);
+        case "LTE": return Convert.ToByte(a) <= Convert.ToByte(b);
+        case "GT": return Convert.ToByte(a) > Convert.ToByte(b);
+        case "GTE": return Convert.ToByte(a) >= Convert.ToByte(b);
         default: throw new ApplicationException($"Unknown OP {op}");
       }
     }
