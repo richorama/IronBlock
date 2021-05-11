@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
+using IronBlock.Blocks;
+using IronBlock.Blocks.Variables;
 
 namespace IronBlock
 {
@@ -43,6 +46,44 @@ namespace IronBlock
         {
           var block = ParseBlock(node);
           if (null != block) workspace.Blocks.Add(block);
+        }
+        else
+        {
+          // Fast-Solution :-)
+          // Global variables should be parsed, else the assessment of any global variable in the script will cause an Application Exception("unexpected value type") exception. 
+
+          // only global variables should be parsed in this context.  
+          if (node.LocalName != "variables" || node.FirstChild == null ||
+              string.IsNullOrWhiteSpace(node.FirstChild.InnerText))
+            continue;
+
+          foreach (XmlNode nodeChild in node.ChildNodes)
+          {
+            if (nodeChild.LocalName != "variable" ||
+                string.IsNullOrWhiteSpace(nodeChild.InnerText))
+              continue;
+
+            // Generate variable members    
+            var block = new GlobalVariablesSet();
+
+            var field = new Field
+            {
+              Name = "VAR",
+              Value = nodeChild.InnerText,
+            };
+
+            block.Fields.Add(field);
+
+            var value = new Value
+            {
+              Name = "VALUE"
+            };
+
+            block.Values.Add(value);
+
+            workspace.Blocks.Add(block);
+
+          }
         }
       }
 
