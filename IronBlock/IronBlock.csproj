@@ -11,7 +11,7 @@
     <PackageTags>blockly netcore scratch interpreter</PackageTags>
     <Description>A .net core interpreter for blockly programs</Description>
     <Copyright>Richard Astbury 2020</Copyright>
-    <Version>1.0.14</Version>
+    <Version>1.0.15</Version>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>keyPair.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
