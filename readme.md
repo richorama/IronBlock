@@ -47,6 +47,9 @@ You'll need to pass this XML to your .NET server using an Ajax call or similar.
 You can then parse the XML, and execute the Blockly program in .NET.
 
 ```cs
+using IronBlock;
+using IronBlock.Blocks;
+
 // create a parser
 var parser = new Parser();
 
