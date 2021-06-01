@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using System;
 using IronBlock.Blocks.Text;
+using IronBlock.Utils;
 
 namespace IronBlock
 {
@@ -67,6 +68,12 @@ namespace IronBlock
           statement = ExpressionStatement(syntaxNode as ExpressionSyntax);
         }
 
+        var comments = string.Join("\n", block.Comments.Select(x => x.Value));
+        if (!string.IsNullOrWhiteSpace(comments))
+        {
+          statement = statement.WithLeadingTrivia(SyntaxFactory.Comment($"/* {comments} */"));
+        }
+
         context.Statements.Add(statement);
       }
 
@@ -114,6 +121,7 @@ namespace IronBlock
       this.Values = new List<Value>();
       this.Statements = new List<Statement>();
       this.Mutations = new List<Mutation>();
+      this.Comments = new List<Comment>();
     }
 
     public string Id { get; set; }
@@ -124,6 +132,7 @@ namespace IronBlock
     public bool Inline { get; set; }
     public IBlock Next { get; set; }
     public IList<Mutation> Mutations { get; set; }
+    public IList<Comment> Comments { get; set; }
     public virtual object Evaluate(Context context)
     {
       if (null != this.Next && context.EscapeMode == EscapeMode.None)
@@ -137,7 +146,10 @@ namespace IronBlock
     {
       if (null != this.Next && context.EscapeMode == EscapeMode.None)
       {
-        return this.Next.Generate(context);
+        var node = this.Next.Generate(context);
+        var commentText = string.Join("\n", this.Next.Comments.Select(x => x.Value));
+        if (string.IsNullOrWhiteSpace(commentText)) return node;
+        return node.WithLeadingTrivia(SyntaxFactory.Comment($"/* {commentText} */"));
       }
       return null;
     }
@@ -258,5 +270,14 @@ namespace IronBlock
 
   }
 
+
+  public class Comment
+  {
+    public Comment(string value)
+    {
+      this.Value = value;
+    }
+    public string Value { get; set; }
+  }
 
 }
