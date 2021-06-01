@@ -118,7 +118,7 @@ namespace IronBlock
             ParseStatement(childNode, block);
             break;
           case "comment":
-            // comments are ignored
+            ParseComment(childNode, block);
             break;
           case "next":
             var nextBlock = ParseBlock(childNode.FirstChild);
@@ -155,6 +155,10 @@ namespace IronBlock
       block.Values.Add(value);
     }
 
+    void ParseComment(XmlNode commentNode, IBlock block)
+    {
+      block.Comments.Add(new Comment(commentNode.InnerText));
+    }
 
     void ParseStatement(XmlNode statementNode, IBlock block)
     {
