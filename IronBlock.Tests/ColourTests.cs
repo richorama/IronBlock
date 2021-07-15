@@ -6,13 +6,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace IronBlock.Tests
 {
-    [TestClass]
-    public class ColourTests
+  [TestClass]
+  public class ColourTests
+  {
+    [TestMethod]
+    public void Test_Colour_Picker()
     {
-        [TestMethod]
-        public void Test_Colour_Picker()
-        {
-            const string xml = @"
+      const string xml = @"
 <xml>
   <block type=""colour_picker"">
     <field name=""COLOUR"">#ff0000</field>
@@ -20,43 +20,43 @@ namespace IronBlock.Tests
 </xml>
 ";
 
-            var output = new Parser()
-              .AddStandardBlocks()
-              .Parse(xml)
-              .Evaluate();
-            
-            Assert.AreEqual("#ff0000", output);
+      var output = new Parser()
+        .AddStandardBlocks()
+        .Parse(xml)
+        .Evaluate();
 
-        }
+      Assert.AreEqual("#ff0000", output);
 
-        [TestMethod]
-        public void Test_Colour_Random()
-        {
-            const string xml = @"
+    }
+
+    [TestMethod]
+    public void Test_Colour_Random()
+    {
+      const string xml = @"
 <xml>
   <block type=""colour_random""></block>
 </xml>
 ";
 
-            var program = new Parser()
-              .AddStandardBlocks()
-              .Parse(xml);
+      var program = new Parser()
+        .AddStandardBlocks()
+        .Parse(xml);
 
-            var output = program.Evaluate() as string;
-            
-            Assert.AreEqual(7, output.Length);
-            Assert.AreEqual('#', output[0]);
+      var output = program.Evaluate() as string;
 
-            // assure it's random by asking for another one
-            var output2 = program.Evaluate() as string;
-            Assert.AreNotEqual(output, output2);
-        }
+      Assert.AreEqual(7, output.Length);
+      Assert.AreEqual('#', output[0]);
+
+      // assure it's random by asking for another one
+      var output2 = program.Evaluate() as string;
+      Assert.AreNotEqual(output, output2);
+    }
 
 
-        [TestMethod]
-        public void Test_Colour_Rgb()
-        {
-            const string xml = @"
+    [TestMethod]
+    public void Test_Colour_Rgb()
+    {
+      const string xml = @"
 <xml>
  <block type=""colour_rgb"" id=""JM:^k(U=gB8g^%oXS3}#"" x=""188"" y=""88"">
     <value name=""RED"">
@@ -78,20 +78,20 @@ namespace IronBlock.Tests
 </xml>
 ";
 
-            var colour = new Parser()
-              .AddStandardBlocks()
-              .Parse(xml)
-              .Evaluate() as string;
+      var colour = new Parser()
+        .AddStandardBlocks()
+        .Parse(xml)
+        .Evaluate() as string;
 
-            Assert.AreEqual("#ff0001", colour);
+      Assert.AreEqual("#ff0001", colour);
 
-        }
+    }
 
 
-        [TestMethod]
-        public void Test_Colour_Blend()
-        {
-            const string xml = @"
+    [TestMethod]
+    public void Test_Colour_Blend()
+    {
+      const string xml = @"
 <xml>
   <block type=""colour_blend"">
     <value name=""COLOUR1"">
@@ -113,15 +113,15 @@ namespace IronBlock.Tests
 </xml>
 ";
 
-            var colour = new Parser()
-              .AddStandardBlocks()
-              .Parse(xml)
-              .Evaluate() as string;
+      var colour = new Parser()
+        .AddStandardBlocks()
+        .Parse(xml)
+        .Evaluate() as string;
 
-            Assert.AreEqual("#d60a33", colour);
-
-        }
-
+      Assert.AreEqual("#d60a33", colour);
 
     }
+
+
+  }
 }

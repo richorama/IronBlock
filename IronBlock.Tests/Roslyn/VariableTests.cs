@@ -4,13 +4,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace IronBlock.Tests.Roslyn
 {
-    [TestClass]
-    public class VariableTests
-    {	
-		[TestMethod]
-		public void Test_Simple_Variable_Assignment()
-		{
-			const string xml = @"
+  [TestClass]
+  public class VariableTests
+  {
+    [TestMethod]
+    public void Test_Simple_Variable_Assignment()
+    {
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"" id=""workspaceBlocks"" style=""display:none"">
   <variables>
     <variable id=""CyJvFZf3l6Qz{x[Xx5A^"" type="""">a</variable>
@@ -25,20 +25,20 @@ namespace IronBlock.Tests.Roslyn
   </block>
 </xml>";
 
-			var output = new Parser()
-				.AddStandardBlocks()
-				.Parse(xml)
-				.Generate();
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Generate();
 
-			string code = output.NormalizeWhitespace().ToFullString();
-			Assert.IsTrue(code.Contains("dynamic a;"));
-			Assert.IsTrue(code.Contains("a = 1;"));
-		}
+      string code = output.NormalizeWhitespace().ToFullString();
+      Assert.IsTrue(code.Contains("dynamic a;"));
+      Assert.IsTrue(code.Contains("a = 1;"));
+    }
 
-		[TestMethod]
-		public void Test_Complex_Variable_Assignment()
-		{
-			const string xml = @"
+    [TestMethod]
+    public void Test_Complex_Variable_Assignment()
+    {
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"" id=""workspaceBlocks"" style=""display:none"">
   <variables>
     <variable id=""CyJvFZf3l6Qz{x[Xx5A^"" type="""">a</variable>
@@ -84,18 +84,18 @@ namespace IronBlock.Tests.Roslyn
   </block>
 </xml>";
 
-			var output = new Parser()
-				.AddStandardBlocks()
-				.Parse(xml)
-				.Generate();
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Generate();
 
-			string code = output.NormalizeWhitespace().ToFullString();
-			Assert.IsTrue(code.Contains("dynamic a;"));
-			Assert.IsTrue(code.Contains("dynamic b;"));
-			Assert.IsTrue(code.Contains("a = 5;"));
-			Assert.IsTrue(code.Contains("b = 8;"));
-			Assert.IsTrue(code.Contains("b = (a + b);"));
+      string code = output.NormalizeWhitespace().ToFullString();
+      Assert.IsTrue(code.Contains("dynamic a;"));
+      Assert.IsTrue(code.Contains("dynamic b;"));
+      Assert.IsTrue(code.Contains("a = 5;"));
+      Assert.IsTrue(code.Contains("b = 8;"));
+      Assert.IsTrue(code.Contains("b = (a + b);"));
 
-		}
-	}
+    }
+  }
 }

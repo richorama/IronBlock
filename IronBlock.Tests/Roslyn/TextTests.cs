@@ -258,7 +258,7 @@ namespace IronBlock.Tests.Roslyn
       var blocks = new Parser()
         .AddStandardBlocks()
         .Parse(xml);
-        
+
       Assert.AreEqual(1, blocks.Blocks.First().Comments.Count);
       Assert.AreEqual("A test comment", blocks.Blocks.First().Comments.First().Value);
       var code = blocks.Generate().NormalizeWhitespace().ToFullString();

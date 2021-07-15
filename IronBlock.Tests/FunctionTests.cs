@@ -3,13 +3,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace IronBlock.Tests
 {
-    [TestClass]
-    public class FunctionTests
+  [TestClass]
+  public class FunctionTests
+  {
+    [TestMethod]
+    public void Test_Procedure_No_Return()
     {
-        [TestMethod]
-        public void Test_Procedure_No_Return()
-        {
-            const string xml = @"
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"">
   <variables>
     <variable type="""">x</variable>
@@ -55,21 +55,21 @@ namespace IronBlock.Tests
 </xml>
 ";
 
-            new Parser()
-                .AddStandardBlocks()
-                .AddDebugPrinter()
-                .Parse(xml)
-                .Evaluate();
+      new Parser()
+          .AddStandardBlocks()
+          .AddDebugPrinter()
+          .Parse(xml)
+          .Evaluate();
 
-            Assert.AreEqual("hello world,hello world,hello world", string.Join(",", TestExtensions.GetDebugText()));
+      Assert.AreEqual("hello world,hello world,hello world", string.Join(",", TestExtensions.GetDebugText()));
 
-        }
+    }
 
 
-        [TestMethod]
-        public void Test_Procedure_Return()
-        {
-            const string xml = @"
+    [TestMethod]
+    public void Test_Procedure_Return()
+    {
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"">
   <block type=""procedures_defreturn"">
     <field name=""NAME"">do something</field>
@@ -86,20 +86,20 @@ namespace IronBlock.Tests
 </xml>
 ";
 
-            var output = new Parser()
-                .AddStandardBlocks()
-                .Parse(xml)
-                .Evaluate();
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Evaluate();
 
-            Assert.AreEqual("hello world", output);
+      Assert.AreEqual("hello world", output);
 
-        }
+    }
 
 
-        [TestMethod]
-        public void Test_Procedure_If_Return()
-        {
-            const string xml = @"
+    [TestMethod]
+    public void Test_Procedure_If_Return()
+    {
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"">
   <block type=""procedures_defreturn"">
     <field name=""NAME"">do something</field>
@@ -131,16 +131,16 @@ namespace IronBlock.Tests
 </xml>
 ";
 
-            var output = new Parser()
-                .AddStandardBlocks()
-                .Parse(xml)
-                .Evaluate();
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Evaluate();
 
-            Assert.AreEqual("hello world", output);
-
-        }
-
+      Assert.AreEqual("hello world", output);
 
     }
+
+
+  }
 }
 

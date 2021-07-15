@@ -6,13 +6,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace IronBlock.Tests
 {
-    [TestClass]
-    public class TextTests
+  [TestClass]
+  public class TextTests
+  {
+    [TestMethod]
+    public void Test_Text_Length()
     {
-        [TestMethod]
-        public void Test_Text_Length()
-        {
-            const string xml = @"
+      const string xml = @"
 <xml>
   <block type=""text_length"">
     <value name=""VALUE"">
@@ -24,21 +24,21 @@ namespace IronBlock.Tests
 </xml>
 ";
 
-            var output = new Parser()
-              .AddStandardBlocks()
-              .Parse(xml)
-              .Evaluate();
+      var output = new Parser()
+        .AddStandardBlocks()
+        .Parse(xml)
+        .Evaluate();
 
-            Assert.AreEqual(3.0, output);
+      Assert.AreEqual(3.0, output);
 
-        }
+    }
 
 
 
-        [TestMethod]
-        public void Test_Text_IsEmpty()
-        {
-            const string xml = @"
+    [TestMethod]
+    public void Test_Text_IsEmpty()
+    {
+      const string xml = @"
 <xml>
   <block type=""text_isEmpty"">
     <value name=""VALUE"">
@@ -49,19 +49,19 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            var output = (bool) new Parser()
-              .AddStandardBlocks()
-              .Parse(xml)
-              .Evaluate();
-            
-            Assert.IsTrue(output);
-        }
+      var output = (bool)new Parser()
+        .AddStandardBlocks()
+        .Parse(xml)
+        .Evaluate();
+
+      Assert.IsTrue(output);
+    }
 
 
-        [TestMethod]
-        public void Test_Text_Trim()
-        {
-            const string xml = @"
+    [TestMethod]
+    public void Test_Text_Trim()
+    {
+      const string xml = @"
 <xml>
   <block type=""text_trim"">
     <field name=""MODE"">BOTH</field>
@@ -73,19 +73,19 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            var output = new Parser()
-              .AddStandardBlocks()
-              .Parse(xml)
-              .Evaluate()
-              .ToString();
-            
-            Assert.AreEqual("ab c", output);
-        }
+      var output = new Parser()
+        .AddStandardBlocks()
+        .Parse(xml)
+        .Evaluate()
+        .ToString();
 
-        [TestMethod]
-        public void Test_Text_ToCase()
-        {
-            const string xml = @"
+      Assert.AreEqual("ab c", output);
+    }
+
+    [TestMethod]
+    public void Test_Text_ToCase()
+    {
+      const string xml = @"
 <xml>
   <block type=""text_changeCase"">
     <field name=""CASE"">TITLECASE</field>
@@ -97,21 +97,21 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            var output = new Parser()
-              .AddStandardBlocks()
-              .Parse(xml)
-              .Evaluate()
-              .ToString();
-            
-            Assert.AreEqual("Hello World", output);
-        }
+      var output = new Parser()
+        .AddStandardBlocks()
+        .Parse(xml)
+        .Evaluate()
+        .ToString();
+
+      Assert.AreEqual("Hello World", output);
+    }
 
 
 
-        [TestMethod]
-        public void Test_Text_Append()
-        {
-            const string xml = @"
+    [TestMethod]
+    public void Test_Text_Append()
+    {
+      const string xml = @"
 <xml>
  <variables>
     <variable type="""">x</variable>
@@ -148,19 +148,19 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            new Parser()
-                .AddStandardBlocks()
-                .AddDebugPrinter()
-                .Parse(xml)
-                .Evaluate();
+      new Parser()
+          .AddStandardBlocks()
+          .AddDebugPrinter()
+          .Parse(xml)
+          .Evaluate();
 
-            Assert.AreEqual("foobar", TestExtensions.GetDebugText().First());
-        }
+      Assert.AreEqual("foobar", TestExtensions.GetDebugText().First());
+    }
 
-        [TestMethod]
-        public void Test_Text_Join()
-        {
-            const string xml = @"
+    [TestMethod]
+    public void Test_Text_Join()
+    {
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"">
   <variables>
     <variable>x</variable>
@@ -197,20 +197,20 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            new Parser()
-                .AddStandardBlocks()
-                .AddDebugPrinter()
-                .Parse(xml)
-                .Evaluate();
+      new Parser()
+          .AddStandardBlocks()
+          .AddDebugPrinter()
+          .Parse(xml)
+          .Evaluate();
 
-            Assert.AreEqual("foobar", TestExtensions.GetDebugText().First());
-        }
+      Assert.AreEqual("foobar", TestExtensions.GetDebugText().First());
+    }
 
 
-        [TestMethod]
-        public void Test_IndexOf()
-        {
-            const string xml = @"
+    [TestMethod]
+    public void Test_IndexOf()
+    {
+      const string xml = @"
 <xml>
   <block type=""text_indexOf"">
     <field name=""END"">FIRST</field>
@@ -227,13 +227,13 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            var output = new Parser()
-              .AddStandardBlocks()
-              .Parse(xml)
-              .Evaluate();
+      var output = new Parser()
+        .AddStandardBlocks()
+        .Parse(xml)
+        .Evaluate();
 
-            Assert.AreEqual(5.0, output);
-        }
-
+      Assert.AreEqual(5.0, output);
     }
+
+  }
 }

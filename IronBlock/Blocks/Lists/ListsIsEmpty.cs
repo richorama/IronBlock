@@ -1,29 +1,29 @@
-using IronBlock.Utils;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using IronBlock.Utils;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace IronBlock.Blocks.Lists
 {
-    public class ListsIsEmpty : IBlock
+  public class ListsIsEmpty : IBlock
+  {
+    public override object Evaluate(Context context)
     {
-        public override object Evaluate(Context context)
-        {
-            var value = this.Values.Evaluate("VALUE", context) as IEnumerable<object>;
-            if (null == value) return true;
+      var value = this.Values.Evaluate("VALUE", context) as IEnumerable<object>;
+      if (null == value) return true;
 
-            return !value.Any();
-        }
+      return !value.Any();
+    }
 
-		public override SyntaxNode Generate(Context context)
-		{
-			var valueExpression = this.Values.Generate("VALUE", context) as ExpressionSyntax;
-			if (valueExpression == null) throw new ApplicationException($"Unknown expression for value.");
+    public override SyntaxNode Generate(Context context)
+    {
+      var valueExpression = this.Values.Generate("VALUE", context) as ExpressionSyntax;
+      if (valueExpression == null) throw new ApplicationException($"Unknown expression for value.");
 
-			return SyntaxGenerator.MethodInvokeExpression(valueExpression, nameof(Enumerable.Any));
-		}
-	}
+      return SyntaxGenerator.MethodInvokeExpression(valueExpression, nameof(Enumerable.Any));
+    }
+  }
 }

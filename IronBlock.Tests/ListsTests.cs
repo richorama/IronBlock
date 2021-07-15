@@ -6,14 +6,14 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace IronBlock.Tests
 {
-    [TestClass]
-    public class ListsTests
-    {
+  [TestClass]
+  public class ListsTests
+  {
 
-        [TestMethod]
-        public void Test_List_Create_With()
-        {
-            const string xml = @"
+    [TestMethod]
+    public void Test_List_Create_With()
+    {
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"">
   <block type=""lists_create_with"">
     <mutation items=""3""></mutation>
@@ -36,20 +36,20 @@ namespace IronBlock.Tests
 </xml>            
 ";
 
-            var output = new Parser()
-              .AddStandardBlocks()
-              .Parse(xml)
-              .Evaluate();
-            
-            Assert.AreEqual("x,y,z", string.Join(",", (output as IEnumerable<object>).Select(x => x.ToString())));
-        }
+      var output = new Parser()
+        .AddStandardBlocks()
+        .Parse(xml)
+        .Evaluate();
+
+      Assert.AreEqual("x,y,z", string.Join(",", (output as IEnumerable<object>).Select(x => x.ToString())));
+    }
 
 
 
-        [TestMethod]
-        public void Test_List_Split()
-        {
-            const string xml = @"
+    [TestMethod]
+    public void Test_List_Split()
+    {
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"">
   <block type=""lists_split"">
     <mutation mode=""SPLIT""></mutation>
@@ -68,19 +68,19 @@ namespace IronBlock.Tests
 </xml>
 ";
 
-            var output = new Parser()
-              .AddStandardBlocks()
-              .Parse(xml)
-              .Evaluate();
-            
-            Assert.AreEqual("x,y,z", string.Join(",", output as IEnumerable<object>));
+      var output = new Parser()
+        .AddStandardBlocks()
+        .Parse(xml)
+        .Evaluate();
 
-        }
+      Assert.AreEqual("x,y,z", string.Join(",", output as IEnumerable<object>));
 
-        [TestMethod]
-        public void Test_Lists_Join()
-        {
-            const string xml = @"
+    }
+
+    [TestMethod]
+    public void Test_Lists_Join()
+    {
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"">
   <block type=""lists_split"">
     <mutation mode=""JOIN""></mutation>
@@ -114,21 +114,21 @@ namespace IronBlock.Tests
 </xml>            
             ";
 
-            var output = new Parser()
-              .AddStandardBlocks()
-              .Parse(xml)
-              .Evaluate();
-            
-            Assert.AreEqual("x,y,z", output);
+      var output = new Parser()
+        .AddStandardBlocks()
+        .Parse(xml)
+        .Evaluate();
 
-        }
+      Assert.AreEqual("x,y,z", output);
+
+    }
 
 
 
-        [TestMethod]
-        public void Test_Lists_Length()
-        {
-            const string xml = @"
+    [TestMethod]
+    public void Test_Lists_Length()
+    {
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"">
   <block type=""lists_length"">
     <value name=""VALUE"">
@@ -151,20 +151,20 @@ namespace IronBlock.Tests
 </xml>
 ";
 
-            var output = new Parser()
-              .AddStandardBlocks()
-              .Parse(xml)
-              .Evaluate();
-            
-            Assert.AreEqual(3, (double) output);
+      var output = new Parser()
+        .AddStandardBlocks()
+        .Parse(xml)
+        .Evaluate();
 
-        }
+      Assert.AreEqual(3, (double)output);
+
+    }
 
 
-        [TestMethod]
-        public void Test_Lists_Repeat()
-        {
-            const string xml = @"
+    [TestMethod]
+    public void Test_Lists_Repeat()
+    {
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"">
   <block type=""lists_repeat"">
     <value name=""ITEM"">
@@ -181,20 +181,20 @@ namespace IronBlock.Tests
 </xml>
 ";
 
-            var output = new Parser()
-              .AddStandardBlocks()
-              .Parse(xml)
-              .Evaluate();
-            
-            Assert.AreEqual("hello,hello,hello", string.Join(",", (output as IEnumerable<object>).Select(x => x.ToString())));
+      var output = new Parser()
+        .AddStandardBlocks()
+        .Parse(xml)
+        .Evaluate();
 
-        }
+      Assert.AreEqual("hello,hello,hello", string.Join(",", (output as IEnumerable<object>).Select(x => x.ToString())));
+
+    }
 
 
-        [TestMethod]
-        public void Test_Lists_IsEmpty()
-        {
-            const string xml = @"
+    [TestMethod]
+    public void Test_Lists_IsEmpty()
+    {
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"">
   <block type=""lists_isEmpty"">
     <value name=""VALUE"">
@@ -206,19 +206,19 @@ namespace IronBlock.Tests
 </xml>
 ";
 
-            var output = new Parser()
-              .AddStandardBlocks()
-              .Parse(xml)
-              .Evaluate();
-            
-            Assert.IsTrue((bool) output);
+      var output = new Parser()
+        .AddStandardBlocks()
+        .Parse(xml)
+        .Evaluate();
 
-        }
+      Assert.IsTrue((bool)output);
 
-        [TestMethod]
-        public void Test_Lists_IndexOf()
-        {
-            const string xml = @"
+    }
+
+    [TestMethod]
+    public void Test_Lists_IndexOf()
+    {
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"">
   <variables></variables>
   <block type=""lists_indexOf"">
@@ -248,19 +248,19 @@ namespace IronBlock.Tests
 </xml>
 ";
 
-            var output = new Parser()
-              .AddStandardBlocks()
-              .Parse(xml)
-              .Evaluate();
-            
-            Assert.AreEqual(2, (int) output);
+      var output = new Parser()
+        .AddStandardBlocks()
+        .Parse(xml)
+        .Evaluate();
 
-        }
+      Assert.AreEqual(2, (int)output);
 
-        [TestMethod]
-        public void Test_Lists_GetIndex()
-        {
-            const string xml = @"
+    }
+
+    [TestMethod]
+    public void Test_Lists_GetIndex()
+    {
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"">
   <block type=""lists_getIndex"">
     <mutation statement=""false"" at=""true""></mutation>
@@ -291,14 +291,14 @@ namespace IronBlock.Tests
 </xml>
 ";
 
-            var output = new Parser()
-              .AddStandardBlocks()
-              .Parse(xml)
-              .Evaluate();
-            
-            Assert.AreEqual("bar", (string) output);
+      var output = new Parser()
+        .AddStandardBlocks()
+        .Parse(xml)
+        .Evaluate();
 
-        }
+      Assert.AreEqual("bar", (string)output);
 
     }
+
+  }
 }

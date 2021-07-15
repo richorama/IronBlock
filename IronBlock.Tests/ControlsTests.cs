@@ -1,17 +1,17 @@
+using System.Linq;
 using IronBlock.Blocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Linq;
 
 namespace IronBlock.Tests
 {
-    [TestClass]
-    public class ControlsTests
+  [TestClass]
+  public class ControlsTests
+  {
+    [TestMethod]
+    public void Test_Controls_If()
     {
-        [TestMethod]
-        public void Test_Controls_If()
-        {
 
-            const string xml = @"
+      const string xml = @"
 <xml>
   <block type=""controls_if"" >
     <value name=""IF0"">
@@ -31,21 +31,21 @@ namespace IronBlock.Tests
   </block>       
 </xml>
 ";
-            new Parser()
-                .AddStandardBlocks()
-                .AddDebugPrinter()
-                .Parse(xml)
-                .Evaluate();
-            
-            Assert.AreEqual("success", TestExtensions.GetDebugText().First());
-        }
+      new Parser()
+          .AddStandardBlocks()
+          .AddDebugPrinter()
+          .Parse(xml)
+          .Evaluate();
+
+      Assert.AreEqual("success", TestExtensions.GetDebugText().First());
+    }
 
 
-        [TestMethod]
-        public void Test_Controls_WhileUntil()
-        {
+    [TestMethod]
+    public void Test_Controls_WhileUntil()
+    {
 
-            const string xml = @"
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"">
   <variables>
     <variable type="""">x</variable>
@@ -102,21 +102,21 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            var parser = new Parser()
-                .AddStandardBlocks()
-                .AddDebugPrinter()
-                .Parse(xml)
-                .Evaluate();
-            
-            Assert.AreEqual("0", string.Join(",", TestExtensions.GetDebugText()));
-        }
+      var parser = new Parser()
+          .AddStandardBlocks()
+          .AddDebugPrinter()
+          .Parse(xml)
+          .Evaluate();
+
+      Assert.AreEqual("0", string.Join(",", TestExtensions.GetDebugText()));
+    }
 
 
-        [TestMethod]
-        public void Test_Controls_Flow_Continue()
-        {
+    [TestMethod]
+    public void Test_Controls_Flow_Continue()
+    {
 
-            const string xml = @"
+      const string xml = @"
 <xml>
   <block type=""controls_repeat_ext"">
     <value name=""TIMES"">
@@ -159,21 +159,21 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            new Parser()
-                .AddStandardBlocks()
-                .AddDebugPrinter()
-                .Parse(xml)
-                .Evaluate();
-            
-            Assert.AreEqual("hello,hello,hello", string.Join(",", TestExtensions.GetDebugText()));
-        }
+      new Parser()
+          .AddStandardBlocks()
+          .AddDebugPrinter()
+          .Parse(xml)
+          .Evaluate();
+
+      Assert.AreEqual("hello,hello,hello", string.Join(",", TestExtensions.GetDebugText()));
+    }
 
 
-        [TestMethod]
-        public void Test_Controls_Flow_Break()
-        {
+    [TestMethod]
+    public void Test_Controls_Flow_Break()
+    {
 
-            const string xml = @"
+      const string xml = @"
 <xml>
   <block type=""controls_repeat_ext"">
     <value name=""TIMES"">
@@ -216,22 +216,22 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            new Parser()
-                .AddStandardBlocks()
-                .AddDebugPrinter()
-                .Parse(xml)
-                .Evaluate();
+      new Parser()
+          .AddStandardBlocks()
+          .AddDebugPrinter()
+          .Parse(xml)
+          .Evaluate();
 
-            Assert.AreEqual("hello", string.Join(",", TestExtensions.GetDebugText()));
-        }
+      Assert.AreEqual("hello", string.Join(",", TestExtensions.GetDebugText()));
+    }
 
 
 
-        [TestMethod]
-        public void Test_Controls_For_Each()
-        {
+    [TestMethod]
+    public void Test_Controls_For_Each()
+    {
 
-            const string xml = @"
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"">
   <variables>
     <variable type="""" id=""%%M;gt+!MJxzjuj,*~.X"">i</variable>
@@ -269,21 +269,21 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            new Parser()
-                .AddStandardBlocks()
-                .AddDebugPrinter()
-                .Parse(xml)
-                .Evaluate();
+      new Parser()
+          .AddStandardBlocks()
+          .AddDebugPrinter()
+          .Parse(xml)
+          .Evaluate();
 
-            Assert.AreEqual("a|b|c", string.Join("|", TestExtensions.GetDebugText()));
-        }
+      Assert.AreEqual("a|b|c", string.Join("|", TestExtensions.GetDebugText()));
+    }
 
 
-        [TestMethod]
-        public void Test_Controls_For()
-        {
+    [TestMethod]
+    public void Test_Controls_For()
+    {
 
-            const string xml = @"
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"">
   <variables>
     <variable type="""" id=""%%M;gt+!MJxzjuj,*~.X"">i</variable>
@@ -320,15 +320,15 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            new Parser()
-                .AddStandardBlocks()
-                .AddDebugPrinter()
-                .Parse(xml)
-                .Evaluate();
+      new Parser()
+          .AddStandardBlocks()
+          .AddDebugPrinter()
+          .Parse(xml)
+          .Evaluate();
 
-            Assert.AreEqual("1,2,3", string.Join(",", TestExtensions.GetDebugText()));
-        }
-
-
+      Assert.AreEqual("1,2,3", string.Join(",", TestExtensions.GetDebugText()));
     }
+
+
+  }
 }

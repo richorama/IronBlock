@@ -7,14 +7,14 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace IronBlock.Tests
 {
-    [TestClass]
-    public class MathTests
+  [TestClass]
+  public class MathTests
+  {
+    [TestMethod]
+    public void Test_Math_Root()
     {
-        [TestMethod]
-        public void Test_Math_Root()
-        {
 
-            const string xml = @"
+      const string xml = @"
 <xml>
   <block type=""math_single"">
     <field name=""OP"">ROOT</field>
@@ -26,19 +26,19 @@ namespace IronBlock.Tests
   </block>        
 </xml>
 ";
-            var output = new Parser()
-                .AddStandardBlocks()
-                .Parse(xml)
-                .Evaluate();
-            
-            Assert.AreEqual(3.0, output);
-        }
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Evaluate();
 
-        [TestMethod]
-        public void Test_Math_Sin()
-        {
+      Assert.AreEqual(3.0, output);
+    }
 
-            const string xml = @"
+    [TestMethod]
+    public void Test_Math_Sin()
+    {
+
+      const string xml = @"
 <xml>
   <block type=""math_trig"">
     <field name=""OP"">SIN</field>
@@ -50,42 +50,42 @@ namespace IronBlock.Tests
   </block>        
 </xml>
 ";
-            var output = new Parser()
-                .AddStandardBlocks()
-                .Parse(xml)
-                .Evaluate();
-            
-            Assert.AreEqual(System.Math.Sin(System.Math.PI / 4), output);
-        }
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Evaluate();
 
-        [TestMethod]
-        public void Test_Math_PI()
-        {
+      Assert.AreEqual(System.Math.Sin(System.Math.PI / 4), output);
+    }
 
-            const string xml = @"
+    [TestMethod]
+    public void Test_Math_PI()
+    {
+
+      const string xml = @"
 <xml>
   <block type=""math_constant"">
     <field name=""CONSTANT"">PI</field>
   </block>        
 </xml>
 ";
-            var workspace = new Parser()
-                .AddStandardBlocks()
-                .Parse(xml);
+      var workspace = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml);
 
-            var output = workspace.Evaluate();
-            Assert.AreEqual(System.Math.PI, output);
+      var output = workspace.Evaluate();
+      Assert.AreEqual(System.Math.PI, output);
 
-            var csharp = workspace.Generate().NormalizeWhitespace().ToFullString();
-			Assert.IsTrue(csharp.Contains("Math.PI"));
-        }
+      var csharp = workspace.Generate().NormalizeWhitespace().ToFullString();
+      Assert.IsTrue(csharp.Contains("Math.PI"));
+    }
 
 
-        [TestMethod]
-        public void Test_Math_Number_Property_Even()
-        {
+    [TestMethod]
+    public void Test_Math_Number_Property_Even()
+    {
 
-            const string xml = @"
+      const string xml = @"
 <xml>
   <block type=""math_number_property"">
     <mutation divisor_input=""false""></mutation>
@@ -98,19 +98,19 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            var output = new Parser()
-                .AddStandardBlocks()
-                .Parse(xml)
-                .Evaluate();
-            
-            Assert.AreEqual(true, (bool) output);
-        }
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Evaluate();
 
-        [TestMethod]
-        public void Test_Math_Number_Property_Odd()
-        {
+      Assert.AreEqual(true, (bool)output);
+    }
 
-            const string xml = @"
+    [TestMethod]
+    public void Test_Math_Number_Property_Odd()
+    {
+
+      const string xml = @"
 <xml>
   <block type=""math_number_property"">
     <mutation divisor_input=""false""></mutation>
@@ -123,20 +123,20 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            var output = new Parser()
-                .AddStandardBlocks()
-                .Parse(xml)
-                .Evaluate();
-            
-            Assert.AreEqual(true, (bool) output);
-        }
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Evaluate();
+
+      Assert.AreEqual(true, (bool)output);
+    }
 
 
-        [TestMethod]
-        public void Test_Math_Number_Property_Prime()
-        {
+    [TestMethod]
+    public void Test_Math_Number_Property_Prime()
+    {
 
-            const string xml = @"
+      const string xml = @"
 <xml>
   <block type=""math_number_property"">
     <mutation divisor_input=""false""></mutation>
@@ -149,19 +149,19 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            var output = new Parser()
-                .AddStandardBlocks()
-                .Parse(xml)
-                .Evaluate();
-            
-            Assert.AreEqual(true, (bool) output);
-        }
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Evaluate();
 
-        [TestMethod]
-        public void Test_Math_Number_Property_Whole_True()
-        {
+      Assert.AreEqual(true, (bool)output);
+    }
 
-            const string xml = @"
+    [TestMethod]
+    public void Test_Math_Number_Property_Whole_True()
+    {
+
+      const string xml = @"
 <xml>
   <block type=""math_number_property"">
     <mutation divisor_input=""false""></mutation>
@@ -174,19 +174,19 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            var output = new Parser()
-                .AddStandardBlocks()
-                .Parse(xml)
-                .Evaluate();
-            
-            Assert.AreEqual(true, (bool) output);
-        }
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Evaluate();
 
-        [TestMethod]
-        public void Test_Math_Number_Property_Whole_False()
-        {
+      Assert.AreEqual(true, (bool)output);
+    }
 
-            const string xml = @"
+    [TestMethod]
+    public void Test_Math_Number_Property_Whole_False()
+    {
+
+      const string xml = @"
 <xml>
   <block type=""math_number_property"">
     <mutation divisor_input=""false""></mutation>
@@ -199,19 +199,19 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            var output = new Parser()
-                .AddStandardBlocks()
-                .Parse(xml)
-                .Evaluate();
-            
-            Assert.AreEqual(false, (bool) output);
-        }
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Evaluate();
 
-        [TestMethod]
-        public void Test_Math_Number_Property_Positive()
-        {
+      Assert.AreEqual(false, (bool)output);
+    }
 
-            const string xml = @"
+    [TestMethod]
+    public void Test_Math_Number_Property_Positive()
+    {
+
+      const string xml = @"
 <xml>
   <block type=""math_number_property"">
     <mutation divisor_input=""false""></mutation>
@@ -224,19 +224,19 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            var output = new Parser()
-                .AddStandardBlocks()
-                .Parse(xml)
-                .Evaluate();
-            
-            Assert.AreEqual(true, (bool) output);
-        }
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Evaluate();
 
-        [TestMethod]
-        public void Test_Math_Number_Property_Negative()
-        {
+      Assert.AreEqual(true, (bool)output);
+    }
 
-            const string xml = @"
+    [TestMethod]
+    public void Test_Math_Number_Property_Negative()
+    {
+
+      const string xml = @"
 <xml>
   <block type=""math_number_property"">
     <mutation divisor_input=""false""></mutation>
@@ -249,19 +249,19 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            var output = new Parser()
-                .AddStandardBlocks()
-                .Parse(xml)
-                .Evaluate();
-            
-            Assert.AreEqual(false, (bool) output);
-        }
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Evaluate();
 
-        [TestMethod]
-        public void Test_Math_Number_Property_Divisible_By()
-        {
+      Assert.AreEqual(false, (bool)output);
+    }
 
-            const string xml = @"
+    [TestMethod]
+    public void Test_Math_Number_Property_Divisible_By()
+    {
+
+      const string xml = @"
 <xml>
   <block type=""math_number_property"">
     <mutation divisor_input=""true""></mutation>
@@ -279,19 +279,19 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            var output = new Parser()
-                .AddStandardBlocks()
-                .Parse(xml)
-                .Evaluate();
-            
-            Assert.AreEqual(true, (bool) output);
-        }
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Evaluate();
 
-        [TestMethod]
-        public void Test_Math_Number_Round()
-        {
+      Assert.AreEqual(true, (bool)output);
+    }
 
-            const string xml = @"
+    [TestMethod]
+    public void Test_Math_Number_Round()
+    {
+
+      const string xml = @"
 <xml>
   <block type=""math_round"">
     <field name=""OP"">ROUND</field>
@@ -303,19 +303,19 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            var output = new Parser()
-                .AddStandardBlocks()
-                .Parse(xml)
-                .Evaluate();
-            
-            Assert.AreEqual(3.0, (double) output);
-        }
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Evaluate();
 
-        [TestMethod]
-        public void Test_Math_Number_Round_Up()
-        {
+      Assert.AreEqual(3.0, (double)output);
+    }
 
-            const string xml = @"
+    [TestMethod]
+    public void Test_Math_Number_Round_Up()
+    {
+
+      const string xml = @"
 <xml>
   <block type=""math_round"">
     <field name=""OP"">ROUNDUP</field>
@@ -327,20 +327,20 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            var output = new Parser()
-                .AddStandardBlocks()
-                .Parse(xml)
-                .Evaluate();
-            
-            Assert.AreEqual(4.0, (double) output);
-        }
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Evaluate();
+
+      Assert.AreEqual(4.0, (double)output);
+    }
 
 
-        [TestMethod]
-        public void Test_Math_Number_Round_Down()
-        {
+    [TestMethod]
+    public void Test_Math_Number_Round_Down()
+    {
 
-            const string xml = @"
+      const string xml = @"
 <xml>
   <block type=""math_round"">
     <field name=""OP"">ROUNDDOWN</field>
@@ -352,20 +352,20 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            var output = new Parser()
-                .AddStandardBlocks()
-                .Parse(xml)
-                .Evaluate();
-            
-            Assert.AreEqual(3.0, (double) output);
-        }
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Evaluate();
+
+      Assert.AreEqual(3.0, (double)output);
+    }
 
 
-        [TestMethod]
-        public void Test_Math_On_List_Sum()
-        {
+    [TestMethod]
+    public void Test_Math_On_List_Sum()
+    {
 
-            const string xml = @"
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"">
   <block type=""math_on_list"">
     <mutation op=""SUM""></mutation>
@@ -387,20 +387,20 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            var output = new Parser()
-                .AddStandardBlocks()
-                .Parse(xml)
-                .Evaluate();
-            
-            Assert.AreEqual(15, (double) output);
-        }
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Evaluate();
+
+      Assert.AreEqual(15, (double)output);
+    }
 
 
-        [TestMethod]
-        public void Test_Math_On_List_Random()
-        {
+    [TestMethod]
+    public void Test_Math_On_List_Random()
+    {
 
-            const string xml = @"
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"">
   <block type=""math_on_list"">
     <mutation op=""RANDOM""></mutation>
@@ -422,20 +422,20 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            var output = new Parser()
-                .AddStandardBlocks()
-                .Parse(xml)
-                .Evaluate();
-            
-            Assert.AreEqual(3 , (double) output);
-        }
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Evaluate();
+
+      Assert.AreEqual(3, (double)output);
+    }
 
 
-        [TestMethod]
-        public void Test_Math_On_List_Mode()
-        {
+    [TestMethod]
+    public void Test_Math_On_List_Mode()
+    {
 
-            const string xml = @"
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"">
   <block type=""math_on_list"">
     <mutation op=""MODE""></mutation>
@@ -457,19 +457,19 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            var output = new Parser()
-                .AddStandardBlocks()
-                .Parse(xml)
-                .Evaluate();
-            
-            Assert.AreEqual(3 , (double) output);
-        }
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Evaluate();
 
-        [TestMethod]
-        public void Test_Math_Constrain()
-        {
+      Assert.AreEqual(3, (double)output);
+    }
 
-            const string xml = @"
+    [TestMethod]
+    public void Test_Math_Constrain()
+    {
+
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"">
   <block type=""math_constrain"">
     <value name=""VALUE"">
@@ -490,19 +490,19 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            var output = new Parser()
-                .AddStandardBlocks()
-                .Parse(xml)
-                .Evaluate();
-            
-            Assert.AreEqual(100 , (double) output);
-        }
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Evaluate();
 
-        [TestMethod]
-        public void Test_Math_Moduluo()
-        {
+      Assert.AreEqual(100, (double)output);
+    }
 
-            const string xml = @"
+    [TestMethod]
+    public void Test_Math_Moduluo()
+    {
+
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"">
   <variables></variables>
   <block type=""math_modulo"">
@@ -519,38 +519,38 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            var output = new Parser()
-                .AddStandardBlocks()
-                .Parse(xml)
-                .Evaluate();
-            
-            Assert.AreEqual(4 , (double) output);
-        }
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Evaluate();
 
-        [TestMethod]
-        public void Test_Math_Random_Fraction()
-        {
+      Assert.AreEqual(4, (double)output);
+    }
 
-            const string xml = @"
+    [TestMethod]
+    public void Test_Math_Random_Fraction()
+    {
+
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"">
   <variables></variables>
    <block type=""math_random_float""></block>
 </xml>
 ";
-            var output = new Parser()
-                .AddStandardBlocks()
-                .Parse(xml)
-                .Evaluate();
-            
-            Assert.IsTrue((double) output >= 0.0);
-            Assert.IsTrue((double) output <= 1.0);            
-        }
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Evaluate();
 
-        [TestMethod]
-        public void Test_Math_Random_Int()
-        {
+      Assert.IsTrue((double)output >= 0.0);
+      Assert.IsTrue((double)output <= 1.0);
+    }
 
-            const string xml = @"
+    [TestMethod]
+    public void Test_Math_Random_Int()
+    {
+
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"">
   <block type=""math_random_int"">
     <value name=""FROM"">
@@ -566,15 +566,15 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-            var output = new Parser()
-                .AddStandardBlocks()
-                .Parse(xml)
-                .Evaluate();
-            
-            Assert.IsTrue((double) output >= 1);
-            Assert.IsTrue((double)output <= 100);            
-        }
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Evaluate();
 
-
+      Assert.IsTrue((double)output >= 1);
+      Assert.IsTrue((double)output <= 100);
     }
+
+
+  }
 }

@@ -4,14 +4,14 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace IronBlock.Tests.Roslyn
 {
-	[TestClass]
-    public class ListsTests
-    {
+  [TestClass]
+  public class ListsTests
+  {
 
-        [TestMethod]
-        public void Test_List_Create_With()
-        {
-            const string xml = @"
+    [TestMethod]
+    public void Test_List_Create_With()
+    {
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"">
   <block type=""lists_create_with"">
     <mutation items=""3""></mutation>
@@ -33,21 +33,21 @@ namespace IronBlock.Tests.Roslyn
   </block>
 </xml>            
 ";
-			var output = new Parser()
-				.AddStandardBlocks()
-				.Parse(xml)
-				.Generate();
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Generate();
 
-			string code = output.NormalizeWhitespace().ToFullString();
-			Assert.IsTrue(code.Contains("new List<dynamic>{\"x\", \"y\", \"z\"};"));
-		}
+      string code = output.NormalizeWhitespace().ToFullString();
+      Assert.IsTrue(code.Contains("new List<dynamic>{\"x\", \"y\", \"z\"};"));
+    }
 
 
 
-        [TestMethod]
-        public void Test_List_Split()
-        {
-            const string xml = @"
+    [TestMethod]
+    public void Test_List_Split()
+    {
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"">
   <block type=""lists_split"">
     <mutation mode=""SPLIT""></mutation>
@@ -65,20 +65,20 @@ namespace IronBlock.Tests.Roslyn
   </block>
 </xml>
 ";
-			var output = new Parser()
-				.AddStandardBlocks()
-				.Parse(xml)
-				.Generate();
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Generate();
 
-			string code = output.NormalizeWhitespace().ToFullString();
-			Assert.IsTrue(code.Contains("\"x,y,z\".ToString(CultureInfo.InvariantCulture).Split(\",\");"));
-		}
+      string code = output.NormalizeWhitespace().ToFullString();
+      Assert.IsTrue(code.Contains("\"x,y,z\".ToString(CultureInfo.InvariantCulture).Split(\",\");"));
+    }
 
 
-        [TestMethod]
-        public void Test_Lists_Join()
-        {
-            const string xml = @"
+    [TestMethod]
+    public void Test_Lists_Join()
+    {
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"">
   <block type=""lists_split"">
     <mutation mode=""JOIN""></mutation>
@@ -112,21 +112,21 @@ namespace IronBlock.Tests.Roslyn
 </xml>
 ";
 
-			var output = new Parser()
-				.AddStandardBlocks()
-				.Parse(xml)
-				.Generate();
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Generate();
 
-			string code = output.NormalizeWhitespace().ToFullString();
-			Assert.IsTrue(code.Contains("string.Join(\",\", new List<dynamic>{\"x\", \"y\", \"z\"});"));
-		}
+      string code = output.NormalizeWhitespace().ToFullString();
+      Assert.IsTrue(code.Contains("string.Join(\",\", new List<dynamic>{\"x\", \"y\", \"z\"});"));
+    }
 
 
 
-        [TestMethod]
-        public void Test_Lists_Length()
-        {
-            const string xml = @"
+    [TestMethod]
+    public void Test_Lists_Length()
+    {
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"">
   <block type=""lists_length"">
     <value name=""VALUE"">
@@ -149,20 +149,20 @@ namespace IronBlock.Tests.Roslyn
 </xml>
 ";
 
-			var output = new Parser()
-				.AddStandardBlocks()
-				.Parse(xml)
-				.Generate();
-			
-			string code = output.NormalizeWhitespace().ToFullString();
-			Assert.IsTrue(code.Contains("\"a,b,c\".ToString(CultureInfo.InvariantCulture).Split(\",\").Length;"));
-		}
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Generate();
+
+      string code = output.NormalizeWhitespace().ToFullString();
+      Assert.IsTrue(code.Contains("\"a,b,c\".ToString(CultureInfo.InvariantCulture).Split(\",\").Length;"));
+    }
 
 
-        [TestMethod]
-        public void Test_Lists_Repeat()
-        {
-            const string xml = @"
+    [TestMethod]
+    public void Test_Lists_Repeat()
+    {
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"">
   <block type=""lists_repeat"">
     <value name=""ITEM"">
@@ -179,20 +179,20 @@ namespace IronBlock.Tests.Roslyn
 </xml>
 ";
 
-			var output = new Parser()
-				.AddStandardBlocks()
-				.Parse(xml)
-				.Generate();
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Generate();
 
-			string code = output.NormalizeWhitespace().ToFullString();
-			Assert.IsTrue(code.Contains("Enumerable.Repeat(\"hello\", 3).ToList();"));
-		}
+      string code = output.NormalizeWhitespace().ToFullString();
+      Assert.IsTrue(code.Contains("Enumerable.Repeat(\"hello\", 3).ToList();"));
+    }
 
 
-        [TestMethod]
-        public void Test_Lists_IsEmpty()
-        {
-            const string xml = @"
+    [TestMethod]
+    public void Test_Lists_IsEmpty()
+    {
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"">
   <block type=""lists_isEmpty"">
     <value name=""VALUE"">
@@ -204,19 +204,19 @@ namespace IronBlock.Tests.Roslyn
 </xml>
 ";
 
-			var output = new Parser()
-				.AddStandardBlocks()
-				.Parse(xml)
-				.Generate();
-			
-			string code = output.NormalizeWhitespace().ToFullString();
-			Assert.IsTrue(code.Contains("new List<dynamic>{}.Any();"));
-		}
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Generate();
 
-		[TestMethod]
-		public void Test_Lists_GetIndex_FromStart()
-		{
-			const string xml = @"
+      string code = output.NormalizeWhitespace().ToFullString();
+      Assert.IsTrue(code.Contains("new List<dynamic>{}.Any();"));
+    }
+
+    [TestMethod]
+    public void Test_Lists_GetIndex_FromStart()
+    {
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"">
   <variables>
     <variable id=""9b-j!_6?v^-pfbSI7(VI"" type="""">item</variable>
@@ -253,19 +253,19 @@ namespace IronBlock.Tests.Roslyn
 </xml>
 ";
 
-			var output = new Parser()
-				.AddStandardBlocks()
-				.Parse(xml)
-				.Generate();
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Generate();
 
-			string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
-			Assert.IsTrue(code.Contains("dynamic item; item = Enumerable.Repeat(10, 5).ToList()[2 - 1];"));
-		}
+      string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
+      Assert.IsTrue(code.Contains("dynamic item; item = Enumerable.Repeat(10, 5).ToList()[2 - 1];"));
+    }
 
-		[TestMethod]
-		public void Test_Lists_GetIndex_FromEnd()
-		{
-			const string xml = @"
+    [TestMethod]
+    public void Test_Lists_GetIndex_FromEnd()
+    {
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"">
   <variables>
     <variable id=""9b-j!_6?v^-pfbSI7(VI"" type="""">item</variable>
@@ -293,19 +293,19 @@ namespace IronBlock.Tests.Roslyn
 </xml>
 ";
 
-			var output = new Parser()
-				.AddStandardBlocks()
-				.Parse(xml)
-				.Generate();
-			
-			string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
-			Assert.IsTrue(code.Contains("dynamic item; item = new List<dynamic>{}.TakeLast(2).First();"));
-		}
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Generate();
 
-		[TestMethod]
-		public void Test_Lists_GetIndex_First()
-		{
-			const string xml = @"
+      string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
+      Assert.IsTrue(code.Contains("dynamic item; item = new List<dynamic>{}.TakeLast(2).First();"));
+    }
+
+    [TestMethod]
+    public void Test_Lists_GetIndex_First()
+    {
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"">
   <variables>
     <variable id=""9b-j!_6?v^-pfbSI7(VI"" type="""">item</variable>
@@ -328,19 +328,19 @@ namespace IronBlock.Tests.Roslyn
 </xml>
 ";
 
-			var output = new Parser()
-				.AddStandardBlocks()
-				.Parse(xml)
-				.Generate();
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Generate();
 
-			string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
-			Assert.IsTrue(code.Contains("dynamic item; item = new List<dynamic>{}.First();"));
-		}
+      string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
+      Assert.IsTrue(code.Contains("dynamic item; item = new List<dynamic>{}.First();"));
+    }
 
-		[TestMethod]
-		public void Test_Lists_GetIndex_Last()
-		{
-			const string xml = @"
+    [TestMethod]
+    public void Test_Lists_GetIndex_Last()
+    {
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"">
   <variables>
     <variable id=""9b-j!_6?v^-pfbSI7(VI"" type="""">item</variable>
@@ -363,19 +363,19 @@ namespace IronBlock.Tests.Roslyn
 </xml>
 ";
 
-			var output = new Parser()
-				.AddStandardBlocks()
-				.Parse(xml)
-				.Generate();
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Generate();
 
-			string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
-			Assert.IsTrue(code.Contains("dynamic item; item = new List<dynamic>{}.Last();"));
-		}
+      string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
+      Assert.IsTrue(code.Contains("dynamic item; item = new List<dynamic>{}.Last();"));
+    }
 
-		[TestMethod]
-		public void Test_Lists_SetIndex_FromStart()
-		{
-			const string xml = @"
+    [TestMethod]
+    public void Test_Lists_SetIndex_FromStart()
+    {
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"" id=""workspaceBlocks"" style=""display:none"">
   <variables>
     <variable id=""X.f5Y~hcMogYGWy/jV#E"" type="""">list</variable>
@@ -423,19 +423,19 @@ namespace IronBlock.Tests.Roslyn
 </xml>
 ";
 
-			var output = new Parser()
-				.AddStandardBlocks()
-				.Parse(xml)
-				.Generate();
-			
-			string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
-			Assert.IsTrue(code.Contains("dynamic list; list = new List<dynamic>{10, 20}; list[2 - 1] = 30;"));
-		}
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Generate();
 
-		[TestMethod]
-		public void Test_Lists_SetIndex_FromEnd()
-		{
-			const string xml = @"
+      string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
+      Assert.IsTrue(code.Contains("dynamic list; list = new List<dynamic>{10, 20}; list[2 - 1] = 30;"));
+    }
+
+    [TestMethod]
+    public void Test_Lists_SetIndex_FromEnd()
+    {
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"" id=""workspaceBlocks"" style=""display:none"">
   <variables>
     <variable id=""cc|GVfJ3tvn4)$KU@H7y"" type="""">list</variable>
@@ -473,19 +473,19 @@ namespace IronBlock.Tests.Roslyn
 </xml>
 ";
 
-			var output = new Parser()
-				.AddStandardBlocks()
-				.Parse(xml)
-				.Generate();
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Generate();
 
-			string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
-			Assert.IsTrue(code.Contains("dynamic list; list = new List<dynamic>{}; list[list.Count - 2] = 10;"));
-		}
+      string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
+      Assert.IsTrue(code.Contains("dynamic list; list = new List<dynamic>{}; list[list.Count - 2] = 10;"));
+    }
 
-		[TestMethod]
-		public void Test_Lists_SetIndex_First()
-		{
-			const string xml = @"
+    [TestMethod]
+    public void Test_Lists_SetIndex_First()
+    {
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"" id=""workspaceBlocks"" style=""display:none"">
   <variables>
     <variable id=""cc|GVfJ3tvn4)$KU@H7y"" type="""">list</variable>
@@ -518,19 +518,19 @@ namespace IronBlock.Tests.Roslyn
 </xml>
 ";
 
-			var output = new Parser()
-				.AddStandardBlocks()
-				.Parse(xml)
-				.Generate();
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Generate();
 
-			string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
-			Assert.IsTrue(code.Contains("dynamic list; list = new List<dynamic>{}; list[0] = 10;"));
-		}
+      string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
+      Assert.IsTrue(code.Contains("dynamic list; list = new List<dynamic>{}; list[0] = 10;"));
+    }
 
-		[TestMethod]
-		public void Test_Lists_SetIndex_Last()
-		{
-			const string xml = @"
+    [TestMethod]
+    public void Test_Lists_SetIndex_Last()
+    {
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"" id=""workspaceBlocks"" style=""display:none"">
   <variables>
     <variable id=""cc|GVfJ3tvn4)$KU@H7y"" type="""">list</variable>
@@ -563,13 +563,13 @@ namespace IronBlock.Tests.Roslyn
 </xml>
 ";
 
-			var output = new Parser()
-				.AddStandardBlocks()
-				.Parse(xml)
-				.Generate();
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Generate();
 
-			string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
-			Assert.IsTrue(code.Contains("dynamic list; list = new List<dynamic>{}; list[list.Count - 1] = 10;"));
-		}
-	}
+      string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
+      Assert.IsTrue(code.Contains("dynamic list; list = new List<dynamic>{}; list[list.Count - 1] = 10;"));
+    }
+  }
 }

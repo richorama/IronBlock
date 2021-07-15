@@ -1,7 +1,7 @@
+using System;
 using IronBlock.Utils;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System;
 
 namespace IronBlock.Blocks.Text
 {

@@ -4,13 +4,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace IronBlock.Tests.Roslyn
 {
-    [TestClass]
-    public class ArithmeticTests
+  [TestClass]
+  public class ArithmeticTests
+  {
+    [TestMethod]
+    public void Test_Math_Operation_Add()
     {
-		[TestMethod]
-		public void Test_Math_Operation_Add()
-		{
-			const string xml = @"
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"" id=""workspaceBlocks"" style=""display:none"">
   <variables></variables>
   <block id=""xYWLO1CBIc?5q]psGz;C"" type=""math_arithmetic"" y=""188"" x=""513"">
@@ -28,19 +28,19 @@ namespace IronBlock.Tests.Roslyn
   </block>
 </xml>";
 
-			var output = new Parser()
-				.AddStandardBlocks()
-				.Parse(xml)
-				.Generate();
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Generate();
 
-			string code = output.NormalizeWhitespace().ToFullString();
-			Assert.IsTrue(code.Contains("(2 + 4);"));
-		}
+      string code = output.NormalizeWhitespace().ToFullString();
+      Assert.IsTrue(code.Contains("(2 + 4);"));
+    }
 
-        [TestMethod]
-        public void Test_Math_Operation_Power()
-        {
-            const string xml = @"
+    [TestMethod]
+    public void Test_Math_Operation_Power()
+    {
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"" id=""workspaceBlocks"" style=""display:none"">
   <variables></variables>
   <block id=""xYWLO1CBIc?5q]psGz;C"" type=""math_arithmetic"" y=""188"" x=""513"">
@@ -58,19 +58,19 @@ namespace IronBlock.Tests.Roslyn
   </block>
 </xml>";
 
-            var output = new Parser()
-                .AddStandardBlocks()
-                .Parse(xml)
-                .Generate();
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Generate();
 
-            string code = output.NormalizeWhitespace().ToFullString();
-            Assert.IsTrue(code.Contains("(Math.Pow(4, 2));"));
-        }
+      string code = output.NormalizeWhitespace().ToFullString();
+      Assert.IsTrue(code.Contains("(Math.Pow(4, 2));"));
+    }
 
-        [TestMethod]
-		public void Test_Math_Operation_Add_With_Multiply()
-		{
-			const string xml = @"
+    [TestMethod]
+    public void Test_Math_Operation_Add_With_Multiply()
+    {
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"" id=""workspaceBlocks"" style=""display:none"">
   <variables></variables>
   <block id=""v3etC{34uL,(%l=C)@}j"" type=""math_arithmetic"" y=""213"" x=""538"">
@@ -98,21 +98,21 @@ namespace IronBlock.Tests.Roslyn
   </block>
 </xml>";
 
-			var output = new Parser()
-				.AddStandardBlocks()
-				.Parse(xml)
-				.Generate();
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Generate();
 
-			string code = output.NormalizeWhitespace().ToFullString();
-			Assert.IsTrue(code.Contains("((2 + 4) * 5);"));
-		}
+      string code = output.NormalizeWhitespace().ToFullString();
+      Assert.IsTrue(code.Contains("((2 + 4) * 5);"));
+    }
 
 
     [TestMethod]
     public void Test_Math_Operation_Moduluo()
     {
 
-        const string xml = @"
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"">
 <variables></variables>
 <block type=""math_modulo"">
@@ -129,15 +129,15 @@ namespace IronBlock.Tests.Roslyn
 </block>
 </xml>
 ";
-        var output = new Parser()
-            .AddStandardBlocks()
-            .Parse(xml)
-            .Generate();
-        
-        string code = output.NormalizeWhitespace().ToFullString();
-        Assert.IsTrue(code.Contains("64 % 10;"), code);
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Generate();
+
+      string code = output.NormalizeWhitespace().ToFullString();
+      Assert.IsTrue(code.Contains("64 % 10;"), code);
     }
 
 
-	}
+  }
 }

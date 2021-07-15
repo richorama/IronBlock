@@ -91,7 +91,7 @@ namespace IronBlock.Tests
   </block>
 </xml>";
 
-      var args = new Dictionary<string,object>();
+      var args = new Dictionary<string, object>();
       args.Add("message", "Hello World");
 
       new Parser()
@@ -103,7 +103,7 @@ namespace IronBlock.Tests
       Assert.AreEqual("Hello World", TestExtensions.GetDebugText().First());
     }
 
-  [TestMethod]
+    [TestMethod]
     public void Test_Args_Output()
     {
       const string xml = @"
@@ -118,7 +118,7 @@ namespace IronBlock.Tests
   </block>
 </xml>";
 
-      var args = new Dictionary<string,object>();
+      var args = new Dictionary<string, object>();
 
       new Parser()
         .AddStandardBlocks()

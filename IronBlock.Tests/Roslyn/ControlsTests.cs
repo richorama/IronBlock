@@ -1,18 +1,18 @@
+using System.Linq;
 using IronBlock.Blocks;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Linq;
 
 namespace IronBlock.Tests.Roslyn
 {
-    [TestClass]
-    public class ControlsTests
+  [TestClass]
+  public class ControlsTests
+  {
+    [TestMethod]
+    public void Test_Controls_If()
     {
-        [TestMethod]
-        public void Test_Controls_If()
-        {
 
-            const string xml = @"
+      const string xml = @"
 <xml>
   <block type=""controls_if"" >
     <value name=""IF0"">
@@ -32,20 +32,20 @@ namespace IronBlock.Tests.Roslyn
   </block>       
 </xml>
 ";
-			var output = new Parser()
-				.AddStandardBlocks()
-				.Parse(xml)
-				.Generate();
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Generate();
 
-			string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
-			Assert.IsTrue(code.Contains("if (true) { Console.WriteLine(\"success\"); }"));
-		}
+      string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
+      Assert.IsTrue(code.Contains("if (true) { Console.WriteLine(\"success\"); }"));
+    }
 
-		[TestMethod]
-		public void Test_Controls_If_With_Multiple_Statements()
-		{
+    [TestMethod]
+    public void Test_Controls_If_With_Multiple_Statements()
+    {
 
-			const string xml = @"
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"" id=""workspaceBlocks"" style=""display:none"">
   <variables>
     <variable id=""7seVex*HL`I8akO#+j43"" type="""">a</variable>
@@ -122,19 +122,19 @@ namespace IronBlock.Tests.Roslyn
 	</block>
 </xml>
 ";
-			var output = new Parser()
-				.AddStandardBlocks()
-				.Parse(xml)
-				.Generate();
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Generate();
 
-			string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
-			Assert.IsTrue(code.Contains("if ((a == -1)) { b = (c - d); e = (f - g); }"));
-		}
+      string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
+      Assert.IsTrue(code.Contains("if ((a == -1)) { b = (c - d); e = (f - g); }"));
+    }
 
-		[TestMethod]
-		public void Test_Controls_If_Else()
-		{
-			const string xml = @"
+    [TestMethod]
+    public void Test_Controls_If_Else()
+    {
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"" id=""workspaceBlocks"" style=""display:none"">
   <variables>
     <variable id=""7seVex*HL`I8akO#+j43"" type="""">test</variable>
@@ -179,20 +179,20 @@ namespace IronBlock.Tests.Roslyn
   </block>
 </xml>
 ";
-			var output = new Parser()
-				.AddStandardBlocks()
-				.Parse(xml)
-				.Generate();
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Generate();
 
-			string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
-			Assert.IsTrue(code.Contains("if ((test == 0)) { test = 1; } else { test = 2; }"));
-		}
+      string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
+      Assert.IsTrue(code.Contains("if ((test == 0)) { test = 1; } else { test = 2; }"));
+    }
 
-		[TestMethod]
-		public void Test_Controls_If_ElseIf_Else()
-		{
+    [TestMethod]
+    public void Test_Controls_If_ElseIf_Else()
+    {
 
-			const string xml = @"
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"" id=""workspaceBlocks"" style=""display:none"">
   <variables>
     <variable id=""7seVex*HL`I8akO#+j43"" type="""">test</variable>
@@ -287,21 +287,21 @@ namespace IronBlock.Tests.Roslyn
   </block>
 </xml>
 ";
-			var output = new Parser()
-				.AddStandardBlocks()
-				.Parse(xml)
-				.Generate();
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Generate();
 
-			string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
-			Assert.IsTrue(code.Contains("if ((test == 0)) { test = 1; } else if ((test == 1)) { test = 2; } else if ((test == 2)) { test = 3; } else { test = 4; }"));
-		}
+      string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
+      Assert.IsTrue(code.Contains("if ((test == 0)) { test = 1; } else if ((test == 1)) { test = 2; } else if ((test == 2)) { test = 3; } else { test = 4; }"));
+    }
 
 
-		[TestMethod]
-        public void Test_Controls_WhileUntil()
-        {
+    [TestMethod]
+    public void Test_Controls_WhileUntil()
+    {
 
-            const string xml = @"
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"">
   <variables>
     <variable type="""">x</variable>
@@ -358,20 +358,20 @@ namespace IronBlock.Tests.Roslyn
   </block>
 </xml>
 ";
-            var output = new Parser()
-                .AddStandardBlocks()
-                .Parse(xml)
-                .Generate();
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Generate();
 
-			string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
-			Assert.IsTrue(code.Contains("dynamic x; x = 0; while ((x == 0)) { Console.WriteLine(x); x = 1; }"));
-		}
+      string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
+      Assert.IsTrue(code.Contains("dynamic x; x = 0; while ((x == 0)) { Console.WriteLine(x); x = 1; }"));
+    }
 
-        [TestMethod]
-        public void Test_Controls_Flow_Continue()
-        {
+    [TestMethod]
+    public void Test_Controls_Flow_Continue()
+    {
 
-            const string xml = @"
+      const string xml = @"
 <xml>
   <block type=""controls_repeat_ext"">
     <value name=""TIMES"">
@@ -414,21 +414,21 @@ namespace IronBlock.Tests.Roslyn
   </block>
 </xml>
 ";
-			var output = new Parser()
-				.AddStandardBlocks()
-				.Parse(xml)
-				.Generate();
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Generate();
 
-			string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
-			Assert.IsTrue(code.Contains("for (int count = 0; count < 3; count++) { Console.WriteLine(\"hello\"); if (true) { continue; }  Console.WriteLine(\"world\"); }"));
-		}
+      string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
+      Assert.IsTrue(code.Contains("for (int count = 0; count < 3; count++) { Console.WriteLine(\"hello\"); if (true) { continue; }  Console.WriteLine(\"world\"); }"));
+    }
 
 
-        [TestMethod]
-        public void Test_Controls_Flow_Break()
-        {
+    [TestMethod]
+    public void Test_Controls_Flow_Break()
+    {
 
-            const string xml = @"
+      const string xml = @"
 <xml>
   <block type=""controls_repeat_ext"">
     <value name=""TIMES"">
@@ -471,22 +471,22 @@ namespace IronBlock.Tests.Roslyn
   </block>
 </xml>
 ";
-			var output = new Parser()
-				.AddStandardBlocks()
-				.Parse(xml)
-				.Generate();
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Generate();
 
-			string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
-			Assert.IsTrue(code.Contains("for (int count = 0; count < 3; count++) { Console.WriteLine(\"hello\"); if (true) { break; }  Console.WriteLine(\"world\"); }"));
-		}
+      string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
+      Assert.IsTrue(code.Contains("for (int count = 0; count < 3; count++) { Console.WriteLine(\"hello\"); if (true) { break; }  Console.WriteLine(\"world\"); }"));
+    }
 
 
 
-        [TestMethod]
-        public void Test_Controls_For_Each()
-        {
+    [TestMethod]
+    public void Test_Controls_For_Each()
+    {
 
-            const string xml = @"
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"">
   <variables>
     <variable type="""" id=""%%M;gt+!MJxzjuj,*~.X"">i</variable>
@@ -524,21 +524,21 @@ namespace IronBlock.Tests.Roslyn
   </block>
 </xml>
 ";
-			var output = new Parser()
-				.AddStandardBlocks()
-				.Parse(xml)
-				.Generate();
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Generate();
 
-			string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
-			Assert.IsTrue(code.Contains(@"foreach (var i in ""a,b,c"".ToString(CultureInfo.InvariantCulture).Split("","")) { Console.WriteLine(i); }"));
-		}
+      string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
+      Assert.IsTrue(code.Contains(@"foreach (var i in ""a,b,c"".ToString(CultureInfo.InvariantCulture).Split("","")) { Console.WriteLine(i); }"));
+    }
 
 
-        [TestMethod]
-        public void Test_Controls_For()
-        {
+    [TestMethod]
+    public void Test_Controls_For()
+    {
 
-            const string xml = @"
+      const string xml = @"
 <xml xmlns=""http://www.w3.org/1999/xhtml"">
   <variables>
     <variable type="""" id=""%%M;gt+!MJxzjuj,*~.X"">i</variable>
@@ -575,13 +575,13 @@ namespace IronBlock.Tests.Roslyn
   </block>
 </xml>
 ";
-			var output = new Parser()
-				.AddStandardBlocks()
-				.Parse(xml)
-				.Generate();
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Generate();
 
-			string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
-			Assert.IsTrue(code.Contains("dynamic i; for (i = 1; i <= 3; i += 1) { Console.WriteLine(i); }"));
-		}
+      string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
+      Assert.IsTrue(code.Contains("dynamic i; for (i = 1; i <= 3; i += 1) { Console.WriteLine(i); }"));
     }
+  }
 }
