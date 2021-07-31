@@ -575,6 +575,58 @@ namespace IronBlock.Tests
       Assert.IsTrue((double)output <= 100);
     }
 
+    [TestMethod]
+    public void Test_Math_Change()
+    {
+
+      const string xml = @"
+<xml xmlns=""https://developers.google.com/blockly/xml"">
+  <variables>
+    <variable id=""ff`YJBi(D@smL[)Q:H}}"">foo</variable>
+  </variables>
+  <block type=""variables_set"" id=""a2aSu{9x7/D~9z3WGU(C"" x=""562"" y=""112"">
+    <field name=""VAR"" id=""ff`YJBi(D@smL[)Q:H}}"">foo</field>
+    <value name=""VALUE"">
+      <block type=""math_number"" id=""(=?Qs,U~+c+hewlZejLb"">
+        <field name=""NUM"">1</field>
+      </block>
+    </value>
+    <next>
+      <block type=""math_change"" id=""uO~$6GN{K~{gOBd!r%vp"">
+        <field name=""VAR"" id=""ff`YJBi(D@smL[)Q:H}}"">foo</field>
+        <value name=""DELTA"">
+          <shadow type=""math_number"" id=""S3n?jRy1.r1?+xGsN[ba"">
+            <field name=""NUM"">1</field>
+          </shadow>
+        </value>
+        <next>
+          <block type=""text_print"" id=""ZzSeF~6sC{%k3b*c_2hm"">
+            <value name=""TEXT"">
+              <shadow type=""text"" id=""x4}B?M9VFEOb;WmE^8ba"">
+                <field name=""TEXT"">abc</field>
+              </shadow>
+              <block type=""variables_get"" id="")[}s1A^ZtI^hEMi5qjuw"">
+                <field name=""VAR"" id=""ff`YJBi(D@smL[)Q:H}}"">foo</field>
+              </block>
+            </value>
+          </block>
+        </next>
+      </block>
+    </next>
+  </block>
+</xml>";
+
+      var output = new Parser()
+        .AddStandardBlocks()
+        .AddDebugPrinter()
+        .Parse(xml)
+        .Evaluate();
+
+      Assert.AreEqual("2", TestExtensions.GetDebugText().First());
+
+    }
+
+
 
   }
 }
