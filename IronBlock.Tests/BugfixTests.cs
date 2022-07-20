@@ -236,6 +236,99 @@ namespace IronBlock.Tests
 
     }
 
+
+   [TestMethod]
+    public void Issue_56()
+    {
+      const string xml = @"
+<xml xmlns=""https://developers.google.com/blockly/xml"">
+  <variables>
+    <variable id=""IP:;/(tRXJEtJO!l8Mo;"">n</variable>
+  </variables>
+  <block type=""variables_set"" id=""{SZ@a_+s~YfH@J=3UoMi"" x=""288"" y=""63"">
+    <field name=""VAR"" id=""IP:;/(tRXJEtJO!l8Mo;"">n</field>
+    <value name=""VALUE"">
+      <block type=""math_number"" id=""qzOkX~rndpNj4aVP?wN3"">
+        <field name=""NUM"">1</field>
+      </block>
+    </value>
+    <next>
+      <block type=""controls_repeat_ext"" id=""b4d[fzE|YdGk.iS}kE3+"">
+        <value name=""TIMES"">
+          <shadow type=""math_number"" id=""CJ2EX)LWTm6D}KKHKXT5"">
+            <field name=""NUM"">4</field>
+          </shadow>
+          <block type=""math_number"" id=""i?^HN5{`6Yl(czxMsF@u"">
+            <field name=""NUM"">4</field>
+          </block>
+        </value>
+        <statement name=""DO"">
+          <block type=""text_print"" id=""iYlK?K-d%R{lA~N!knWJ"">
+            <value name=""TEXT"">
+              <shadow type=""text"" id=""bniEQj?ova^u.87S*c%?"">
+                <field name=""TEXT"">abc</field>
+              </shadow>
+              <block type=""variables_get"" id=""Df@rk52MD*@g8Q-`#XzI"">
+                <field name=""VAR"" id=""IP:;/(tRXJEtJO!l8Mo;"">n</field>
+              </block>
+            </value>
+            <next>
+              <block type=""variables_set"" id=""@07TFca(gS5jg3%w3Xus"">
+                <field name=""VAR"" id=""IP:;/(tRXJEtJO!l8Mo;"">n</field>
+                <value name=""VALUE"">
+                  <block type=""math_arithmetic"" id=""]$aUl34(Sn|25ZoFGEew"">
+                    <field name=""OP"">MULTIPLY</field>
+                    <value name=""A"">
+                      <shadow type=""math_number"" id=""!|bde0V^^[rC@XI6rcO;"">
+                        <field name=""NUM"">1</field>
+                      </shadow>
+                      <block type=""variables_get"" id=""2Ls8V@CnIEq{Xe)M8fd("">
+                        <field name=""VAR"" id=""IP:;/(tRXJEtJO!l8Mo;"">n</field>
+                      </block>
+                    </value>
+                    <value name=""B"">
+                      <shadow type=""math_number"" id=""-~mp_JmuKxnrx^Z2To]i"">
+                        <field name=""NUM"">1</field>
+                      </shadow>
+                      <block type=""math_number"" id=""tt)rqpmz@e}Y[:jpl_$:"">
+                        <field name=""NUM"">2</field>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+                <next>
+                  <block type=""text_print"" id=""l_N;(tLe@n(!C:5nzF?a"">
+                    <value name=""TEXT"">
+                      <shadow type=""text"" id=""c4d;6qL@,`1%FrJ7iU61"">
+                        <field name=""TEXT"">abc</field>
+                      </shadow>
+                      <block type=""variables_get"" id=""[70Gl;b:]?~(m8_P=/$o"">
+                        <field name=""VAR"" id=""IP:;/(tRXJEtJO!l8Mo;"">n</field>
+                      </block>
+                    </value>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </next>
+  </block>
+</xml>
+";
+
+      var output = new Parser()
+        .AddStandardBlocks()
+        .AddDebugPrinter()
+        .Parse(xml)
+        .Evaluate();
+
+      Assert.AreEqual("1", TestExtensions.GetDebugText().First());
+
+    }
+
+
   }
 }
 
