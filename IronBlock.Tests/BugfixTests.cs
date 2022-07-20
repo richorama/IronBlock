@@ -241,80 +241,111 @@ namespace IronBlock.Tests
     public void Issue_56()
     {
       const string xml = @"
-<xml xmlns=""https://developers.google.com/blockly/xml"">
-  <variables>
-    <variable id=""IP:;/(tRXJEtJO!l8Mo;"">n</variable>
-  </variables>
-  <block type=""variables_set"" id=""{SZ@a_+s~YfH@J=3UoMi"" x=""288"" y=""63"">
-    <field name=""VAR"" id=""IP:;/(tRXJEtJO!l8Mo;"">n</field>
-    <value name=""VALUE"">
-      <block type=""math_number"" id=""qzOkX~rndpNj4aVP?wN3"">
-        <field name=""NUM"">1</field>
-      </block>
-    </value>
-    <next>
-      <block type=""controls_repeat_ext"" id=""b4d[fzE|YdGk.iS}kE3+"">
-        <value name=""TIMES"">
-          <shadow type=""math_number"" id=""CJ2EX)LWTm6D}KKHKXT5"">
-            <field name=""NUM"">4</field>
-          </shadow>
-          <block type=""math_number"" id=""i?^HN5{`6Yl(czxMsF@u"">
-            <field name=""NUM"">4</field>
-          </block>
-        </value>
-        <statement name=""DO"">
-          <block type=""text_print"" id=""iYlK?K-d%R{lA~N!knWJ"">
-            <value name=""TEXT"">
-              <shadow type=""text"" id=""bniEQj?ova^u.87S*c%?"">
-                <field name=""TEXT"">abc</field>
-              </shadow>
-              <block type=""variables_get"" id=""Df@rk52MD*@g8Q-`#XzI"">
-                <field name=""VAR"" id=""IP:;/(tRXJEtJO!l8Mo;"">n</field>
-              </block>
-            </value>
-            <next>
-              <block type=""variables_set"" id=""@07TFca(gS5jg3%w3Xus"">
-                <field name=""VAR"" id=""IP:;/(tRXJEtJO!l8Mo;"">n</field>
-                <value name=""VALUE"">
-                  <block type=""math_arithmetic"" id=""]$aUl34(Sn|25ZoFGEew"">
-                    <field name=""OP"">MULTIPLY</field>
-                    <value name=""A"">
-                      <shadow type=""math_number"" id=""!|bde0V^^[rC@XI6rcO;"">
-                        <field name=""NUM"">1</field>
-                      </shadow>
-                      <block type=""variables_get"" id=""2Ls8V@CnIEq{Xe)M8fd("">
-                        <field name=""VAR"" id=""IP:;/(tRXJEtJO!l8Mo;"">n</field>
-                      </block>
-                    </value>
-                    <value name=""B"">
-                      <shadow type=""math_number"" id=""-~mp_JmuKxnrx^Z2To]i"">
-                        <field name=""NUM"">1</field>
-                      </shadow>
-                      <block type=""math_number"" id=""tt)rqpmz@e}Y[:jpl_$:"">
-                        <field name=""NUM"">2</field>
-                      </block>
-                    </value>
-                  </block>
-                </value>
-                <next>
-                  <block type=""text_print"" id=""l_N;(tLe@n(!C:5nzF?a"">
-                    <value name=""TEXT"">
-                      <shadow type=""text"" id=""c4d;6qL@,`1%FrJ7iU61"">
-                        <field name=""TEXT"">abc</field>
-                      </shadow>
-                      <block type=""variables_get"" id=""[70Gl;b:]?~(m8_P=/$o"">
-                        <field name=""VAR"" id=""IP:;/(tRXJEtJO!l8Mo;"">n</field>
-                      </block>
-                    </value>
-                  </block>
-                </next>
-              </block>
-            </next>
-          </block>
-        </statement>
-      </block>
-    </next>
-  </block>
+<xml>
+	<variables>
+		<variable id=""`cXm$e:+$_$xfnckvbWS"">n</variable>
+	</variables>
+	<block type=""variables_set"" id=""set_n_initial"" inline=""true"" x=""20"" y=""20"">
+		<field name=""VAR"" id=""`cXm$e:+$_$xfnckvbWS"">n</field>
+		<value name=""VALUE"">
+			<block type=""math_number"" id=""a!$B~u(M%g2G4*QmO1y3"">
+				<field name=""NUM"">1</field>
+			</block>
+		</value>
+		<next>
+			<block type=""controls_repeat_ext"" id=""repeat"" inline=""true"">
+				<value name=""TIMES"">
+					<block type=""math_number"" id=""p^-}JUBIABX?i~]F1N-/"">
+						<field name=""NUM"">4</field>
+					</block>
+				</value>
+				<statement name=""DO"">
+					<block type=""text_print"" id=""^RMKi5lSA[4TL*d*;L*Z"">
+						<value name=""TEXT"">
+							<shadow type=""text"" id=""y*c#?1$[$C$r3}qRXP}1"">
+								<field name=""TEXT"">abc</field>
+							</shadow>
+						</value>
+						<next>
+							<block type=""variables_set"" id=""set_n_update"" inline=""true"">
+								<field name=""VAR"" id=""`cXm$e:+$_$xfnckvbWS"">n</field>
+								<value name=""VALUE"">
+									<block type=""math_arithmetic"" id="")[%d2l/(JaEViKo{buBb"">
+										<field name=""OP"">MULTIPLY</field>
+										<value name=""A"">
+											<block type=""variables_get"" id=""b$;3hwIPA)fT|oYmmZ)n"">
+												<field name=""VAR"" id=""`cXm$e:+$_$xfnckvbWS"">n</field>
+											</block>
+										</value>
+										<value name=""B"">
+											<block type=""math_number"" id=""t4I1,iM2QW[SIzG1crQ|"">
+												<field name=""NUM"">2</field>
+											</block>
+										</value>
+									</block>
+								</value>
+								<next>
+									<block type=""text_print"" id=""print"">
+										<value name=""TEXT"">
+											<block type=""variables_get"" id=""x/o@wI:02,lq[rfI^Ck!"">
+												<field name=""VAR"" id=""`cXm$e:+$_$xfnckvbWS"">n</field>
+											</block>
+										</value>
+									</block>
+								</next>
+							</block>
+						</next>
+					</block>
+				</statement>
+			</block>
+		</next>
+	</block>
+	<block type=""variables_set"" id=""hf^H|d299JOPBLCc(:rP"" inline=""true"" x=""20"" y=""20"">
+		<field name=""VAR"" id=""`cXm$e:+$_$xfnckvbWS"">n</field>
+		<value name=""VALUE"">
+			<block type=""math_number"" id=""MRY1{5.QLm?o=hU|i0.-"">
+				<field name=""NUM"">1</field>
+			</block>
+		</value>
+		<next>
+			<block type=""controls_repeat_ext"" id=""lpOt88AZXfNG:zje_+!g"" inline=""true"">
+				<value name=""TIMES"">
+					<block type=""math_number"" id=""1z/hne],iy!~-viM`=b{"">
+						<field name=""NUM"">4</field>
+					</block>
+				</value>
+				<statement name=""DO"">
+					<block type=""variables_set"" id=""?1(+A-kCHz-3jB?8TNy,"" inline=""true"">
+						<field name=""VAR"" id=""`cXm$e:+$_$xfnckvbWS"">n</field>
+						<value name=""VALUE"">
+							<block type=""math_arithmetic"" id=""-0]!]_Zs5$h%EZJuch$b"">
+								<field name=""OP"">MULTIPLY</field>
+								<value name=""A"">
+									<block type=""variables_get"" id=""sS,,-mQyc$FHh.0pb{fy"">
+										<field name=""VAR"" id=""`cXm$e:+$_$xfnckvbWS"">n</field>
+									</block>
+								</value>
+								<value name=""B"">
+									<block type=""math_number"" id=""j/9Xmj=OjAsk)Xi_/1Il"">
+										<field name=""NUM"">2</field>
+									</block>
+								</value>
+							</block>
+						</value>
+						<next>
+							<block type=""text_print"" id=""NUNJ?=p*cQ0,}]q+PA]p"">
+								<value name=""TEXT"">
+									<block type=""variables_get"" id=""V0tg(?r{sn{?{WHsNTzM"">
+										<field name=""VAR"" id=""`cXm$e:+$_$xfnckvbWS"">n</field>
+									</block>
+								</value>
+							</block>
+						</next>
+					</block>
+				</statement>
+			</block>
+		</next>
+	</block>
 </xml>
 ";
 
@@ -324,7 +355,8 @@ namespace IronBlock.Tests
         .Parse(xml)
         .Evaluate();
 
-      Assert.AreEqual("1", TestExtensions.GetDebugText().First());
+      Assert.AreEqual("abc", TestExtensions.GetDebugText().First());
+      Assert.AreEqual(12, TestExtensions.GetDebugText().Count());
 
     }
 
