@@ -236,6 +236,34 @@ namespace IronBlock.Tests
 
     }
 
+
+    [TestMethod]
+    public void DemoVariable()
+    {
+      const string xml = @"
+<xml>
+  <block type=""variables_set"">
+    <field name=""VAR"">x</field>
+    <value name=""VALUE"">
+      <block type=""text"">
+        <field name=""TEXT"">foo</field>
+      </block>
+    </value>
+  </block>
+</xml>
+";
+
+      var context = new Context();
+      context.Variables.Add("x", "bar");
+      var output = new Parser()
+        .AddStandardBlocks()
+        .Parse(xml)
+        .Evaluate(context);
+
+      Assert.AreEqual("foo", context.Variables["x"]);
+    }
+
+
   }
 }
 
