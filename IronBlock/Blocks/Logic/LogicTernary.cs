@@ -24,7 +24,7 @@ namespace IronBlock.Blocks.Logic
       {
         if (this.Values.Any(x => x.Name == "ELSE"))
         {
-          return this.Values.Generate("ELSE", context);
+          return this.Values.Evaluate("ELSE", context);
         }
       }
       return null;
