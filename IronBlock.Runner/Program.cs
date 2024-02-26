@@ -43,7 +43,7 @@ Specify any of the following as a second argument
         var xml = File.ReadAllText(filename);
 
         var parser =
-            new Parser()
+            new XmlParser()
                 .AddStandardBlocks()
                 .Parse(xml);
 

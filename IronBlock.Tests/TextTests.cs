@@ -24,7 +24,7 @@ namespace IronBlock.Tests
 </xml>
 ";
 
-      var output = new Parser()
+      var output = new XmlParser()
         .AddStandardBlocks()
         .Parse(xml)
         .Evaluate();
@@ -49,7 +49,7 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-      var output = (bool)new Parser()
+      var output = (bool)new XmlParser()
         .AddStandardBlocks()
         .Parse(xml)
         .Evaluate();
@@ -73,7 +73,7 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-      var output = new Parser()
+      var output = new XmlParser()
         .AddStandardBlocks()
         .Parse(xml)
         .Evaluate()
@@ -97,7 +97,7 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-      var output = new Parser()
+      var output = new XmlParser()
         .AddStandardBlocks()
         .Parse(xml)
         .Evaluate()
@@ -148,7 +148,7 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-      new Parser()
+      new XmlParser()
           .AddStandardBlocks()
           .AddDebugPrinter()
           .Parse(xml)
@@ -197,7 +197,7 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-      new Parser()
+      new XmlParser()
           .AddStandardBlocks()
           .AddDebugPrinter()
           .Parse(xml)
@@ -227,7 +227,7 @@ namespace IronBlock.Tests
   </block>
 </xml>
 ";
-      var output = new Parser()
+      var output = new XmlParser()
         .AddStandardBlocks()
         .Parse(xml)
         .Evaluate();

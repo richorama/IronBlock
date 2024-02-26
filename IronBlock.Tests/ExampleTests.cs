@@ -12,7 +12,7 @@ namespace IronBlock.Tests
     public void Test_Example1()
     {
       var xml = File.ReadAllText("../../../Examples/example1.xml");
-      var parser = new Parser();
+      var parser = new XmlParser();
 
       parser.AddStandardBlocks();
       var printer = parser.AddDebugPrinter();
@@ -27,7 +27,7 @@ namespace IronBlock.Tests
     public void Test_Example2()
     {
       var xml = File.ReadAllText("../../../Examples/example2.xml");
-      var parser = new Parser();
+      var parser = new XmlParser();
 
       parser.AddStandardBlocks();
       var printer = parser.AddDebugPrinter();

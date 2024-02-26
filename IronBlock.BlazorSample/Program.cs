@@ -39,7 +39,7 @@ namespace IronBlock.BlazorSample
     {
       var printBlock = new CustomPrintBlock();
 
-      new IronBlock.Parser()
+      new IronBlock.XmlParser()
         .AddStandardBlocks()
         .AddBlock("text_print", printBlock)
         .Parse(xml)

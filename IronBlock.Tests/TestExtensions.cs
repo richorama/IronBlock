@@ -27,7 +27,7 @@ namespace IronBlock.Tests
       return DebugPrint.Text;
     }
 
-    internal static Parser AddDebugPrinter(this Parser parser)
+    internal static IParser AddDebugPrinter(this IParser parser)
     {
       DebugPrint.Text.Clear();
 

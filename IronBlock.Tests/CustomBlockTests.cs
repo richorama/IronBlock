@@ -36,7 +36,7 @@ namespace IronBlock.Tests
 ";
 
       var printBlock = new CustomPrintBlock();
-      var output = new Parser()
+      var output = new XmlParser()
         .AddStandardBlocks()
         .AddBlock("text_print", printBlock)
         .Parse(xml)

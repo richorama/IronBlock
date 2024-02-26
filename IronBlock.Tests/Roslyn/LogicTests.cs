@@ -18,7 +18,7 @@ namespace IronBlock.Tests.Roslyn
     </block>           
 </xml>
 ";
-      var output = new Parser()
+      var output = new XmlParser()
           .AddStandardBlocks()
           .Parse(xml)
           .Generate();
@@ -48,7 +48,7 @@ namespace IronBlock.Tests.Roslyn
   </block>
 </xml>";
 
-      var output = new Parser()
+      var output = new XmlParser()
           .AddStandardBlocks()
           .Parse(xml)
           .Generate();
@@ -79,7 +79,7 @@ namespace IronBlock.Tests.Roslyn
   </block>
 </xml>";
 
-      var output = new Parser()
+      var output = new XmlParser()
           .AddStandardBlocks()
           .Parse(xml)
           .Generate();
@@ -109,7 +109,7 @@ namespace IronBlock.Tests.Roslyn
   </block>
 </xml>";
 
-      var output = new Parser()
+      var output = new XmlParser()
           .AddStandardBlocks()
           .Parse(xml)
           .Generate();
@@ -133,7 +133,7 @@ namespace IronBlock.Tests.Roslyn
   </block>
 </xml>";
 
-      var output = new Parser()
+      var output = new XmlParser()
           .AddStandardBlocks()
           .Parse(xml)
           .Generate();
@@ -151,7 +151,7 @@ namespace IronBlock.Tests.Roslyn
   <block type=""logic_null""></block>
 </xml>";
 
-      var output = new Parser()
+      var output = new XmlParser()
           .AddStandardBlocks()
           .Parse(xml)
           .Generate();
@@ -185,7 +185,7 @@ namespace IronBlock.Tests.Roslyn
   </block>
 </xml>";
 
-      var output = new Parser()
+      var output = new XmlParser()
           .AddStandardBlocks()
           .Parse(xml)
           .Generate();

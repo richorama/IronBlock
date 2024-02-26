@@ -55,7 +55,7 @@ namespace IronBlock.Tests
 </xml>
 ";
 
-      new Parser()
+      new XmlParser()
           .AddStandardBlocks()
           .AddDebugPrinter()
           .Parse(xml)
@@ -86,7 +86,7 @@ namespace IronBlock.Tests
 </xml>
 ";
 
-      var output = new Parser()
+      var output = new XmlParser()
           .AddStandardBlocks()
           .Parse(xml)
           .Evaluate();
@@ -131,7 +131,7 @@ namespace IronBlock.Tests
 </xml>
 ";
 
-      var output = new Parser()
+      var output = new XmlParser()
           .AddStandardBlocks()
           .Parse(xml)
           .Evaluate();

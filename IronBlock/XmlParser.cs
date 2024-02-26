@@ -7,34 +7,11 @@ using IronBlock.Blocks.Variables;
 
 namespace IronBlock
 {
-  public class Parser
+  public class XmlParser : IParser
   {
-    IDictionary<string, Func<IBlock>> blocks = new Dictionary<string, Func<IBlock>>();
+  
 
-    public Parser AddBlock<T>(string type) where T : IBlock, new()
-    {
-      this.AddBlock(type, () => new T());
-      return this;
-    }
-
-    public Parser AddBlock<T>(string type, T block) where T : IBlock
-    {
-      this.AddBlock(type, () => block);
-      return this;
-    }
-
-    public Parser AddBlock(string type, Func<IBlock> blockFactory)
-    {
-      if (this.blocks.ContainsKey(type))
-      {
-        this.blocks[type] = blockFactory;
-        return this;
-      }
-      this.blocks.Add(type, blockFactory);
-      return this;
-    }
-
-    public Workspace Parse(string xml, bool preserveWhitespace = false)
+    public override Workspace Parse(string xml, bool preserveWhitespace = false)
     {
       var xdoc = new XmlDocument { PreserveWhitespace = preserveWhitespace };
       xdoc.LoadXml(xml);

@@ -14,7 +14,7 @@ namespace IronBlock.Tests.Roslyn
     {
       var xml = File.ReadAllText("../../../Examples/example1.xml");
 
-      var output = new Parser()
+      var output = new XmlParser()
           .AddStandardBlocks()
           .Parse(xml)
           .Generate();
@@ -29,7 +29,7 @@ namespace IronBlock.Tests.Roslyn
     {
       var xml = File.ReadAllText("../../../Examples/example2.xml");
 
-      var output = new Parser()
+      var output = new XmlParser()
           .AddStandardBlocks()
           .Parse(xml)
           .Generate();
@@ -43,7 +43,7 @@ namespace IronBlock.Tests.Roslyn
     {
       var xml = File.ReadAllText("../../../Examples/example3.xml");
 
-      var output = new Parser()
+      var output = new XmlParser()
           .AddStandardBlocks()
           .Parse(xml)
           .Generate();
@@ -57,7 +57,7 @@ namespace IronBlock.Tests.Roslyn
     {
       var xml = File.ReadAllText("../../../Examples/example4.xml");
 
-      var output = new Parser()
+      var output = new XmlParser()
           .AddStandardBlocks()
           .Parse(xml)
           .Evaluate();
