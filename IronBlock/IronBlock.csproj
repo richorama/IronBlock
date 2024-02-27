@@ -14,10 +14,15 @@
     <Version>1.0.18</Version>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>keyPair.snk</AssemblyOriginatorKeyFile>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="3.9.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+      <None Include="..\readme.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
 
 </Project>
