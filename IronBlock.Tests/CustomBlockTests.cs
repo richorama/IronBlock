@@ -12,7 +12,7 @@ namespace IronBlock.Tests
 
     public override object Evaluate(Context context)
     {
-      Text.Add((this.Values.FirstOrDefault(x => x.Name == "VALUE")?.Evaluate(context) ?? "").ToString());
+      Text.Add((this.Values.FirstOrDefault(x => x.Name == "VALUE")?.Evaluate(context) ?? "").ToString()!);
       return base.Evaluate(context);
     }
   }
