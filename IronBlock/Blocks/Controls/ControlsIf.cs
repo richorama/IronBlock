@@ -26,6 +26,10 @@ namespace IronBlock.Blocks.Controls
         {
           var statement = this.Statements.Get($"DO{i}");
           statement.Evaluate(context);
+          if (context.EscapeMode == EscapeMode.Return)
+          {
+            return context.ReturnValue;
+          }
           done = true;
           break;
         }
@@ -40,6 +44,10 @@ namespace IronBlock.Blocks.Controls
           {
             var statement = this.Statements.Get("ELSE");
             statement.Evaluate(context);
+            if (context.EscapeMode == EscapeMode.Return)
+            {
+              return context.ReturnValue;
+            }
           }
         }
       }

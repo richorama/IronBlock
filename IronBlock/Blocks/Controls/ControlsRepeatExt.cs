@@ -27,6 +27,11 @@ namespace IronBlock.Blocks.Controls
           break;
         }
 
+        if (context.EscapeMode == EscapeMode.Return)
+        {
+          return context.ReturnValue;
+        }
+
         context.EscapeMode = EscapeMode.None;
       }
 

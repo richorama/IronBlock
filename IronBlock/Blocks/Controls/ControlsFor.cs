@@ -32,7 +32,15 @@ namespace IronBlock.Blocks.Controls
 
       while ((double)context.Variables[variableName] <= toValue)
       {
+        if (context.EscapeMode == EscapeMode.Return)
+        {
+          return context.ReturnValue;
+        }
         statement.Evaluate(context);
+        if (context.EscapeMode == EscapeMode.Return)
+        {
+          return context.ReturnValue;
+        }
         context.Variables[variableName] = (double)context.Variables[variableName] + byValue;
       }
 

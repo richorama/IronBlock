@@ -29,7 +29,15 @@ namespace IronBlock.Blocks.Text
         counter++;
       }
 
-      return statement.Evaluate(funcContext);
+      var result = statement.Evaluate(funcContext);
+      
+      if (funcContext.EscapeMode == EscapeMode.Return)
+      {
+        funcContext.EscapeMode = EscapeMode.None;
+        return funcContext.ReturnValue;
+      }
+      
+      return result;
     }
   }
 }

@@ -19,6 +19,10 @@ namespace IronBlock.Blocks.Controls
 
       foreach (var item in list)
       {
+        if (context.EscapeMode == EscapeMode.Return)
+        {
+          return context.ReturnValue;
+        }
         if (context.Variables.ContainsKey(variableName))
         {
           context.Variables[variableName] = item;
@@ -28,6 +32,10 @@ namespace IronBlock.Blocks.Controls
           context.Variables.Add(variableName, item);
         }
         statement.Evaluate(context);
+        if (context.EscapeMode == EscapeMode.Return)
+        {
+          return context.ReturnValue;
+        }
       }
 
       return base.Evaluate(context);

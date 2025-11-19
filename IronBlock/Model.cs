@@ -201,7 +201,14 @@ namespace IronBlock
     public object Evaluate(Context context)
     {
       if (null == this.Block) return null;
-      return this.Block.Evaluate(context);
+      var result = this.Block.Evaluate(context);
+      
+      if (context.EscapeMode == EscapeMode.Return)
+      {
+        return context.ReturnValue;
+      }
+      
+      return result;
     }
     public SyntaxNode Generate(Context context)
     {
@@ -221,7 +228,8 @@ namespace IronBlock
   {
     None,
     Break,
-    Continue
+    Continue,
+    Return
   }
 
 
@@ -240,6 +248,8 @@ namespace IronBlock
     public IDictionary<string, object> Functions { get; set; }
 
     public EscapeMode EscapeMode { get; set; }
+
+    public object ReturnValue { get; set; }
 
     public List<StatementSyntax> Statements { get; }
 

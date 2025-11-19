@@ -27,14 +27,30 @@ namespace IronBlock.Blocks.Controls
             context.EscapeMode = EscapeMode.None;
             break;
           }
+          if (context.EscapeMode == EscapeMode.Return)
+          {
+            return context.ReturnValue;
+          }
           statement.Evaluate(context);
+          if (context.EscapeMode == EscapeMode.Return)
+          {
+            return context.ReturnValue;
+          }
         }
       }
       else
       {
         while (!(bool)value.Evaluate(context))
         {
+          if (context.EscapeMode == EscapeMode.Return)
+          {
+            return context.ReturnValue;
+          }
           statement.Evaluate(context);
+          if (context.EscapeMode == EscapeMode.Return)
+          {
+            return context.ReturnValue;
+          }
         }
       }
 

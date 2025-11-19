@@ -1,0 +1,38 @@
+<xml xmlns="http://www.w3.org/1999/xhtml">
+  <block type="procedures_defreturn">
+    <field name="NAME">test_function</field>
+    <statement name="STACK">
+      <!-- procedures_ifreturn inside an if statement -->
+      <block type="controls_if">
+        <value name="IF0">
+          <block type="logic_boolean">
+            <field name="BOOL">TRUE</field>
+          </block>
+        </value>
+        <statement name="DO0">
+          <block type="procedures_ifreturn">
+            <mutation value="1"></mutation>
+            <value name="CONDITION">
+              <block type="logic_boolean">
+                <field name="BOOL">TRUE</field>
+              </block>
+            </value>
+            <value name="VALUE">
+              <block type="text">
+                <field name="TEXT">should return this</field>
+              </block>
+            </value>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="RETURN">
+      <block type="text">
+        <field name="TEXT">should not reach here</field>
+      </block>
+    </value>
+  </block>
+  <block type="procedures_callreturn">
+    <mutation name="test_function"></mutation>
+  </block>
+</xml>
