@@ -1,0 +1,11 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  IronBlock -> /home/runner/work/IronBlock/IronBlock/IronBlock/bin/Debug/netstandard2.0/IronBlock.dll
+  IronBlock.Tests -> /home/runner/work/IronBlock/IronBlock/IronBlock.Tests/bin/Debug/net9.0/IronBlock.Tests.dll
+Test run for /home/runner/work/IronBlock/IronBlock/IronBlock.Tests/bin/Debug/net9.0/IronBlock.Tests.dll (.NETCoreApp,Version=v9.0)
+VSTest version 18.0.1 (x64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+
+Passed!  - Failed:     0, Passed:   161, Skipped:     0, Total:   161, Duration: 476 ms - IronBlock.Tests.dll (net9.0)
