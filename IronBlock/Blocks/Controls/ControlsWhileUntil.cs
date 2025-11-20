@@ -22,16 +22,24 @@ namespace IronBlock.Blocks.Controls
       {
         while ((bool)value.Evaluate(context))
         {
-          if (context.EscapeMode == EscapeMode.Break)
-          {
-            context.EscapeMode = EscapeMode.None;
-            break;
-          }
           if (context.EscapeMode == EscapeMode.Return)
           {
             return context.ReturnValue;
           }
           statement.Evaluate(context);
+          
+          if (context.EscapeMode == EscapeMode.Break)
+          {
+            context.EscapeMode = EscapeMode.None;
+            break;
+          }
+          
+          if (context.EscapeMode == EscapeMode.Continue)
+          {
+            context.EscapeMode = EscapeMode.None;
+            continue;
+          }
+          
           if (context.EscapeMode == EscapeMode.Return)
           {
             return context.ReturnValue;
@@ -47,6 +55,19 @@ namespace IronBlock.Blocks.Controls
             return context.ReturnValue;
           }
           statement.Evaluate(context);
+          
+          if (context.EscapeMode == EscapeMode.Break)
+          {
+            context.EscapeMode = EscapeMode.None;
+            break;
+          }
+          
+          if (context.EscapeMode == EscapeMode.Continue)
+          {
+            context.EscapeMode = EscapeMode.None;
+            continue;
+          }
+          
           if (context.EscapeMode == EscapeMode.Return)
           {
             return context.ReturnValue;
