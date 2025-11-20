@@ -6,19 +6,35 @@ namespace IronBlock.Blocks.Math
   {
     public override object Evaluate(Context context)
     {
+      var variables = context.Variables;
       var variableName = this.Fields.Get("VAR");
       var delta = (double)this.Values.Evaluate("DELTA", context);
 
-      if (context.Variables.ContainsKey(variableName))
+      double value;
+      if (variables.ContainsKey(variableName) && variables[variableName] != null)
       {
-        var value = (double)context.Variables[variableName];
-        value += delta;
-        context.Variables[variableName] = value;
+        value = (double)variables[variableName];
       }
       else
       {
-        throw new ApplicationException($"variable {variableName} not declared");
+        var rootContext = context.GetRootContext();
+        
+        if (rootContext.Variables.ContainsKey(variableName) && rootContext.Variables[variableName] != null)
+        {
+          value = (double)rootContext.Variables[variableName];
+          value += delta;
+          rootContext.Variables[variableName] = value;
+          return base.Evaluate(context);
+        }
+        else
+        {
+          // Initialize undeclared or null variable to 0.0
+          value = 0.0;
+        }
       }
+
+      value += delta;
+      variables[variableName] = value;
 
       return base.Evaluate(context);
 

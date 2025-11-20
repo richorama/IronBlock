@@ -626,6 +626,83 @@ namespace IronBlock.Tests
 
     }
 
+    [TestMethod]
+    public void Test_Math_Change_With_Undeclared_Variable()
+    {
+      const string xml = @"
+<xml xmlns=""https://developers.google.com/blockly/xml"">
+  <variables>
+    <variable id=""ff`YJBi(D@smL[)Q:H}}"">foo</variable>
+  </variables>
+  <block type=""math_change"" id=""uO~$6GN{K~{gOBd!r%vp"">
+    <field name=""VAR"" id=""ff`YJBi(D@smL[)Q:H}}"">foo</field>
+    <value name=""DELTA"">
+      <shadow type=""math_number"" id=""S3n?jRy1.r1?+xGsN[ba"">
+        <field name=""NUM"">1</field>
+      </shadow>
+    </value>
+    <next>
+      <block type=""text_print"" id=""ZzSeF~6sC{%k3b*c_2hm"">
+        <value name=""TEXT"">
+          <shadow type=""text"" id=""x4}B?M9VFEOb;WmE^8ba"">
+            <field name=""TEXT"">abc</field>
+          </shadow>
+          <block type=""variables_get"" id="")[}s1A^ZtI^hEMi5qjuw"">
+            <field name=""VAR"" id=""ff`YJBi(D@smL[)Q:H}}"">foo</field>
+          </block>
+        </value>
+      </block>
+    </next>
+  </block>
+</xml>";
+
+      var output = new Parser()
+        .AddStandardBlocks()
+        .AddDebugPrinter()
+        .Parse(xml)
+        .Evaluate();
+
+      // Variable should be initialized to 0.0 and then incremented by 1
+      Assert.AreEqual("1", TestExtensions.GetDebugText().First());
+    }
+
+    [TestMethod]
+    public void Test_Math_Change_With_Null_Variable()
+    {
+      const string xml = @"
+<xml xmlns=""https://developers.google.com/blockly/xml"">
+  <variables>
+    <variable id=""test123"">testVar</variable>
+  </variables>
+  <block type=""math_change"" id=""block123"">
+    <field name=""VAR"" id=""test123"">testVar</field>
+    <value name=""DELTA"">
+      <block type=""math_number"" id=""num123"">
+        <field name=""NUM"">5</field>
+      </block>
+    </value>
+    <next>
+      <block type=""text_print"" id=""print123"">
+        <value name=""TEXT"">
+          <block type=""variables_get"" id=""get123"">
+            <field name=""VAR"" id=""test123"">testVar</field>
+          </block>
+        </value>
+      </block>
+    </next>
+  </block>
+</xml>";
+
+      var output = new Parser()
+        .AddStandardBlocks()
+        .AddDebugPrinter()
+        .Parse(xml)
+        .Evaluate();
+
+      // Variable should be initialized to 0.0 and then incremented by 5
+      Assert.AreEqual("5", TestExtensions.GetDebugText().First());
+    }
+
 
 
   }
