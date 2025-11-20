@@ -32,6 +32,19 @@ namespace IronBlock.Blocks.Controls
           context.Variables.Add(variableName, item);
         }
         statement.Evaluate(context);
+        
+        if (context.EscapeMode == EscapeMode.Break)
+        {
+          context.EscapeMode = EscapeMode.None;
+          break;
+        }
+        
+        if (context.EscapeMode == EscapeMode.Continue)
+        {
+          context.EscapeMode = EscapeMode.None;
+          continue;
+        }
+        
         if (context.EscapeMode == EscapeMode.Return)
         {
           return context.ReturnValue;
