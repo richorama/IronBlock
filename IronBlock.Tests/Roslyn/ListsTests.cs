@@ -571,5 +571,350 @@ namespace IronBlock.Tests.Roslyn
       string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
       Assert.IsTrue(code.Contains("dynamic list; list = new List<dynamic>{}; list[list.Count - 1] = 10;"));
     }
+
+    [TestMethod]
+    public void Test_Lists_SetIndex_Insert_FromStart()
+    {
+      const string xml = @"
+<xml xmlns=""http://www.w3.org/1999/xhtml"" id=""workspaceBlocks"" style=""display:none"">
+  <variables>
+    <variable id=""X.f5Y~hcMogYGWy/jV#E"" type="""">list</variable>
+  </variables>
+  <block id=""EI781:1nxTF=088/HJJ5"" type=""variables_set"" x=""263"" y=""288"">
+    <field id=""X.f5Y~hcMogYGWy/jV#E"" name=""VAR"" variabletype="""">list</field>
+    <value name=""VALUE"">
+      <block id="";b/7T{A~*-N,M5!oiGne"" type=""lists_create_with"">
+        <mutation items=""2""></mutation>
+        <value name=""ADD0"">
+          <block id=""2=1U#!u^Z$!nch108HXz"" type=""math_number"">
+            <field name=""NUM"">10</field>
+          </block>
+        </value>
+        <value name=""ADD1"">
+          <block id=""adN@6Uy:f.QZ%7.!I8!Z"" type=""math_number"">
+            <field name=""NUM"">20</field>
+          </block>
+        </value>
+      </block>
+    </value>
+    <next>
+      <block id=""M~!--)5@O{KOhd.E31gZ"" type=""lists_setIndex"">
+        <mutation at=""true""></mutation>
+        <field name=""MODE"">INSERT</field>
+        <field name=""WHERE"">FROM_START</field>
+        <value name=""LIST"">
+          <block id=""m,G/pT4!CuERnWGImwgH"" type=""variables_get"">
+            <field id=""X.f5Y~hcMogYGWy/jV#E"" name=""VAR"" variabletype="""">list</field>
+          </block>
+        </value>
+        <value name=""AT"">
+          <block id=""h}rIRz1]]DfYRZR)=6Kp"" type=""math_number"">
+            <field name=""NUM"">2</field>
+          </block>
+        </value>
+        <value name=""TO"">
+          <block id=""0ZfyZ~oP1n6u%WA:U6|n"" type=""math_number"">
+            <field name=""NUM"">15</field>
+          </block>
+        </value>
+      </block>
+    </next>
+  </block>
+</xml>
+";
+
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Generate();
+
+      string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
+      Assert.IsTrue(code.Contains("dynamic list; list = new List<dynamic>{10, 20}; list.Insert(2 - 1, 15);"));
+    }
+
+    [TestMethod]
+    public void Test_Lists_SetIndex_Insert_FromEnd()
+    {
+      const string xml = @"
+<xml xmlns=""http://www.w3.org/1999/xhtml"" id=""workspaceBlocks"" style=""display:none"">
+  <variables>
+    <variable id=""cc|GVfJ3tvn4)$KU@H7y"" type="""">list</variable>
+  </variables>
+  <block id=""fR5O0Jp|d1OmOK-Pk^_P"" type=""variables_set"" x=""288"" y=""88"">
+    <field id=""cc|GVfJ3tvn4)$KU@H7y"" name=""VAR"" variabletype="""">list</field>
+    <value name=""VALUE"">
+      <block id=""!bX1D@bA^X|EPq~|rE@8"" type=""lists_create_with"">
+        <mutation items=""3""></mutation>
+        <value name=""ADD0"">
+          <block id=""2=1U#!u^Z$!nch108HXz"" type=""math_number"">
+            <field name=""NUM"">10</field>
+          </block>
+        </value>
+        <value name=""ADD1"">
+          <block id=""adN@6Uy:f.QZ%7.!I8!Z"" type=""math_number"">
+            <field name=""NUM"">20</field>
+          </block>
+        </value>
+        <value name=""ADD2"">
+          <block id=""adN@6Uy:f.QZ%7.!I8!Z"" type=""math_number"">
+            <field name=""NUM"">30</field>
+          </block>
+        </value>
+      </block>
+    </value>
+    <next>
+      <block id=""C7rv=SPiJD~wmb3i~`.Q"" type=""lists_setIndex"">
+        <mutation at=""true""></mutation>
+        <field name=""MODE"">INSERT</field>
+        <field name=""WHERE"">FROM_END</field>
+        <value name=""LIST"">
+          <block id=""5VIlE8Inpe_qTmvAZEV}"" type=""variables_get"">
+            <field id=""cc|GVfJ3tvn4)$KU@H7y"" name=""VAR"" variabletype="""">list</field>
+          </block>
+        </value>
+        <value name=""AT"">
+          <block id=""T1}cABG9FDd@lwW:W|u^"" type=""math_number"">
+            <field name=""NUM"">1</field>
+          </block>
+        </value>
+        <value name=""TO"">
+          <block id=""/T$p;AuHvxym5s4k:jC7"" type=""math_number"">
+            <field name=""NUM"">25</field>
+          </block>
+        </value>
+      </block>
+    </next>
+  </block>
+</xml>
+";
+
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Generate();
+
+      string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
+      Assert.IsTrue(code.Contains("dynamic list; list = new List<dynamic>{10, 20, 30}; list.Insert(list.Count - 1, 25);"));
+    }
+
+    [TestMethod]
+    public void Test_Lists_SetIndex_Insert_First()
+    {
+      const string xml = @"
+<xml xmlns=""http://www.w3.org/1999/xhtml"" id=""workspaceBlocks"" style=""display:none"">
+  <variables>
+    <variable id=""cc|GVfJ3tvn4)$KU@H7y"" type="""">list</variable>
+  </variables>
+  <block id=""fR5O0Jp|d1OmOK-Pk^_P"" type=""variables_set"" x=""288"" y=""88"">
+    <field id=""cc|GVfJ3tvn4)$KU@H7y"" name=""VAR"" variabletype="""">list</field>
+    <value name=""VALUE"">
+      <block id=""!bX1D@bA^X|EPq~|rE@8"" type=""lists_create_with"">
+        <mutation items=""2""></mutation>
+        <value name=""ADD0"">
+          <block id=""2=1U#!u^Z$!nch108HXz"" type=""math_number"">
+            <field name=""NUM"">10</field>
+          </block>
+        </value>
+        <value name=""ADD1"">
+          <block id=""adN@6Uy:f.QZ%7.!I8!Z"" type=""math_number"">
+            <field name=""NUM"">20</field>
+          </block>
+        </value>
+      </block>
+    </value>
+    <next>
+      <block id=""C7rv=SPiJD~wmb3i~`.Q"" type=""lists_setIndex"">
+        <mutation at=""false""></mutation>
+        <field name=""MODE"">INSERT</field>
+        <field name=""WHERE"">FIRST</field>
+        <value name=""LIST"">
+          <block id=""5VIlE8Inpe_qTmvAZEV}"" type=""variables_get"">
+            <field id=""cc|GVfJ3tvn4)$KU@H7y"" name=""VAR"" variabletype="""">list</field>
+          </block>
+        </value>
+        <value name=""TO"">
+          <block id=""/T$p;AuHvxym5s4k:jC7"" type=""math_number"">
+            <field name=""NUM"">5</field>
+          </block>
+        </value>
+      </block>
+    </next>
+  </block>
+</xml>
+";
+
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Generate();
+
+      string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
+      Assert.IsTrue(code.Contains("dynamic list; list = new List<dynamic>{10, 20}; list.Insert(0, 5);"));
+    }
+
+    [TestMethod]
+    public void Test_Lists_SetIndex_Insert_Last()
+    {
+      const string xml = @"
+<xml xmlns=""http://www.w3.org/1999/xhtml"" id=""workspaceBlocks"" style=""display:none"">
+  <variables>
+    <variable id=""cc|GVfJ3tvn4)$KU@H7y"" type="""">list</variable>
+  </variables>
+  <block id=""fR5O0Jp|d1OmOK-Pk^_P"" type=""variables_set"" x=""288"" y=""88"">
+    <field id=""cc|GVfJ3tvn4)$KU@H7y"" name=""VAR"" variabletype="""">list</field>
+    <value name=""VALUE"">
+      <block id=""!bX1D@bA^X|EPq~|rE@8"" type=""lists_create_with"">
+        <mutation items=""2""></mutation>
+        <value name=""ADD0"">
+          <block id=""2=1U#!u^Z$!nch108HXz"" type=""math_number"">
+            <field name=""NUM"">10</field>
+          </block>
+        </value>
+        <value name=""ADD1"">
+          <block id=""adN@6Uy:f.QZ%7.!I8!Z"" type=""math_number"">
+            <field name=""NUM"">20</field>
+          </block>
+        </value>
+      </block>
+    </value>
+    <next>
+      <block id=""C7rv=SPiJD~wmb3i~`.Q"" type=""lists_setIndex"">
+        <mutation at=""false""></mutation>
+        <field name=""MODE"">INSERT</field>
+        <field name=""WHERE"">LAST</field>
+        <value name=""LIST"">
+          <block id=""5VIlE8Inpe_qTmvAZEV}"" type=""variables_get"">
+            <field id=""cc|GVfJ3tvn4)$KU@H7y"" name=""VAR"" variabletype="""">list</field>
+          </block>
+        </value>
+        <value name=""TO"">
+          <block id=""/T$p;AuHvxym5s4k:jC7"" type=""math_number"">
+            <field name=""NUM"">30</field>
+          </block>
+        </value>
+      </block>
+    </next>
+  </block>
+</xml>
+";
+
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Generate();
+
+      string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
+      Assert.IsTrue(code.Contains("dynamic list; list = new List<dynamic>{10, 20}; list.Insert(list.Count, 30);"));
+    }
+
+    [TestMethod]
+    public void Test_Lists_SetIndex_Insert_Random()
+    {
+      const string xml = @"
+<xml xmlns=""http://www.w3.org/1999/xhtml"" id=""workspaceBlocks"" style=""display:none"">
+  <variables>
+    <variable id=""cc|GVfJ3tvn4)$KU@H7y"" type="""">list</variable>
+  </variables>
+  <block id=""fR5O0Jp|d1OmOK-Pk^_P"" type=""variables_set"" x=""288"" y=""88"">
+    <field id=""cc|GVfJ3tvn4)$KU@H7y"" name=""VAR"" variabletype="""">list</field>
+    <value name=""VALUE"">
+      <block id=""!bX1D@bA^X|EPq~|rE@8"" type=""lists_create_with"">
+        <mutation items=""2""></mutation>
+        <value name=""ADD0"">
+          <block id=""2=1U#!u^Z$!nch108HXz"" type=""math_number"">
+            <field name=""NUM"">10</field>
+          </block>
+        </value>
+        <value name=""ADD1"">
+          <block id=""adN@6Uy:f.QZ%7.!I8!Z"" type=""math_number"">
+            <field name=""NUM"">20</field>
+          </block>
+        </value>
+      </block>
+    </value>
+    <next>
+      <block id=""C7rv=SPiJD~wmb3i~`.Q"" type=""lists_setIndex"">
+        <mutation at=""false""></mutation>
+        <field name=""MODE"">INSERT</field>
+        <field name=""WHERE"">RANDOM</field>
+        <value name=""LIST"">
+          <block id=""5VIlE8Inpe_qTmvAZEV}"" type=""variables_get"">
+            <field id=""cc|GVfJ3tvn4)$KU@H7y"" name=""VAR"" variabletype="""">list</field>
+          </block>
+        </value>
+        <value name=""TO"">
+          <block id=""/T$p;AuHvxym5s4k:jC7"" type=""math_number"">
+            <field name=""NUM"">15</field>
+          </block>
+        </value>
+      </block>
+    </next>
+  </block>
+</xml>
+";
+
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Generate();
+
+      string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
+      Assert.IsTrue(code.Contains("list.Insert(new Random().Next(list.Count), 15);"));
+    }
+
+    [TestMethod]
+    public void Test_Lists_SetIndex_Random()
+    {
+      const string xml = @"
+<xml xmlns=""http://www.w3.org/1999/xhtml"" id=""workspaceBlocks"" style=""display:none"">
+  <variables>
+    <variable id=""cc|GVfJ3tvn4)$KU@H7y"" type="""">list</variable>
+  </variables>
+  <block id=""fR5O0Jp|d1OmOK-Pk^_P"" type=""variables_set"" x=""288"" y=""88"">
+    <field id=""cc|GVfJ3tvn4)$KU@H7y"" name=""VAR"" variabletype="""">list</field>
+    <value name=""VALUE"">
+      <block id=""!bX1D@bA^X|EPq~|rE@8"" type=""lists_create_with"">
+        <mutation items=""2""></mutation>
+        <value name=""ADD0"">
+          <block id=""2=1U#!u^Z$!nch108HXz"" type=""math_number"">
+            <field name=""NUM"">10</field>
+          </block>
+        </value>
+        <value name=""ADD1"">
+          <block id=""adN@6Uy:f.QZ%7.!I8!Z"" type=""math_number"">
+            <field name=""NUM"">20</field>
+          </block>
+        </value>
+      </block>
+    </value>
+    <next>
+      <block id=""C7rv=SPiJD~wmb3i~`.Q"" type=""lists_setIndex"">
+        <mutation at=""false""></mutation>
+        <field name=""MODE"">SET</field>
+        <field name=""WHERE"">RANDOM</field>
+        <value name=""LIST"">
+          <block id=""5VIlE8Inpe_qTmvAZEV}"" type=""variables_get"">
+            <field id=""cc|GVfJ3tvn4)$KU@H7y"" name=""VAR"" variabletype="""">list</field>
+          </block>
+        </value>
+        <value name=""TO"">
+          <block id=""/T$p;AuHvxym5s4k:jC7"" type=""math_number"">
+            <field name=""NUM"">99</field>
+          </block>
+        </value>
+      </block>
+    </next>
+  </block>
+</xml>
+";
+
+      var output = new Parser()
+          .AddStandardBlocks()
+          .Parse(xml)
+          .Generate();
+
+      string code = output.NormalizeWhitespace(string.Empty, " ").ToFullString();
+      Assert.IsTrue(code.Contains("list[new Random().Next(list.Count)] = 99;"));
+    }
   }
 }

@@ -17,7 +17,7 @@ namespace IronBlock.Tests
 
       public override object Evaluate(Context context)
       {
-        Text.Add((this.Values.First(x => x.Name == "TEXT").Evaluate(context) ?? "").ToString());
+        Text.Add((this.Values.First(x => x.Name == "TEXT").Evaluate(context) ?? "").ToString()!);
         return base.Evaluate(context);
       }
     }

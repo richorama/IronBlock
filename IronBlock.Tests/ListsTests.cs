@@ -41,7 +41,7 @@ namespace IronBlock.Tests
         .Parse(xml)
         .Evaluate();
 
-      Assert.AreEqual("x,y,z", string.Join(",", (output as IEnumerable<object>).Select(x => x.ToString())));
+      Assert.AreEqual("x,y,z", string.Join(",", ((IEnumerable<object>)output!).Select(x => x.ToString())));
     }
 
 
@@ -73,7 +73,7 @@ namespace IronBlock.Tests
         .Parse(xml)
         .Evaluate();
 
-      Assert.AreEqual("x,y,z", string.Join(",", output as IEnumerable<object>));
+      Assert.AreEqual("x,y,z", string.Join(",", (IEnumerable<object>)output!));
 
     }
 
@@ -186,7 +186,7 @@ namespace IronBlock.Tests
         .Parse(xml)
         .Evaluate();
 
-      Assert.AreEqual("hello,hello,hello", string.Join(",", (output as IEnumerable<object>).Select(x => x.ToString())));
+      Assert.AreEqual("hello,hello,hello", string.Join(",", ((IEnumerable<object>)output!).Select(x => x.ToString())));
 
     }
 
